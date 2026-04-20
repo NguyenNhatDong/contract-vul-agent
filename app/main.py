@@ -11,7 +11,7 @@ def load_categories(path: str):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--contract", required=True, help="Path to .sol file")
-    ap.add_argument("--model", default="iradukundadev/finetuned-deepseek-r1_7b:latest")
+    ap.add_argument("--model", default="deepseek-r1:7b")
     ap.add_argument("--out", default="outputs/results.json")
     args = ap.parse_args()
 

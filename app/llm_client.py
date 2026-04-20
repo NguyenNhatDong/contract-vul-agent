@@ -1,7 +1,7 @@
 import ollama
 
 class LLMClient:
-    def __init__(self, model: str = "iradukundadev/finetuned-deepseek-r1_7b:latest"):
+    def __init__(self, model: str = "deepseek-r1:7b"):
         self.model = model
 
     def chat(self, prompt: str, temperature: float = 0.2) -> str:
