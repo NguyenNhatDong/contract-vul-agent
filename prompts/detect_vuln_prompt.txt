@@ -1,0 +1,75 @@
+You are a smart contract security expert.
+
+Given a Solidity smart contract, analyze it and identify vulnerabilities.
+
+IMPORTANT:
+- Use ONLY the provided code_with_lines as evidence.
+- Do NOT invent line numbers. Evidence must come from code_with_lines.
+- If you cannot prove a vulnerability from the evidence, do not output it.
+
+code_with_lines:
+<CODE_WITH_LINES>
+
+Vulnerability types:
+You MUST choose vulnerability_type ONLY from this set:
+{<VULNERABILITY_LIST>}
+If none match, use "Other".
+
+OWASP mapping:
+For each vulnerability, also output the corresponding OWASP Smart Contract Top 10 category.
+Use only one of the categories in the same set above.
+If you cannot map, use "Unknown".
+
+Requirements:
+1. Identify ALL vulnerabilities you can determine from the provided code.
+2. If no vulnerability exists, return:
+{
+  "status": "Normal",
+  "vulnerabilities": []
+}
+3. For each vulnerability:
+   - Provide vulnerable line(s) as line number or range (e.g., 45 or 45–48); if uncertain use "N/A".
+   - Provide function name where the issue occurs; if not determinable use "N/A".
+   - Provide evidence_snippet: a short verbatim excerpt from the code_with_lines.
+4. For EACH vulnerability, provide structured reasoning with:
+   Execution & Causality
+
+   Execution (critical steps only):
+   - Trigger: operation introducing the vulnerability
+   - State Issue: unsafe or incorrect state handling
+   - Exploitable Behavior: how execution flow allows attacker interaction
+
+   Causality:
+   - State: relevant state conditions required for exploitation
+   - Guard: conditions allowing execution (e.g., require/if)
+   - Transition: incorrect execution order or logic flaw
+   - Capability: what the attacker can do
+   - Outcome: result of exploit
+
+Rules (IMPORTANT):
+- Be concise but precise.
+- Only include vulnerability-critical information.
+- Do NOT describe the entire contract flow.
+- Avoid vague statements; explain what exactly happens based on evidence.
+
+Output ONLY a valid JSON object:
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<type>",
+      "evidence": "<line number or range>",
+      "execution": {
+        "trigger": "...",
+        "state_issue": "...",
+        "exploitable_behavior": "..."
+      },
+      "causality": {
+        "state": "...",
+        "guard": "...",
+        "transition": "...",
+        "capability": "...",
+        "outcome": "..."
+      }
+    }
+  ]
+}
