@@ -1,0 +1,27 @@
+{
+  "contract_name": "reentrancy_simple.sol",
+  "contract_path": "contracts\\reentrancy_simple.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "16| (msg.sender.call.value(userBalance[msg.sender])())",
+      "execution": {
+        "trigger": "Calling msg.sender.call.value(userBalance[msg.sender])() in withdrawBalance",
+        "state_issue": "Attempting to call a function on userBalance which is not intended",
+        "exploitable_behavior": "Invalid function call leading to potential unintended behavior or reverts"
+      },
+      "causality": {
+        "state": "userBalance[msg.sender] does not have the method called",
+        "guard": "The incorrect call might cause a revert or unexpected state change",
+        "transition": "Invalid function usage causing incorrect state handling",
+        "capability": "Attacker can exploit invalid function calls leading to unintended behavior",
+        "outcome": "Potential reverts or incorrect balance updates"
+      }
+    }
+  ],
+  "analysis_time_seconds": 32.62,
+  "timestamp": "2026-04-21T00:48:17.821754",
+  "error": null
+}

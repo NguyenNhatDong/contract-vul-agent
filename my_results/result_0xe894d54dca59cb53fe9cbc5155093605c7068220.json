@@ -1,0 +1,43 @@
+{
+  "contract_name": "0xe894d54dca59cb53fe9cbc5155093605c7068220.sol",
+  "contract_path": "contracts\\0xe894d54dca59cb53fe9cbc5155093605c7068220.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "Line 7",
+      "execution": {
+        "trigger": "The function transfer calls keccak256 with a hardcoded string.",
+        "state_issue": "Using a hardcoded entropy source can lead to predictable or controllable behavior.",
+        "exploitable_behavior": "An attacker could exploit this by manipulating the input to control the hash output."
+      },
+      "causality": {
+        "state": "The entropy source is not randomized and uses a fixed string.",
+        "guard": "No randomness is used, making it predictable.",
+        "transition": "Predictable entropy allows attackers to control the function's execution flow.",
+        "capability": "Attacker can manipulate the input to cause arbitrary behavior.",
+        "outcome": "Exploitation leads to remote code execution or network pollution."
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Lines 9-12",
+      "execution": {
+        "trigger": "The loop calls caddress.call with arbitrary addresses from _tos.",
+        "state_issue": "Sending invalid or malicious addresses can cause DoS attacks.",
+        "exploitable_behavior": "Attacking parties can send invalid addresses to disrupt the contract."
+      },
+      "causality": {
+        "state": "The function does not validate input addresses.",
+        "guard": "No checks are in place for valid addresses.",
+        "transition": "Sending invalid addresses bypasses validation logic.",
+        "capability": "Attacker can send arbitrary addresses to disrupt the contract.",
+        "outcome": "Network pollution or denial of service occurs."
+      }
+    }
+  ],
+  "analysis_time_seconds": 16.76,
+  "timestamp": "2026-04-21T00:13:29.415581",
+  "error": null
+}

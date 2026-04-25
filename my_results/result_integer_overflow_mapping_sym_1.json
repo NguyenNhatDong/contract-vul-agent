@@ -1,0 +1,27 @@
+{
+  "contract_name": "integer_overflow_mapping_sym_1.sol",
+  "contract_path": "contracts\\integer_overflow_mapping_sym_1.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "8",
+      "execution": {
+        "trigger": "The operation `map[k] -= v` in the init function.",
+        "state_issue": "The subtraction of a larger value from a mapping key's value can cause an underflow due to signed variable handling.",
+        "exploitable_behavior": "An attacker could exploit this by causing the mapping value to become negative, leading to incorrect data retrieval."
+      },
+      "causality": {
+        "state": "The mapping values are stored as uint256 but treated as signed during arithmetic operations.",
+        "guard": "No explicit guard against underflow in the operation `map[k] -= v`.",
+        "transition": "The subtraction operation does not check for potential underflow, leading to incorrect value storage.",
+        "capability": "An attacker can exploit this by providing a larger value than expected, causing negative mapping values.",
+        "outcome": "Negative mapping values result in incorrect data retrieval and potential contract misbehavior."
+      }
+    }
+  ],
+  "analysis_time_seconds": 21.75,
+  "timestamp": "2026-04-21T00:37:29.820658",
+  "error": null
+}

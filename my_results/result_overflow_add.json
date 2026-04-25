@@ -1,0 +1,27 @@
+{
+  "contract_name": "overflow_add.sol",
+  "contract_path": "contracts\\overflow_add.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Lines 9, 15, 21",
+      "execution": {
+        "trigger": "Arithmetic operations in overflowaddtostate, overflowmultostate, underflowtostate",
+        "state_issue": "count is modified without checking for overflow or underflow",
+        "exploitable_behavior": "count wraps around instead of throwing an error"
+      },
+      "causality": {
+        "state": "count's value changes unexpectedly due to arithmetic operations",
+        "guard": "No checks for overflow/underflow conditions",
+        "transition": "Arithmetic operations cause state transitions without validation",
+        "capability": "Attacker can exploit by causing unintended count modifications",
+        "outcome": "Unexpected state values that could lead to attacker advantage"
+      }
+    }
+  ],
+  "analysis_time_seconds": 23.85,
+  "timestamp": "2026-04-21T00:42:43.025224",
+  "error": null
+}

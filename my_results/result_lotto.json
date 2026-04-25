@@ -1,0 +1,27 @@
+{
+  "contract_name": "lotto.sol",
+  "contract_path": "contracts\\lotto.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 21",
+      "execution": {
+        "trigger": "Calling withdrawLeftOver()",
+        "state_issue": "The contract's balance may be insufficient for an external send.",
+        "exploitable_behavior": "Unauthorized external transfers."
+      },
+      "causality": {
+        "state": "payedOut is true, but no checks on caller's ownership.",
+        "guard": "No check if msg.sender is the owner.",
+        "transition": "Sending from an unauthorized sender.",
+        "capability": "The attacker can send funds without authorization.",
+        "outcome": "Funds may be transferred to a third party."
+      }
+    }
+  ],
+  "analysis_time_seconds": 22.94,
+  "timestamp": "2026-04-21T00:39:00.723950",
+  "error": null
+}

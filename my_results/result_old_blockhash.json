@@ -1,0 +1,43 @@
+{
+  "contract_name": "old_blockhash.sol",
+  "contract_path": "contracts\\old_blockhash.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Front-running Attacks>",
+      "evidence": "23",
+      "execution": {
+        "trigger": "function lockInGuess(bytes32 hash) public payable { ... guesses[msg.sender].block = block.number + 1; }",
+        "state_issue": "The guess's block is set to the next block number, allowing attackers with knowledge of future blocks to exploit this.",
+        "exploitable_behavior": "Attackers can predict or control the next block number and use it in their guesses."
+      },
+      "causality": {
+        "state": "Requiring 1 ether for lockInGuess prevents unauthorized access but doesn't secure against knowing the next block number.",
+        "guard": "The function's requirement of 1 ether is a security measure, not an exploit vector.",
+        "transition": "Setting guesses[msg.sender].block to block.number +1 creates a predictable target for attackers.",
+        "capability": "Attackers with knowledge of future blocks can win the challenge by guessing correctly.",
+        "outcome": "Ether is transferred to attackers who predict or control the next block number."
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "29",
+      "execution": {
+        "trigger": "function settle() public { ... bytes32 answer = blockhash(guesses[msg.sender].block); }",
+        "state_issue": "Using a predictable index-based hash makes the guess vulnerable to prediction.",
+        "exploitable_behavior": "Attackers can predict or control the next block number and use it in their guesses."
+      },
+      "causality": {
+        "state": "The contract uses an index based on the current block, which is not cryptographic hashing.",
+        "guard": "No external calls are made, so this isn't a DoS attack.",
+        "transition": "Predictable hash calculation allows attackers to guess correctly without waiting for confirmation.",
+        "capability": "Attackers can exploit predictable hashes by guessing correctly before others confirm.",
+        "outcome": "Ether is transferred to attackers who predict or control the next block number."
+      }
+    }
+  ],
+  "analysis_time_seconds": 33.02,
+  "timestamp": "2026-04-21T00:42:19.153696",
+  "error": null
+}

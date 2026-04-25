@@ -1,0 +1,75 @@
+{
+  "contract_name": "odds_and_evens.sol",
+  "contract_path": "contracts\\odds_and_evens.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 4,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "Line 19",
+      "execution": {
+        "trigger": " play() function called with a number.",
+        "state_issue": "The andTheWinnerIs() function assumes exactly two players have been registered.",
+        "exploitable_behavior": "Attacker can exploit by causing more than one player to be added."
+      },
+      "causality": {
+        "state": "Players array is not properly managed, leading to incorrect state handling in andTheWinnerIs().",
+        "guard": "No explicit guard against invalid number of players.",
+        "transition": "Incrementing tot without checking if two players exist.",
+        "capability": "Attacker can cause an extra player registration or skip the winner calculation.",
+        "outcome": "Incorrect winner determination."
+      }
+    },
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Line 19",
+      "execution": {
+        "trigger": " play() function is called with a number.",
+        "state_issue": "The function does not check if the caller has sufficient authorization to send ether.",
+        "exploitable_behavior": "Attacker can exploit by sending more than one ether."
+      },
+      "causality": {
+        "state": "Sender must be owner to call play().",
+        "guard": "No guard against unauthorized sender.",
+        "transition": "Ether amount not checked beyond 1 ether.",
+        "capability": "Attacker can send multiple ethers and exploit uint8 overflow.",
+        "outcome": "Overflow in tot."
+      }
+    },
+    {
+      "vulnerability_type": "<SC07:2023 - Logic Errors>",
+      "evidence": "Line 25",
+      "execution": {
+        "trigger": " play() function called with a number and then another.",
+        "state_issue": "Tot is incremented twice if andTheWinnerIs() is called multiple times.",
+        "exploitable_behavior": "Extra increment of tot."
+      },
+      "causality": {
+        "state": "Tot should be exactly 2 before calling andTheWinnerIs().",
+        "guard": "No guard against multiple calls to andTheWinnerIs().",
+        "transition": "Incrementing after function call.",
+        "capability": "Attacker can cause extra increments of tot.",
+        "outcome": "Invalid state."
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 19",
+      "execution": {
+        "trigger": " play() function called with a number.",
+        "state_issue": "Tot is uint8, which can overflow.",
+        "exploitable_behavior": "Attacker can exploit by sending multiple ethers."
+      },
+      "causality": {
+        "state": "Tot should be exactly 2 before calling andTheWinnerIs().",
+        "guard": "No guard against integer overflow in tot.",
+        "transition": "Incrementing after function call.",
+        "capability": "Attacker can cause extra increments of tot.",
+        "outcome": "Invalid state."
+      }
+    }
+  ],
+  "analysis_time_seconds": 28.21,
+  "timestamp": "2026-04-21T00:41:46.114811",
+  "error": null
+}

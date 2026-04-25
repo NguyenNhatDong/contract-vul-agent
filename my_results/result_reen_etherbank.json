@@ -1,0 +1,27 @@
+{
+  "contract_name": "reen_etherbank.sol",
+  "contract_path": "contracts\\reen_etherbank.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Lines 13-16",
+      "execution": {
+        "trigger": "Calling withdrawBalance() without sufficient balance",
+        "state_issue": "Lack of validation on caller's balance before withdrawal",
+        "exploitable_behavior": "Unauthorized withdrawal of funds"
+      },
+      "causality": {
+        "state": "Caller's insufficient balance (balance <= 0)",
+        "guard": "No check for caller's balance validity",
+        "transition": "Execution flow bypasses balance check",
+        "capability": "Attacker can withdraw without sufficient funds",
+        "outcome": "Funds are transferred without authorization"
+      }
+    }
+  ],
+  "analysis_time_seconds": 49.02,
+  "timestamp": "2026-04-21T00:45:46.788431",
+  "error": null
+}

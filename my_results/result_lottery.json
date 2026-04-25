@@ -1,0 +1,27 @@
+{
+  "contract_name": "lottery.sol",
+  "contract_path": "contracts\\lottery.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Lines 36-41",
+      "execution": {
+        "trigger": "Calling `makeBet` with an unsigned transaction.",
+        "state_issue": "The contract does not verify that the caller has signed the transaction before proceeding.",
+        "exploitable_behavior": "An attacker can exploit this by calling `makeBet` multiple times without being allowed to send funds back."
+      },
+      "causality": {
+        "state": "Contract state lacks checks for signed transactions.",
+        "guard": "No guard against unsigned messages in `makeBet`.",
+        "transition": "Improper handling of unsigned messages leads to reentrancy attacks.",
+        "capability": "Attacker can exploit by calling `makeBet` without signing.",
+        "outcome": "Exploitation allows attackers to manipulate contract state."
+      }
+    }
+  ],
+  "analysis_time_seconds": 15.49,
+  "timestamp": "2026-04-21T00:38:37.774236",
+  "error": null
+}

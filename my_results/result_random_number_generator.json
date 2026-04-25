@@ -1,0 +1,43 @@
+{
+  "contract_name": "random_number_generator.sol",
+  "contract_path": "contracts\\random_number_generator.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "12",
+      "execution": {
+        "trigger": "Calculation of y in line 12",
+        "state_issue": "Division by zero if salt is a multiple of 5",
+        "exploitable_behavior": "Yields undefined or incorrect value for y"
+      },
+      "causality": {
+        "state": "Salt being a multiple of 5",
+        "guard": "salt % 5 == 0",
+        "transition": "Calculation of y",
+        "capability": "Attacker can cause division by zero",
+        "outcome": "Invalid or unexpected value for y"
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "12",
+      "execution": {
+        "trigger": "Calculation of y in line 12",
+        "state_issue": "Division by zero if salt is a multiple of 5",
+        "exploitable_behavior": "Yields undefined or incorrect value for y"
+      },
+      "causality": {
+        "state": "Salt being a multiple of 5",
+        "guard": "salt % 5 == 0",
+        "transition": "Calculation of y",
+        "capability": "Attacker can cause division by zero",
+        "outcome": "Invalid or unexpected value for y"
+      }
+    }
+  ],
+  "analysis_time_seconds": 24.18,
+  "timestamp": "2026-04-21T00:44:33.523204",
+  "error": null
+}

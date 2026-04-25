@@ -1,0 +1,91 @@
+{
+  "contract_name": "crypto_roulette.sol",
+  "contract_path": "contracts\\crypto_roulette.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 5,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "Line 30",
+      "execution": {
+        "trigger": "The secretNumber is set using a hash of the current time and block number.",
+        "state_issue": "The modulo operation may not distribute uniformly, leading to predictable numbers.",
+        "exploitable_behavior": "An attacker could potentially guess the secretNumber consistently."
+      },
+      "causality": {
+        "state": "Predictable secretNumber due to hash function's output distribution.",
+        "guard": "No uniform distribution check in modulo operation.",
+        "transition": "Hash value is used without ensuring randomness.",
+        "capability": "Attacker can exploit predictable numbers.",
+        "outcome": "Consistent guessing of secretNumber."
+      }
+    },
+    {
+      "vulnerability_type": "<SC07:2023 - Logic Errors>",
+      "evidence": "Lines 41-48",
+      "execution": {
+        "trigger": "The play function allows multiple players to use the same number.",
+        "state_issue": "No check for existing games with the same number.",
+        "exploitable_behavior": "Multiple players can win without unique numbers."
+      },
+      "causality": {
+        "state": "Games with same number exist in the gamesPlayed array.",
+        "guard": "No validation before adding a new game to gamesPlayed.",
+        "transition": "Adding an identical number doesn't trigger any error.",
+        "capability": "Players can manipulate the system by reusing numbers.",
+        "outcome": "Winning without unique number checks."
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "Line 30",
+      "execution": {
+        "trigger": "The secretNumber is set using a hash of the current time and block number.",
+        "state_issue": "The modulo operation may not distribute uniformly, leading to predictable numbers.",
+        "exploitable_behavior": "An attacker could potentially guess the secretNumber consistently."
+      },
+      "causality": {
+        "state": "Predictable secretNumber due to hash function's output distribution.",
+        "guard": "No uniform distribution check in modulo operation.",
+        "transition": "Hash value is used without ensuring randomness.",
+        "capability": "Attacker can exploit predictable numbers.",
+        "outcome": "Consistent guessing of secretNumber."
+      }
+    },
+    {
+      "vulnerability_type": "<SC07:2023 - Logic Errors>",
+      "evidence": "Line 43",
+      "execution": {
+        "trigger": "The balance is transferred without acknowledgment.",
+        "state_issue": "No confirmation that the player won.",
+        "exploitable_behavior": "Players can steal funds without being notified."
+      },
+      "causality": {
+        "state": "No acknowledgment of winning occurs.",
+        "guard": "No check for existing games with same number.",
+        "transition": "Transfer happens immediately after winning.",
+        "capability": "Players can manipulate the system by reusing numbers.",
+        "outcome": "Winning without unique number checks."
+      }
+    },
+    {
+      "vulnerability_type": "<SC07:2023 - Logic Errors>",
+      "evidence": "Line 51",
+      "execution": {
+        "trigger": "The kill function checks if now > lastPlayed + 1 day.",
+        "state_issue": "Doesn't account for time zones or daylight saving changes.",
+        "exploitable_behavior": "Attacker can trigger suicide at unexpected times."
+      },
+      "causality": {
+        "state": "Time zone and DST variations affect the check.",
+        "guard": "No consideration for time zone differences.",
+        "transition": "Incorrect triggering due to time-related miscalculations.",
+        "capability": "Attacker can exploit time discrepancies.",
+        "outcome": "Unintended suicides."
+      }
+    }
+  ],
+  "analysis_time_seconds": 50.45,
+  "timestamp": "2026-04-21T00:15:45.702539",
+  "error": null
+}

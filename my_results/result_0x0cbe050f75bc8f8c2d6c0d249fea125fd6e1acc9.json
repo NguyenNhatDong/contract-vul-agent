@@ -1,0 +1,27 @@
+{
+  "contract_name": "0x0cbe050f75bc8f8c2d6c0d249fea125fd6e1acc9.sol",
+  "contract_path": "contracts\\0x0cbe050f75bc8f8c2d6c0d249fea125fd6e1acc9.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 6",
+      "execution": {
+        "trigger": "The callAddress function calls a.call() which refers to itself.",
+        "state_issue": "Attempting to call self without proper termination leads to infinite recursion or stack overflow.",
+        "exploitable_behavior": "Reentrant calls cause the contract to recurse indefinitely."
+      },
+      "causality": {
+        "state": "The contract's recursive nature requires a base case for execution termination.",
+        "guard": "No guard condition prevents the function from calling itself repeatedly.",
+        "transition": "Self-reference without proper exit leads to infinite recursion.",
+        "capability": "The attacker can exploit this by triggering multiple calls leading to an overflow or loop.",
+        "outcome": "Stack overflow, gas exhaustion, or contract termination."
+      }
+    }
+  ],
+  "analysis_time_seconds": 14.88,
+  "timestamp": "2026-04-21T00:10:43.437589",
+  "error": null
+}

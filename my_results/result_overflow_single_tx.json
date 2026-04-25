@@ -1,0 +1,27 @@
+{
+  "contract_name": "overflow_single_tx.sol",
+  "contract_path": "contracts\\overflow_single_tx.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Lines 8, 14, 20",
+      "execution": {
+        "trigger": "Calling any of the functions that perform arithmetic operations (overflowaddtostate, overflowmultostate, underflowtostate)",
+        "state_issue": "The 'count' variable is manipulated without proper overflow checks.",
+        "exploitable_behavior": "Arithmetic operations can cause unexpected state changes due to integer overflow or underflow."
+      },
+      "causality": {
+        "state": "The 'count' variable's value is critical and must not exceed uint256 limits.",
+        "guard": "No guards against arithmetic operation results exceeding uint256 limits.",
+        "transition": "Arithmetic operations can cause state transitions that bypass normal execution flow.",
+        "capability": "An attacker could exploit undefined behavior from integer overflow/underflow.",
+        "outcome": "Invalid 'count' values due to unhandled arithmetic operations."
+      }
+    }
+  ],
+  "analysis_time_seconds": 12.78,
+  "timestamp": "2026-04-21T00:43:33.429312",
+  "error": null
+}

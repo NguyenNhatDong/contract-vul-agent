@@ -1,0 +1,43 @@
+{
+  "contract_name": "lottopollo.sol",
+  "contract_path": "contracts\\lottopollo.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 5-8",
+      "execution": {
+        "trigger": "payOut function with rand parameter",
+        "state_issue": "Timestamp manipulation without proper constraints",
+        "exploitable_behavior": "Message and balance can be sent at any time"
+      },
+      "causality": {
+        "state": "block.timestamp is used in comparisons",
+        "guard": "Line 7 condition using block timestamp",
+        "transition": "Incorrect use of integer timestamps for timing checks",
+        "capability": "Attacker can manipulate message timing",
+        "outcome": "Message and balance sent at any time"
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 14-17",
+      "execution": {
+        "trigger": "rand parameter in payOut function",
+        "state_issue": "Integer comparison without bounds",
+        "exploitable_behavior": "Arbitrary message and balance handling"
+      },
+      "causality": {
+        "state": "block.timestamp is used as integer",
+        "guard": "Line 14 condition using block.timestamp",
+        "transition": "Incorrect integer comparison for time check",
+        "capability": "Attacker can exploit arbitrary message timing",
+        "outcome": "Message and balance sent at any time"
+      }
+    }
+  ],
+  "analysis_time_seconds": 17.03,
+  "timestamp": "2026-04-21T00:39:17.775224",
+  "error": null
+}

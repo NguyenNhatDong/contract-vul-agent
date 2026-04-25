@@ -1,0 +1,59 @@
+{
+  "contract_name": "incorrect_constructor_name1.sol",
+  "contract_path": "contracts\\incorrect_constructor_name1.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 3,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Lines 7-9",
+      "execution": {
+        "trigger": "Calling a function with onlyowner modifier",
+        "state_issue": "Missing input validation in the onlyowner modifier",
+        "exploitable_behavior": "Unauthorized access to contract functions"
+      },
+      "causality": {
+        "state": "Contract's constructor name mismatch and lack of input validation",
+        "guard": "No explicit checks beyond the onlyowner modifier when calling functions",
+        "transition": "Incorrect function naming leading to external control",
+        "capability": "Attackers can call IamMissing with any name, gaining control",
+        "outcome": "Unauthorized access or control over the contract"
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - External Calls Vulnerabilities>",
+      "evidence": "Line 17",
+      "execution": {
+        "trigger": "Calling IamMissing function",
+        "state_issue": "No proper checks beyond the onlyowner modifier",
+        "exploitable_behavior": "Unauthorized setting of owner"
+      },
+      "causality": {
+        "state": "Contract's constructor name mismatch and missing input validation",
+        "guard": "No additional checks for the caller's identity",
+        "transition": "Incorrect function usage leading to unauthorized access",
+        "capability": "Attackers can exploit the mismatched constructor name",
+        "outcome": "Unauthorized control over the contract"
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - External Calls Vulnerabilities>",
+      "evidence": "Line 17",
+      "execution": {
+        "trigger": "Calling IamMissing function",
+        "state_issue": "No proper checks beyond the onlyowner modifier",
+        "exploitable_behavior": "Unauthorized setting of owner"
+      },
+      "causality": {
+        "state": "Contract's constructor name mismatch and missing input validation",
+        "guard": "No additional checks for the caller's identity",
+        "transition": "Incorrect function usage leading to unauthorized access",
+        "capability": "Attackers can exploit the mismatched constructor name",
+        "outcome": "Unauthorized control over the contract"
+      }
+    }
+  ],
+  "analysis_time_seconds": 32.38,
+  "timestamp": "2026-04-21T00:34:55.623707",
+  "error": null
+}

@@ -1,0 +1,27 @@
+{
+  "contract_name": "dos_simple.sol",
+  "contract_path": "contracts\\dos_simple.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Lines 8-12",
+      "execution": {
+        "trigger": "Calling ifillArray() when listAddresses.length < 1500",
+        "state_issue": "The function adds multiple addresses without resetting the array, allowing attackers to manipulate state",
+        "exploitable_behavior": "Attackers can call the function multiple times to add their address repeatedly"
+      },
+      "causality": {
+        "state": "listAddresses.length < 1500",
+        "guard": "The if statement on line 8",
+        "transition": "Looping without resetting listAddresses",
+        "capability": "Attackers can call the function to add addresses",
+        "outcome": "State manipulation and potential control over listAddresses"
+      }
+    }
+  ],
+  "analysis_time_seconds": 13.8,
+  "timestamp": "2026-04-21T00:16:53.873616",
+  "error": null
+}

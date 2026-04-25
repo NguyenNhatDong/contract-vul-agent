@@ -1,0 +1,27 @@
+{
+  "contract_name": "overflow_mapping.sol",
+  "contract_path": "contracts\\overflow_mapping.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "8",
+      "execution": {
+        "trigger": "When init is called with v > k",
+        "state_issue": "The subtraction of a larger value from a smaller one does not result in an underflow but wraps around to a large positive number.",
+        "exploitable_behavior": "map[k] stores incorrect values due to integer wrapping."
+      },
+      "causality": {
+        "state": "k and v are uint256, so their subtraction can't directly cause negative numbers without wrapping.",
+        "guard": "No bounds checking on v > k.",
+        "transition": "Subtraction wraps around when underflow occurs.",
+        "capability": "Attacker provides v > k to exploit incorrect map values.",
+        "outcome": "map[k] stores unintended large positive values."
+      }
+    }
+  ],
+  "analysis_time_seconds": 22.92,
+  "timestamp": "2026-04-21T00:43:05.950315",
+  "error": null
+}

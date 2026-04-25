@@ -1,0 +1,43 @@
+{
+  "contract_name": "wallet_03_wrong_constructor.sol",
+  "contract_path": "contracts\\wallet_03_wrong_constructor.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Line 14",
+      "execution": {
+        "trigger": "Calling initWallet() by any address",
+        "state_issue": "The creator is set to the caller's address, removing control over who holds funds.",
+        "exploitable_behavior": "Any caller can become the creator and thus have full control over their funds."
+      },
+      "causality": {
+        "state": "The contract allows any address to call initWallet()",
+        "guard": "No guard against arbitrary addresses calling initWallet()",
+        "transition": "initWallet() sets creator without proper authorization",
+        "capability": "Caller can become creator with no restrictions",
+        "outcome": "Funds are under the caller's control"
+      }
+    },
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Lines 31-32",
+      "execution": {
+        "trigger": "Calling migrateTo() with creator == msg.sender",
+        "state_issue": "Funds can be moved without proper authorization or checks on the recipient's address.",
+        "exploitable_behavior": "Caller can transfer all funds to any address if they are the current creator."
+      },
+      "causality": {
+        "state": "The migrateTo() function requires only that the caller is the current creator",
+        "guard": "No guard against unauthorized transfers beyond checking the sender's role",
+        "transition": "Transfer occurs without verifying recipient's identity or balance constraints",
+        "capability": "Caller can delegate funds to any address",
+        "outcome": "Funds are moved without proper authorization"
+      }
+    }
+  ],
+  "analysis_time_seconds": 22.09,
+  "timestamp": "2026-04-21T00:54:42.314193",
+  "error": null
+}

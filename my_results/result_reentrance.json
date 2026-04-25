@@ -1,0 +1,27 @@
+{
+  "contract_name": "reentrance.sol",
+  "contract_path": "contracts\\reentrance.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Lines 18-20",
+      "execution": {
+        "trigger": "Calling withdraw with a large amount that triggers the check.",
+        "state_issue": "The use of an invalid function call.value leads to incorrect state handling.",
+        "exploitable_behavior": "The contract's funds can be manipulated incorrectly."
+      },
+      "causality": {
+        "state": "The balances mapping is not properly updated when withdraw is called with sufficient balance.",
+        "guard": "The check using msg.sender.call.value(_amount)() which is invalid.",
+        "transition": "Invalid function call leads to incorrect state transitions in the contract's logic.",
+        "capability": "An attacker can exploit this by causing incorrect state updates, leading to potential fund manipulation.",
+        "outcome": "Funds may be improperly accessed or controlled."
+      }
+    }
+  ],
+  "analysis_time_seconds": 15.08,
+  "timestamp": "2026-04-21T00:46:48.360413",
+  "error": null
+}

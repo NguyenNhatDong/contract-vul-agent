@@ -1,0 +1,10 @@
+{
+  "contract_name": "incorrect_constructor_name3.sol",
+  "contract_path": "contracts\\incorrect_constructor_name3.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 16.75,
+  "timestamp": "2026-04-21T00:36:09.634655",
+  "error": null
+}

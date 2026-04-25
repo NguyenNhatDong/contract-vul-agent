@@ -1,0 +1,43 @@
+{
+  "contract_name": "0xb11b2fed6c9354f7aa2f658d3b4d7b31d8a13b77.sol",
+  "contract_path": "contracts\\0xb11b2fed6c9354f7aa2f658d3b4d7b31d8a13b77.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Lines 8",
+      "execution": {
+        "trigger": "target.call.value(msg.value)(data)",
+        "state_issue": "Unchecked external call without gas limit or security context.",
+        "exploitable_behavior": "Arbitrary data execution with potential DoS."
+      },
+      "causality": {
+        "state": "Target address's contract code",
+        "guard": "No explicit checks on caller's authorization.",
+        "transition": "Execution bypasses normal flow without proper validation.",
+        "capability": "Call originator can execute arbitrary external calls.",
+        "outcome": "Potential denial of service via excessive call volume."
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Lines 19-20",
+      "execution": {
+        "trigger": "msg.sender == tx.origin",
+        "state_issue": "No checks on sender's authorization.",
+        "exploitable_behavior": "Non-owner can set owner."
+      },
+      "causality": {
+        "state": "Owner address",
+        "guard": "No explicit check for caller's identity.",
+        "transition": "Execution bypasses normal flow without proper validation.",
+        "capability": "Caller can execute arbitrary code under certain conditions.",
+        "outcome": "Unauthorized access to owner setting."
+      }
+    }
+  ],
+  "analysis_time_seconds": 17.71,
+  "timestamp": "2026-04-21T00:12:06.067940",
+  "error": null
+}

@@ -1,0 +1,27 @@
+{
+  "contract_name": "integer_overflow_multitx_onefunc_feasible.sol",
+  "contract_path": "contracts\\integer_overflow_multitx_onefunc_feasible.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 13",
+      "execution": {
+        "trigger": "The line `count -= input;` in the run() function.",
+        "state_issue": "The subtraction may cause an integer overflow, leading to incorrect state handling.",
+        "exploitable_behavior": "An attacker could exploit this by providing a large enough value for 'input' that causes count to underflow."
+      },
+      "causality": {
+        "state": "count is less than the input's value and has reached its minimum possible value.",
+        "guard": "The absence of checks for potential overflow before subtraction.",
+        "transition": "Incorrect execution order due to unhandled integer overflow.",
+        "capability": "An attacker can exploit this by causing count to underflow through large inputs.",
+        "outcome": "count becomes a positive number when it should be negative, leading to incorrect behavior."
+      }
+    }
+  ],
+  "analysis_time_seconds": 15.32,
+  "timestamp": "2026-04-21T00:38:22.268288",
+  "error": null
+}

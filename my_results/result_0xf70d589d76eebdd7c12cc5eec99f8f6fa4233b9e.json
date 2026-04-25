@@ -1,0 +1,43 @@
+{
+  "contract_name": "0xf70d589d76eebdd7c12cc5eec99f8f6fa4233b9e.sol",
+  "contract_path": "contracts\\0xf70d589d76eebdd7c12cc5eec99f8f6fa4233b9e.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Unchecked External Calls>",
+      "evidence": "Line 18-20",
+      "execution": {
+        "trigger": "external call in GetFreebie() function",
+        "state_issue": "Unchecked external calls can execute arbitrary code.",
+        "exploitable_behavior": "Attacker can execute malicious code via external calls."
+      },
+      "causality": {
+        "state": "Unchecked external calls are enabled by the contract's code.",
+        "guard": "No security checks on external call execution.",
+        "transition": "Execution of external calls bypasses normal contract controls.",
+        "capability": "Attacker can execute arbitrary code",
+        "outcome": "Arbitrary code execution"
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Unchecked External Calls>",
+      "evidence": "Line 38",
+      "execution": {
+        "trigger": "external call in Command() function",
+        "state_issue": "Unchecked external calls can execute arbitrary code.",
+        "exploitable_behavior": "Attacker can execute malicious code via external calls."
+      },
+      "causality": {
+        "state": "Unchecked external calls are enabled by the contract's code.",
+        "guard": "No security checks on external call execution.",
+        "transition": "Execution of external calls bypasses normal contract controls.",
+        "capability": "Attacker can execute arbitrary code",
+        "outcome": "Arbitrary code execution"
+      }
+    }
+  ],
+  "analysis_time_seconds": 18.41,
+  "timestamp": "2026-04-21T00:14:28.332560",
+  "error": null
+}

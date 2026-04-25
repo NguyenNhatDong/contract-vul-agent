@@ -1,0 +1,10 @@
+{
+  "contract_name": "mapping_write.sol",
+  "contract_path": "contracts\\mapping_write.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 40.0,
+  "timestamp": "2026-04-21T00:39:57.788215",
+  "error": null
+}

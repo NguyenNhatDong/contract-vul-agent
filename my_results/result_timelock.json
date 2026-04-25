@@ -1,0 +1,27 @@
+{
+  "contract_name": "timelock.sol",
+  "contract_path": "contracts\\timelock.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC03:2023 - Timestamp Dependence>",
+      "evidence": "Lines 10 and 20",
+      "execution": {
+        "trigger": "lockTime[msg.sender] = now + 1 weeks; (line 10) and require(now > lockTime[msg.sender]); (line 20)",
+        "state_issue": "The use of a global timestamp without considering time zones can cause inconsistent lock times.",
+        "exploitable_behavior": "Attackers could exploit varying time zones to bypass lock conditions or double spends."
+      },
+      "causality": {
+        "state": "Global timestamps vary by node, affecting lockTime calculations.",
+        "guard": "Time zone differences and execution order may lead to incorrect state checks.",
+        "transition": "Incorrect timing due to global timestamp issues can cause failed transactions.",
+        "capability": "Attackers can manipulate time zones or execution environments to exploit this flaw.",
+        "outcome": "Potential double spends or unauthorized access."
+      }
+    }
+  ],
+  "analysis_time_seconds": 21.77,
+  "timestamp": "2026-04-21T00:52:19.920595",
+  "error": null
+}

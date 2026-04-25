@@ -1,0 +1,10 @@
+{
+  "contract_name": "integer_overflow_multitx_multifunc_feasible.sol",
+  "contract_path": "contracts\\integer_overflow_multitx_multifunc_feasible.sol",
+  "status": "Error",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 0,
+  "timestamp": "2026-04-21T00:38:06.931048",
+  "error": "No JSON object found in model output.\nOutput preview (first 1000 chars):\nThe provided code contains an Integer Overflow and Underflow vulnerability due to improper handling of subtraction operations with uint256 variables. \n\n**Vulnerability Identified:**\n- **Vulnerability Type:** <SC02:2023 - Integer Overflow and Underflow>\n- **OWASP Category:** Integer Overflow and Underflow (SC02)\n\n**Explanation:**\nThe `run` function subtracts the input from `count`, which is a uint256. If the input exceeds `count`, this results in an underflow, producing a negative value that wraps around without error. This can lead to incorrect state management or unintended behavior for external code relying on valid subtraction outcomes.\n\n**Evidence:**\nLine 16: `// <yes> <report> ARITHMETIC` followed by `count -= input;`\n\nThis vulnerability allows attackers to exploit underflow scenarios, potentially causing miscalculations in the contract's state."
+}
