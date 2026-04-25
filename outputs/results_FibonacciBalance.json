@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 25",
+      "execution": {
+        "trigger": "The transfer of ether in the withdraw function (line 25)",
+        "state_issue": "The calculatedFibNumber is a uint, so multiplying by 1 doesn't change its value but could lead to integer overflow if it's larger than the maximum allowed value for uint.",
+        "exploitable_behavior": "The contract allows users to withdraw ether based on an incorrect Fibonacci number calculation which may cause unintended transfers."
+      },
+      "causality": {
+        "state": "The calculatedFibNumber is a uint and could be very large, leading to potential integer overflow during the transfer operation.",
+        "guard": "No guards prevent the multiplication from causing an overflow.",
+        "transition": "The calculation of calculatedFibNumber doesn't check for maximum value limits before use.",
+        "capability": "An attacker can exploit this by causing a situation where calculatedFibNumber exceeds the maximum allowed uint value, leading to incorrect ether transfers.",
+        "outcome": "Ether is transferred incorrectly due to integer overflow."
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 51",
+      "execution": {
+        "trigger": "The fibonacci function in the library (line 51)",
+        "state_issue": "The recursive calculation of Fibonacci numbers without memoization can lead to stack overflows for large n, but also, if n is very large, it could cause integer overflow in the return value.",
+        "exploitable_behavior": "The recursive implementation doesn't handle large values efficiently and may not prevent potential integer overflows."
+      },
+      "causality": {
+        "state": "The fibonacci function uses recursion without memoization or base case checks for maximum uint limits.",
+        "guard": "No guards prevent the calculation from causing an overflow or stack overflow.",
+        "transition": "The recursive calls don't check for maximum value limits and could cause stack overflows.",
+        "capability": "An attacker can exploit this by providing a very large n, leading to potential integer overflows or stack overflows.",
+        "outcome": "Incorrect Fibonacci numbers due to integer overflow."
+      }
+    }
+  ]
+}

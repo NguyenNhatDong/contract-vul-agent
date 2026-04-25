@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "13",
+      "execution": {
+        "trigger": "The call to the external function with insufficient arguments.",
+        "state_issue": "Incorrect argument passing leads to undefined behavior or exceptions.",
+        "exploitable_behavior": "Potential for external function calls to fail or cause unintended state changes."
+      },
+      "causality": {
+        "state": "The contract's state allows incorrect parameter usage in external calls.",
+        "guard": "No proper validation of arguments before invocation.",
+        "transition": "Incorrect argument passing leads to external function failures.",
+        "capability": "Attackers can exploit undefined behavior by causing external function invocations with wrong parameters.",
+        "outcome": "Potential for denial of service or contract state corruption."
+      }
+    },
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "13",
+      "execution": {
+        "trigger": "The call to an external function that might allow self-invocation.",
+        "state_issue": "Potential for recursive calls if the called function allows it.",
+        "exploitable_behavior": "Attackers can trigger reentrancy attacks by exploiting this possibility."
+      },
+      "causality": {
+        "state": "The contract's state doesn't prevent recursive external function calls.",
+        "guard": "No checks to prevent self-invocation or malicious parameter injection.",
+        "transition": "Incorrect argument passing could enable self-calling functions.",
+        "capability": "Attackers can trigger reentrancy if the called function allows it.",
+        "outcome": "Potential for attackers to manipulate contract execution flow."
+      }
+    }
+  ]
+}

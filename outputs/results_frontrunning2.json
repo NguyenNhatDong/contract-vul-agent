@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "N/A",
+      "execution": {
+        "trigger": "The use of unsigned integers without explicit checks for overflow.",
+        "state_issue": "Incorrect handling of integer values, leading to potential overflows.",
+        "exploitable_behavior": "Execution flow allows attacker interaction by manipulating input values."
+      },
+      "causality": {
+        "state": "Unsigned integers are used without checking for overflow conditions.",
+        "guard": "No explicit checks for overflow are present in the code.",
+        "transition": "Incorrect logic leads to potential overflows when handling integer values.",
+        "capability": "Attacker can manipulate input values to cause overflows.",
+        "outcome": "Potential integer overflows leading to incorrect results or contract failure."
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC03:2023 - Timestamp Dependence>",
+      "evidence": "7–8",
+      "execution": {
+        "trigger": "Calling `payOut` with a random number greater than 0 and now - rand > 24 hours",
+        "state_issue": "Reliance on the difference between the current timestamp (`now`) and a previously generated random number (`rand`) for payout eligibility.",
+        "exploitable_behavior": "An attacker could manipulate the `rand` value to control the payout timing."
+      },
+      "causality": {
+        "state": "The contract relies on a specific time difference between `now` and `rand` for payouts.",
+        "guard": "The condition `rand > 0 && now - rand > 24 hours` must be met.",
+        "transition": "An attacker could set `rand` to a value that makes the condition true, triggering a payout before the intended time.",
+        "capability": "An attacker can manipulate the `rand` value to control payout timing.",
+        "outcome": "Early payouts or manipulation of the lottery system."
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "21",
+      "execution": {
+        "trigger": "Calling `randomGen()` function.",
+        "state_issue": "Using the `block.timestamp` as a source of randomness.",
+        "exploitable_behavior": "The `block.timestamp` is predictable and can be manipulated by miners, leading to predictable random numbers."
+      },
+      "causality": {
+        "state": "The contract uses `block.timestamp` for generating random numbers.",
+        "guard": "N/A",
+        "transition": "An attacker can manipulate the block timestamp, influencing the generated random number.",
+        "capability": "An attacker can predict and potentially control the outcome of the lottery.",
+        "outcome": "Loss of randomness and potential manipulation of lottery results."
+      }
+    }
+  ]
+}

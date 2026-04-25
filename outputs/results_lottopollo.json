@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC03:2023 - Timestamp Dependence>",
+      "evidence": "lines 7 and 19",
+      "execution": {
+        "trigger": "rand > 0 && now - rand > 24 hours",
+        "state_issue": "now is vulnerable to manipulation",
+        "exploitable_behavior": "funds may be sent when not intended"
+      },
+      "causality": {
+        "state": "now and block.timestamp are external and manipulable",
+        "guard": "no checks for timestamp predictability",
+        "transition": "manipulation can bypass conditions",
+        "capability": "attackers can control now",
+        "outcome": "funds sent based on attacker-controlled time"
+      }
+    },
+    {
+      "vulnerability_type": "<SC03:2023 - Timestamp Dependence>",
+      "evidence": "line 19",
+      "execution": {
+        "trigger": "always called",
+        "state_issue": "block.timestamp is directly returned",
+        "exploitable_behavior": "timestamp can be predicted or controlled"
+      },
+      "causality": {
+        "state": "block.timestamp is external and manipulable",
+        "guard": "no protection against manipulation",
+        "transition": "manipulation changes timestamp without code change",
+        "capability": "attackers can predict future timestamps",
+        "outcome": "attackers can exploit predictable values"
+      }
+    }
+  ]
+}

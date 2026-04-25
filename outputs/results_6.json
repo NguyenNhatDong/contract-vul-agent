@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC03:2023 - Timestamp Dependence>",
+      "evidence": "7–8",
+      "execution": {
+        "trigger": "Calling `payOut` with a random number greater than 0 and now - rand > 24 hours",
+        "state_issue": "Reliance on the difference between `now` and `rand` to determine payout eligibility",
+        "exploitable_behavior": "An attacker can manipulate the `rand` value to control the payout timing"
+      },
+      "causality": {
+        "state": "The contract uses a timestamp-based condition for payouts.",
+        "guard": "The condition `now - rand > 24 hours`",
+        "transition": "An attacker can manipulate `rand` to bypass the 24-hour delay and trigger payouts prematurely.",
+        "capability": "An attacker can potentially gain early access to funds by manipulating the `rand` value.",
+        "outcome": "Early payout of funds without meeting the intended criteria."
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "21",
+      "execution": {
+        "trigger": "Calling `randomGen` function",
+        "state_issue": "Using `block.timestamp` as a source of randomness",
+        "exploitable_behavior": "The random number generated is predictable and can be easily manipulated by an attacker."
+      },
+      "causality": {
+        "state": "The contract relies on `block.timestamp` for generating random numbers.",
+        "guard": "N/A",
+        "transition": "Using `block.timestamp` as a source of randomness introduces predictability.",
+        "capability": "An attacker can predict the generated random number by observing the blockchain's timestamp.",
+        "outcome": "The contract's randomness is compromised, potentially leading to predictable outcomes and manipulation."
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Lines 14-18",
+      "execution": {
+        "trigger": "Line 10's require(msg.value > currentBid)",
+        "state_issue": "Lines 17 and 18 don't handle failed bid conditions properly.",
+        "exploitable_behavior": "The contract reverts on failed bids."
+      },
+      "causality": {
+        "state": "currentFrontrunner and currentBid states aren't managed correctly.",
+        "guard": "Line 10's require statement doesn't handle failed bids.",
+        "transition": "Failed bids cause multiple reverts without proper handling.",
+        "capability": "Attackers can exploit improper state management.",
+        "outcome": "Attackers cause the contract to revert multiple times."
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "code_with_lines/15",
+      "execution": {
+        "trigger": "The `supportsToken()` modifier calls `Bank(msg.sender).supportsToken()`, which returns a 32-byte value.",
+        "state_issue": "The comparison between the hash and byte array is incorrect, leading to potential false negatives.",
+        "exploitable_behavior": "An attacker can exploit this by calling `hasNoBalance supportsToken()` without proper authorization."
+      },
+      "causality": {
+        "state": "The incorrect type comparison in the `supportsToken()` check causes unauthorized access.",
+        "guard": "The `Bank` contract's `supportsToken()` returns a 32-byte value, while the hash is an integer.",
+        "transition": "The mismatch between types allows bypassing the authorization check.",
+        "capability": "An attacker can exploit this by calling `hasNoBalance supportsToken()` without proper authorization.",
+        "outcome": "Unauthorized access to the contract's tokens."
+      }
+    }
+  ]
+}

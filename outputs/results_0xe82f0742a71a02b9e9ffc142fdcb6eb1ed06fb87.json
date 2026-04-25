@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 20-24",
+      "execution": {
+        "trigger": "Calling withdraw() from an external address with the correct sender.",
+        "state_issue": "The contract's owner is changed to the external address, bypassing normal access control.",
+        "exploitable_behavior": "The attacker can take over the contract by providing a valid signature and the required address."
+      },
+      "causality": {
+        "state": "The contract's owner is set to an unauthorized address upon successful withdrawal.",
+        "guard": "Line 23 checks if the sender matches the contract's current owner, but line 20 allows external addresses to bypass this check by setting the owner themselves.",
+        "transition": "The function transitions from checking the sender to changing the owner without proper authorization.",
+        "capability": "The attacker can manipulate the contract's ownership through an external address.",
+        "outcome": "The attacker gains control of the contract's funds."
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "Line 13",
+      "execution": {
+        "trigger": "When the forward function is called with malicious data.",
+        "state_issue": "The state allows untrusted code to be executed via delegatecall.",
+        "exploitable_behavior": "An attacker can execute arbitrary code in a transaction."
+      },
+      "causality": {
+        "state": "The use of delegatecall without access control.",
+        "guard": "The require statement does not restrict who calls delegatecall.",
+        "transition": "Untrusted code execution bypasses normal contract security measures.",
+        "capability": "Attacker can execute any code via the Proxy's interface.",
+        "outcome": "Arbitrary code execution in a transaction."
+      }
+    }
+  ]
+}

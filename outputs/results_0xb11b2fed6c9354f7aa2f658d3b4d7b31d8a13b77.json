@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "7",
+      "execution": {
+        "trigger": "target.call.value(msg.value)(data)",
+        "state_issue": "External call without parameter validation leads to potential DoS or misuse.",
+        "exploitable_behavior": "Attacker can exploit external call parameters."
+      },
+      "causality": {
+        "state": "Parameters msg.value and data are not validated before external call.",
+        "guard": "No explicit checks on msg.value and data values.",
+        "transition": "Execution bypasses contract's parameter validation.",
+        "capability": "Attacker can manipulate parameters to cause issues.",
+        "outcome": "Potential denial of service or misuse."
+      }
+    },
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "20",
+      "execution": {
+        "trigger": "Owner = msg.sender;",
+        "state_issue": "Overwrite current owner without checks.",
+        "exploitable_behavior": "Attacker can take control."
+      },
+      "causality": {
+        "state": "No checks on _owner ownership before assignment.",
+        "guard": "OnlyOwner modifier allows setting _owner directly.",
+        "transition": "Direct assignment bypasses security checks.",
+        "capability": "Attacker can assign any owner.",
+        "outcome": "Unrestricted control."
+      }
+    }
+  ]
+}

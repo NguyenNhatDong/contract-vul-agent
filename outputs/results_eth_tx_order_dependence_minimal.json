@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "Lines 17-18",
+      "execution": {
+        "trigger": "setReward() function is called after the reward has been transferred.",
+        "state_issue": "The reward variable is updated with msg.value before completing the transfer, leading to incorrect state handling.",
+        "exploitable_behavior": "An attacker can exploit this by calling setReward() multiple times or in a different order."
+      },
+      "causality": {
+        "state": "Reward value and owner address are part of the contract's state",
+        "guard": "The require statements check if the sender is the owner or has submitted a valid claim.",
+        "transition": "Changing the reward variable without completing the transfer leads to inconsistent state transitions.",
+        "capability": "An attacker can manipulate the order of function calls to exploit this inconsistency.",
+        "outcome": "Invalid reward transfers and incorrect updates to the contract's state."
+      }
+    },
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "Lines 25-26",
+      "execution": {
+        "trigger": "claimReward() is called without proper authorization checks.",
+        "state_issue": "The reward is transferred directly from the sender's address without verifying the caller's identity or balance.",
+        "exploitable_behavior": "An attacker can exploit this by calling claimReward() with insufficient parameters."
+      },
+      "causality": {
+        "state": "Reward and sender addresses are part of the contract's state",
+        "guard": "The require statements check if the submission is valid but do not verify caller authorization.",
+        "transition": "Direct transfer bypasses necessary checks, leading to unauthorized state changes.",
+        "capability": "An attacker can send rewards without proper authorization or verification.",
+        "outcome": "Unauthorized reward transfers and potential denial of service."
+      }
+    }
+  ]
+}

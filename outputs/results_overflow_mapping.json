@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 8",
+      "execution": {
+        "trigger": "The subtraction operation in the init function (map[k] -= v)",
+        "state_issue": "When subtracting a value from map[k], if it underflows, the result wraps around to a large positive number.",
+        "exploitable_behavior": "An attacker could exploit this by causing an underflow, leading to incorrect mapping values."
+      },
+      "causality": {
+        "state": "The contract's mapping data is vulnerable to integer underflow when subtracting values larger than the current value in map[k].",
+        "guard": "No explicit guard against underflow since subtraction on uint256 doesn't check for negative results.",
+        "transition": "Underflow occurs due to fixed-size arithmetic, leading to unexpected positive values.",
+        "capability": "An attacker can cause underflow by providing large v relative to map[k].",
+        "outcome": "The mapping data becomes corrupted, potentially allowing attacks like DoS."
+      }
+    }
+  ]
+}

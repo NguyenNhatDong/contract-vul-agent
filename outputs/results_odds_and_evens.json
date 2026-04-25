@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04: Access Control Vulnerabilities>",
+      "evidence": "lines 10-23",
+      "execution": {
+        "trigger": "Calling play() multiple times without proper state management",
+        "state_issue": "Players array is accessed beyond its bounds when tot == 2.",
+        "exploitable_behavior": "Accessing uninitialized player data."
+      },
+      "causality": {
+        "state": "Players array has a fixed size of 2, and players[1].number may not be initialized.",
+        "guard": "No checks for valid indices before accessing players[1].",
+        "transition": "Incrementing tot without ensuring all players have provided necessary data.",
+        "capability": "Attacker can exploit undefined behavior to cause incorrect calculations or state changes.",
+        "outcome": "Incorrect calculation of n leading to potential errors."
+      }
+    },
+    {
+      "vulnerability_type": "<SC05: Front-running Attacks>",
+      "evidence": "lines 19-24",
+      "execution": {
+        "trigger": "Calling play() multiple times in succession without proper state management.",
+        "state_issue": "Players array is accessed beyond its bounds when tot == 2.",
+        "exploitable_behavior": "Accessing uninitialized player data."
+      },
+      "causality": {
+        "state": "Players array has a fixed size of 2, and players[1].number may not be initialized.",
+        "guard": "No checks for valid indices before accessing players[1].",
+        "transition": "Incrementing tot without ensuring all players have provided necessary data.",
+        "capability": "Attacker can exploit undefined behavior to cause incorrect calculations or state changes.",
+        "outcome": "Incorrect calculation of n leading to potential errors."
+      }
+    }
+  ]
+}

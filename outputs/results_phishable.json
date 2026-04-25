@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "14",
+      "execution": {
+        "trigger": "An attacker sends a transaction with their own address (tx.origin) that does not match the contract's owner.",
+        "state_issue": "The function's require statement checks if tx.origin equals owner, but this check is bypassed when an attacker can manipulate or bypass it.",
+        "exploitable_behavior": "The attacker can exploit by sending a transaction without proper authorization, leading to unauthorized access of funds."
+      },
+      "causality": {
+        "state": "The contract's state requires that tx.origin == owner for the transfer to occur. However, if this check is not enforced correctly (e.g., due to incorrect logic or bypass), it allows unauthorized access.",
+        "guard": "The guard condition `tx.origin == owner` is insufficient as an attacker can manipulate tx.origin without proper authorization.",
+        "transition": "The function's execution flow does not properly validate the caller's origin, leading to potential bypass.",
+        "capability": "An attacker can exploit this by sending a transaction with their own address and manipulating the recipient parameter.",
+        "outcome": "The attacker gains access to the contract's funds."
+      }
+    }
+  ]
+}

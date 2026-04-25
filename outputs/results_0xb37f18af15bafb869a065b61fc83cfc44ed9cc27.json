@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Unchecked External Calls>",
+      "evidence": "Line 27",
+      "execution": {
+        "trigger": "sendMoney() called with malicious target address",
+        "state_issue": "Unchecked external call via value() allows arbitrary code execution",
+        "exploitable_behavior": "Unauthorized fund transfer"
+      },
+      "causality": {
+        "state": "DepositsCount is public and not protected against manipulation",
+        "guard": "No bounds checking in increment operation",
+        "transition": "Unchecked external call bypasses state protection",
+        "capability": "Attacker can replace target address",
+        "outcome": "Funds transferred without owner consent"
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Lines 13-15",
+      "execution": {
+        "trigger": "Any call to function() increments depositsCount",
+        "state_issue": "depositsCount is public without bounds checking",
+        "exploitable_behavior": "Unintended manipulation can cause overflow/underflow"
+      },
+      "causality": {
+        "state": "DepositsCount variable is mutable and public",
+        "guard": "No checks for integer limits",
+        "transition": "Increment bypasses state protection",
+        "capability": "Attacker manipulates count beyond safe limits",
+        "outcome": "Unexpected behavior due to overflow/underflow"
+      }
+    }
+  ]
+}

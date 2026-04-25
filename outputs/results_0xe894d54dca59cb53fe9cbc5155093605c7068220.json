@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 11",
+      "execution": {
+        "trigger": "The calculation of _value = v * 10 ** _decimals; on line 9.",
+        "state_issue": "Missing type specifications for parameters v and _decimals in the function definition, leading to potential integer overflow during multiplication.",
+        "exploitable_behavior": "The external call on line 11 may receive incorrect values due to overflow."
+      },
+      "causality": {
+        "state": "Parameters v and _decimals are uint256 without proper bounds.",
+        "guard": "No type checking ensures they remain within safe ranges.",
+        "transition": "Calculation exceeds maximum value for uint256.",
+        "capability": "The attacker can exploit by causing an overflow that leads to incorrect behavior.",
+        "outcome": "Invalid _value passed to external call, potentially leading to errors or unintended logic flow."
+      }
+    }
+  ]
+}

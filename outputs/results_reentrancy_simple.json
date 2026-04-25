@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 16",
+      "execution": {
+        "trigger": "The condition in the if statement of withdrawBalance() function.",
+        "state_issue": "The function may execute without proper reentrancy control, allowing attackers to exploit unintended state changes.",
+        "exploitable_behavior": "Calling msg.sender with a value that doesn't match the expected address can cause unintended execution."
+      },
+      "causality": {
+        "state": "The user's balance is not properly verified before accessing it.",
+        "guard": "The condition incorrectly uses call.value() instead of directly checking the balance.",
+        "transition": "An external function call occurs when it shouldn't, potentially leading to unintended behavior.",
+        "capability": "An attacker can exploit this by providing an incorrect address or value.",
+        "outcome": "Reentrancy attacks may occur due to improper state checks."
+      }
+    },
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 16",
+      "execution": {
+        "trigger": "The condition in the if statement of withdrawBalance() function.",
+        "state_issue": "The function may execute without proper reentrancy control, allowing attackers to exploit unintended state changes.",
+        "exploitable_behavior": "Calling msg.sender with a value that doesn't match the expected address can cause unintended execution."
+      },
+      "causality": {
+        "state": "The user's balance is not properly verified before accessing it.",
+        "guard": "The condition incorrectly uses call.value() instead of directly checking the balance.",
+        "transition": "An external function call occurs when it shouldn't, potentially leading to unintended behavior.",
+        "capability": "An attacker can exploit this by providing an incorrect address or value.",
+        "outcome": "Reentrancy attacks may occur due to improper state checks."
+      }
+    }
+  ]
+}

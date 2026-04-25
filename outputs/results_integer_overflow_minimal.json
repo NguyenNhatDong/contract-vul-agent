@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 8",
+      "execution": {
+        "trigger": "When input is larger than count",
+        "state_issue": "count becomes negative due to subtraction of a larger number from a smaller one.",
+        "exploitable_behavior": "The contract's state (count) can become negative, leading to incorrect behavior."
+      },
+      "causality": {
+        "state": "uint count = 1; and input is a uint256",
+        "guard": "No bounds checking on input value before subtraction.",
+        "transition": "Subtraction without overflow control leads to underflow.",
+        "capability": "An attacker can provide an input exceeding the initial count's value.",
+        "outcome": "count becomes negative, causing unintended contract behavior."
+      }
+    }
+  ]
+}

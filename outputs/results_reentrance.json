@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "18",
+      "execution": {
+        "trigger": "msg.sender.withdraw(_amount)",
+        "state_issue": "call.value() expects a uint256 argument.",
+        "exploitable_behavior": "Incorrect comparison due to overflow."
+      },
+      "causality": {
+        "state": "balances[msg.sender] >= _amount",
+        "guard": "_amount is passed directly without conversion to uint256",
+        "transition": "call.value() expects a uint256 argument, leading to incorrect behavior.",
+        "capability": "Attackers can manipulate the withdrawal amount through overflow.",
+        "outcome": "Arbitrary balance changes or injection of values."
+      }
+    }
+  ]
+}

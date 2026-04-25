@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "Line 11",
+      "execution": {
+        "trigger": "Calling solve() without validation",
+        "state_issue": "No validation of the solution string",
+        "exploitable_behavior": "Ether is transferred upon successful hash match"
+      },
+      "causality": {
+        "state": "The contract's internal funds are vulnerable to external manipulation",
+        "guard": "Missing require condition in solve() function",
+        "transition": "Direct execution of the function without validation",
+        "capability": "Attacker can call solve() with a valid solution and receive Ether",
+        "outcome": "Ether is transferred"
+      }
+    }
+  ]
+}

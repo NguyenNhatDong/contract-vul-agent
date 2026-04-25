@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Lines 41–45",
+      "execution": {
+        "trigger": "Calling deleteOwner with an address that isn't currently an owner.",
+        "state_issue": "The owners mapping may contain entries for addresses that aren't actual owners if called incorrectly.",
+        "exploitable_behavior": "Attackers can delete any owner, including those they don't own."
+      },
+      "causality": {
+        "state": "The `owners` mapping may contain entries for addresses that aren't actual owners if called incorrectly.",
+        "guard": "The function's condition allows deletion without verifying ownership status.",
+        "transition": "Incorrect logic in the guard clause skips necessary checks.",
+        "capability": "Attackers can exploit this flaw to delete non-owning addresses.",
+        "outcome": "Unauthorized deletions of any owner, including those not owned."
+      }
+    }
+  ]
+}

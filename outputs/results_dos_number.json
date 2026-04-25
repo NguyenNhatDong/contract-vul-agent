@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Lines 12-17 in insertNnumbers() function",
+      "execution": {
+        "trigger": "Calling insertNnumbers() with a large number of elements or repeatedly without resetting the array.",
+        "state_issue": "The contract does not check if numElements equals array.length before incrementing, leading to potential growth beyond intended limits.",
+        "exploitable_behavior": "Attackers can cause unintended growth by repeatedly inserting elements when the array is full."
+      },
+      "causality": {
+        "state": "numElements and array.length are mismatched due to incorrect checks during insertion.",
+        "guard": "No proper guard against exceeding array length before incrementing numElements.",
+        "transition": "The loop does not account for current array capacity, leading to potential overflow or memory exhaustion.",
+        "capability": "An attacker can exploit this by causing the array to grow beyond its intended size.",
+        "outcome": "Potential denial of service due to excessive resource usage."
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Lines 12-17 in insertNnumbers() function",
+      "execution": {
+        "trigger": "Calling insertNnumbers() with a large number of elements or repeatedly without resetting the array.",
+        "state_issue": "The contract does not check if numElements equals array.length before incrementing, leading to potential growth beyond intended limits.",
+        "exploitable_behavior": "Attackers can cause unintended growth by repeatedly inserting elements when the array is full."
+      },
+      "causality": {
+        "state": "numElements and array.length are mismatched due to incorrect checks during insertion.",
+        "guard": "No proper guard against exceeding array length before incrementing numElements.",
+        "transition": "The loop does not account for current array capacity, leading to potential overflow or memory exhaustion.",
+        "capability": "An attacker can exploit this by causing the array to grow beyond its intended size.",
+        "outcome": "Potential denial of service due to excessive resource usage."
+      }
+    }
+  ]
+}

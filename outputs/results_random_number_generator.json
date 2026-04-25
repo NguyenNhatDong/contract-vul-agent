@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "Line 12",
+      "execution": {
+        "trigger": "Calculation of y in the random function",
+        "state_issue": "Division by zero when salt %5 is zero",
+        "exploitable_behavior": "Arithmetic operation causing undefined behavior"
+      },
+      "causality": {
+        "state": "salt being divisible by 5",
+        "guard": "salt %5 ==0",
+        "transition": "Calculation of y",
+        "capability": "Attacker can exploit division by zero",
+        "outcome": "Arithmetic error or undefined behavior"
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "Lines 6-14",
+      "execution": {
+        "trigger": "Seed calculation using block number and timestamp",
+        "state_issue": "Predictable seed values",
+        "exploitable_behavior": "Potential for reverse-engineering"
+      },
+      "causality": {
+        "state": "block number or salt being predictable",
+        "guard": "Predictability of these values",
+        "transition": "Seed calculation",
+        "capability": "Attacker can exploit predictability",
+        "outcome": "Predictable seed and random outputs"
+      }
+    }
+  ]
+}

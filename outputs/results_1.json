@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "7| balance += deposit;",
+      "execution": {
+        "trigger": "balance += deposit;",
+        "state_issue": "Adding a large `deposit` to the existing `balance` can result in an integer overflow.",
+        "exploitable_behavior": "The addition operation (`+=`) doesn't check for potential overflows, leading to unexpected results."
+      },
+      "causality": {
+        "state": "A large `deposit` value exceeding the maximum uint value.",
+        "guard": "N/A",
+        "transition": "Overflow occurs during the addition operation (`balance += deposit;`).",
+        "capability": "An attacker can call the `add()` function with a large `deposit` to cause an overflow, potentially manipulating the contract's state.",
+        "outcome": "The `balance` variable could be set to an unintended value, disrupting the contract's intended functionality."
+      }
+    }
+  ]
+}

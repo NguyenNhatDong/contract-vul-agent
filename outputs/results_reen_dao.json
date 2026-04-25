@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Lines 12-13",
+      "execution": {
+        "trigger": "Calling withdrawAll() with a positive oCredit value",
+        "state_issue": "The function allows external code execution via an external call without proper validation or checks.",
+        "exploitable_behavior": "An attacker can inject malicious code into the contract by calling this method, potentially leading to unintended behavior."
+      },
+      "causality": {
+        "state": "The 'credit' mapping and balance are vulnerable to external modifications through external calls.",
+        "guard": "No validation is performed on oCredit before execution, allowing any value to be passed.",
+        "transition": "The function bypasses normal execution flow by directly executing an external call without proper checks.",
+        "capability": "Attackers can execute arbitrary code via this method due to the lack of input validation.",
+        "outcome": "Arbitrary code execution beyond the contract's intended operations."
+      }
+    }
+  ]
+}

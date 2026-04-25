@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Lines 34–38",
+      "execution": {
+        "trigger": "Calling play() with a number greater than 10.",
+        "state_issue": "The contract doesn't validate the upper limit of 'number' after game creation.",
+        "exploitable_behavior": "An attacker can bypass validation to win."
+      },
+      "causality": {
+        "state": "The 'number' parameter isn't enforced beyond initial check.",
+        "guard": "The require statement only checks for msg.value and number <=10, but doesn't enforce it post-game creation.",
+        "transition": "The code allows bypassing validation by not enforcing the upper limit on the number.",
+        "capability": "An attacker can exploit this to win without proper validation.",
+        "outcome": "The attacker wins the contract balance."
+      }
+    }
+  ]
+}

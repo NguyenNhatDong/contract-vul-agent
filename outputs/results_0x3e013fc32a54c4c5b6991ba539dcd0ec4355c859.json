@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Lines 30-31",
+      "execution": {
+        "trigger": "Line 30 where msg.value >= this.balance is checked.",
+        "state_issue": "Underflow could occur if msg.value is negative, causing incorrect calculations.",
+        "exploitable_behavior": "The contract allows underflow due to potential negative values in msg.value."
+      },
+      "causality": {
+        "state": "msg.value can be negative or exceed allowed limits.",
+        "guard": "Line 30's condition doesn't prevent these extremes.",
+        "transition": "No guard against extreme value inputs.",
+        "capability": "Attacker can exploit by providing invalid values.",
+        "outcome": "Underflow leading to incorrect calculations."
+      }
+    },
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Lines 13 and 14",
+      "execution": {
+        "trigger": "The withdraw function is executed without reentrancy checks.",
+        "state_issue": "No state protection against being called from another contract or the same transaction.",
+        "exploitable_behavior": "An attacker can trigger this function within a single transaction."
+      },
+      "causality": {
+        "state": "No checks for reentrancy in withdraw function.",
+        "guard": "No guards preventing execution from different contexts.",
+        "transition": "Function can be called without proper context checks.",
+        "capability": "Attacker can exploit by calling the function within a single transaction.",
+        "outcome": "Reentrancy attack possible."
+      }
+    }
+  ]
+}

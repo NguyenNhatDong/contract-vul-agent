@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 16",
+      "execution": {
+        "trigger": "When the input is greater than the count value (which starts at 1)",
+        "state_issue": "The subtraction operation can result in a negative number, which is not allowed for uint256.",
+        "exploitable_behavior": "This leads to an integer underflow causing incorrect state handling."
+      },
+      "causality": {
+        "state": "count starts at 1",
+        "guard": "input > count",
+        "transition": "Subtraction operation without bounds checking",
+        "capability": "The attacker can exploit this by providing a large enough input to cause underflow.",
+        "outcome": "Invalid state due to negative value, leading to unexpected behavior."
+      }
+    }
+  ]
+}

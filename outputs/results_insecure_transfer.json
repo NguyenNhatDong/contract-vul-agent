@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 7-13",
+      "execution": {
+        "trigger": "calling transfer with a different _to address after the sender's balance is depleted.",
+        "state_issue": "The function allows reentrancy by not checking if the balance has been depleted before proceeding.",
+        "exploitable_behavior": "An attacker can exploit this by calling the function with a new _to address when the original balance was exhausted."
+      },
+      "causality": {
+        "state": "The contract's state is vulnerable to reentrancy attacks due to missing checks on the sender's balance after an initial transfer.",
+        "guard": "The require statement does not prevent reentrancy as it only checks once.",
+        "transition": "The function can be called multiple times with different _to addresses without proper checks.",
+        "capability": "An attacker can exploit this by calling the function multiple times to manipulate the contract's state.",
+        "outcome": "The attacker can cause unintended changes in the contract's state."
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 9-12",
+      "execution": {
+        "trigger": "Attempting to transfer a value larger than what can be stored in a uint256 variable.",
+        "state_issue": "The balanceOf array uses uint256, which is the maximum size for an integer in Ethereum.",
+        "exploitable_behavior": "An attacker could exploit this by passing a large _value that exceeds the safe range of uint256."
+      },
+      "causality": {
+        "state": "The contract's balanceOf mapping uses uint256, which is prone to overflow with very large values.",
+        "guard": "There are no checks for integer overflow when adding to balanceOf[_to].",
+        "transition": "Adding a value larger than the maximum allowed by uint256 can cause incorrect arithmetic results.",
+        "capability": "An attacker could exploit this by causing an overflow, leading to unintended behavior in the contract's state.",
+        "outcome": "The attacker can manipulate the balanceOf array with integer overflows."
+      }
+    }
+  ]
+}

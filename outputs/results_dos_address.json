@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Lines 10-13",
+      "execution": {
+        "trigger": "The `emptyCreditors` function when the length exceeds 1500.",
+        "state_issue": "The array isn't cleared properly because `new address[](0)` doesn't remove existing addresses.",
+        "exploitable_behavior": "An attacker could exploit this by causing the length to exceed 1500 without resetting all addresses, leading to potential issues elsewhere in the contract."
+      },
+      "causality": {
+        "state": "The `creditorAddresses` array retains old addresses when cleared.",
+        "guard": "No check ensures that existing addresses are removed.",
+        "transition": "Clearing the array doesn't actually remove previous entries, leading to potential issues.",
+        "capability": "An attacker can manipulate the length without resetting all addresses.",
+        "outcome": "Potential DoS or functionality issues due to leftover addresses."
+      }
+    }
+  ]
+}

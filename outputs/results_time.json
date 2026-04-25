@@ -1,0 +1,68 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC03:2023 - Timestamp Dependence>",
+      "evidence": "21–22",
+      "execution": {
+        "trigger": "draw function call with a seed value",
+        "state_issue": "Incorrect use of block.timestamp for randomness generation",
+        "exploitable_behavior": "Attacker can manipulate the timestamp to influence the random number generated"
+      },
+      "causality": {
+        "state": "block.timestamp is used as a source of randomness",
+        "guard": "draw function call with a seed value",
+        "transition": "Incorrect use of block.timestamp for randomness generation",
+        "capability": "Attacker can manipulate the timestamp to influence the random number generated",
+        "outcome": "Random number generated may not be truly random"
+      }
+    },
+    {
+      "vulnerability_type": "<SC03:2023 - Timestamp Dependence>",
+      "evidence": "7–9",
+      "execution": {
+        "trigger": "payOut function call with a valid seed value",
+        "state_issue": "Incorrect use of now - rand > 24 hours for time manipulation",
+        "exploitable_behavior": "Attacker can manipulate the timestamp to influence the payout"
+      },
+      "causality": {
+        "state": "now - rand > 24 hours is used as a condition for payout",
+        "guard": "payOut function call with a valid seed value",
+        "transition": "Incorrect use of now - rand > 24 hours for time manipulation",
+        "capability": "Attacker can manipulate the timestamp to influence the payout",
+        "outcome": "Payout may not be triggered correctly"
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "21–22",
+      "execution": {
+        "trigger": "randomGen function call",
+        "state_issue": "block.timestamp is used as a source of randomness",
+        "exploitable_behavior": "Attacker can manipulate the timestamp to influence the random number generated"
+      },
+      "causality": {
+        "state": "block.timestamp is used as a source of randomness",
+        "guard": "randomGen function call",
+        "transition": "Incorrect use of block.timestamp for randomness generation",
+        "capability": "Attacker can manipulate the timestamp to influence the random number generated",
+        "outcome": "Random number generated may not be truly random"
+      }
+    },
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "15–17",
+      "execution": {
+        "trigger": "payOut function call with a valid seed value",
+        "state_issue": "leader address is set without proper authorization",
+        "exploitable_behavior": "Attacker can manipulate the leader address to influence the payout"
+      },
+      "causality": {
+        "state": "leader address is set without proper authorization",
+        "guard": "payOut function call with a valid seed value",
+        "transition": "Incorrect access control for setting the leader address",
+        "capability": "Attacker can manipulate the leader address to influence the payout",
+        "outcome": "Payout may not be triggered correctly"
+      }
+    }
+  ]
+}

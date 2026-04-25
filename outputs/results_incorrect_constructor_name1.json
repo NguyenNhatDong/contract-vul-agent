@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "14-18",
+      "execution": {
+        "trigger": "Calling `IamMissing()` with a sender that is not the owner",
+        "state_issue": "The contract's balance can be transferred without proper authorization.",
+        "exploitable_behavior": "An attacker can exploit this by passing their public key as `msg.sender` and transferring funds."
+      },
+      "causality": {
+        "state": "The contract's state is vulnerable to manipulation without access control.",
+        "guard": "No additional access control beyond what was intended for the constructor.",
+        "transition": "Without proper authorization, external calls can trigger the function leading to balance transfer.",
+        "capability": "An attacker with knowledge of the contract's code and public keys can exploit this.",
+        "outcome": "Funds within the contract can be transferred unauthorized."
+      }
+    }
+  ]
+}

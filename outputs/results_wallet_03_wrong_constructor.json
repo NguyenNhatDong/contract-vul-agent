@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Line 14",
+      "execution": {
+        "trigger": "Calling a function (like deposit or withdraw) without proper authorization",
+        "state_issue": "The creator address is set to the sender, allowing any user to become creator if they can call functions",
+        "exploitable_behavior": "An attacker could become the creator and then migrate funds without the owner's consent"
+      },
+      "causality": {
+        "state": "The creator address should be controlled by a specific entity (like the owner)",
+        "guard": "The creation of the creator is not restricted to the constructor",
+        "transition": "Setting creator to any address bypasses normal setup",
+        "capability": "Attacker can become creator and migrate funds",
+        "outcome": "Funds can be moved without proper authorization"
+      }
+    },
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Line 31",
+      "execution": {
+        "trigger": "Calling migrateTo with a different address",
+        "state_issue": "The creator must be the same as the sender to migrate funds",
+        "exploitable_behavior": "An attacker could become creator and then migrate funds without owner's consent"
+      },
+      "causality": {
+        "state": "MigrateTo requires the current creator to send funds",
+        "guard": "Creator check is in place but not enforced correctly",
+        "transition": "Once created, an attacker can use migrateTo",
+        "capability": "Attacker can become creator and then migrate funds",
+        "outcome": "Funds can be moved without proper authorization"
+      }
+    }
+  ]
+}

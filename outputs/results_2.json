@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC07:2023 - Logic Errors>",
+      "evidence": "9",
+      "execution": {
+        "trigger": "balances[tx.origin] = 10000;",
+        "state_issue": "Initializes the balance of `tx.origin` to 10000 without any checks or restrictions.",
+        "exploitable_behavior": "An attacker can execute this constructor and immediately have a large balance."
+      },
+      "causality": {
+        "state": "The contract initializes balances upon deployment, potentially allowing an attacker to control the initial distribution of tokens.",
+        "guard": "N/A",
+        "transition": "N/A",
+        "capability": "An attacker can execute the constructor and set their balance to a large amount.",
+        "outcome": "The attacker gains control over a significant portion of the token supply."
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 14 in sendToWinner()",
+      "execution": {
+        "trigger": "Calling sendToWinner() with payedOut as false multiple times or insufficient funds",
+        "state_issue": "Large winAmount causing overflow or negative balance during withdrawal",
+        "exploitable_behavior": "Potential for overflow or underflow leading to exploit attempts"
+      },
+      "causality": {
+        "state": "payedOut is not properly enforced before sending amounts",
+        "guard": "No checks on balance limits in sendToWinner() and insufficient validation in withdrawLeftOver()",
+        "transition": "Sending beyond maximum allowed or negative balances",
+        "capability": "Attacker can exploit by causing overflow/underflow",
+        "outcome": "Exploitation leads to incorrect state transitions"
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 21 in withdrawLeftOver()",
+      "execution": {
+        "trigger": "Calling withdrawLeftOver() with insufficient balance",
+        "state_issue": "Negative or zero balance attempting to send funds",
+        "exploitable_behavior": "Sending negative amount leading to underflow"
+      },
+      "causality": {
+        "state": "Balance is not checked before sending in withdrawLeftOver()",
+        "guard": "No validation on this.balance >= 0",
+        "transition": "Negative balance attempt",
+        "capability": "Attacker can exploit by causing negative send",
+        "outcome": "Exploitation leads to underflow and gas errors"
+      }
+    }
+  ]
+}

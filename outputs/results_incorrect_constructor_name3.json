@@ -1,0 +1,20 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Lines 17-24",
+      "execution": {
+        "trigger": "Calling the withdraw() function with insufficient balance.",
+        "state_issue": "The withdraw() function does not check if the caller has enough balance before transferring funds.",
+        "exploitable_behavior": "Attempting to withdraw more than available balance results in a gas limit exceeded error."
+      },
+      "causality": {
+        "state": "Caller's balance is insufficient.",
+        "guard": "No pre-check on caller's balance.",
+        "transition": "Transfer without sufficient funds leads to gas errors.",
+        "capability": "Caller can attempt withdrawal with insufficient funds.",
+        "outcome": "Gas limit exceeded error."
+      }
+    }
+  ]
+}

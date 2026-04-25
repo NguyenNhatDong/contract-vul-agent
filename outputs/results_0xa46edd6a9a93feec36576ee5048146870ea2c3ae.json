@@ -1,0 +1,36 @@
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC10:2023 - Unchecked External Calls>",
+      "evidence": "Line 10",
+      "execution": {
+        "trigger": "The loop calls caddress.call() for each element in _tos.",
+        "state_issue": "Unchecked external calls can allow attackers to manipulate the contract's state or execution flow.",
+        "exploitable_behavior": "Attacks can inject arbitrary code or influence the contract's behavior through these calls."
+      },
+      "causality": {
+        "state": "_tos.length > 0",
+        "guard": "None provided to prevent external interference",
+        "transition": "Uncontrolled execution flow due to external calls",
+        "capability": "Attacker can inject malicious code or influence contract's state",
+        "outcome": "Potential front-running or manipulation of the contract"
+      }
+    },
+    {
+      "vulnerability_type": "<SC10:2023 - Unchecked External Calls>",
+      "evidence": "Line 10",
+      "execution": {
+        "trigger": "Each iteration calls caddress.call() without validation.",
+        "state_issue": "Unchecked external calls can lead to integer overflow or underflow if parameters are not validated.",
+        "exploitable_behavior": "Attacks can exploit these calls for unintended behavior."
+      },
+      "causality": {
+        "state": "Parameters passed to caddress.call() may be unvalidated",
+        "guard": "No checks on _tos[i] and v[i]",
+        "transition": "Uncontrolled execution flow due to external calls",
+        "capability": "Attacker can exploit these calls for unintended behavior",
+        "outcome": "Potential integer overflow or underflow"
+      }
+    }
+  ]
+}
