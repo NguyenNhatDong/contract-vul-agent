@@ -1,0 +1,47 @@
+{
+  "contract_name": "tokensalechallenge.sol",
+  "contract_path": "contracts\\tokensalechallenge.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "17-19",
+      "function_name": "buy",
+      "evidence_snippet": "balanceOf[msg.sender] += numTokens; // <yes> <report> ARITHMETIC\n",
+      "execution": {
+        "trigger": "The buy() function requires that the caller's message value equals numTokens * PRICE_PER_TOKEN.",
+        "state_issue": "The contract incorrectly adds tokens to the caller's balance instead of deducting them.",
+        "exploitable_behavior": "An attacker can gain tokens without transferring any."
+      },
+      "causality": {
+        "state": "The contract holds tokens and allows external users to add more without proper deduction.",
+        "guard": "The buy() function checks that the caller's message value equals numTokens * PRICE_PER_TOKEN.",
+        "transition": "The incorrect addition of tokens bypasses the intended access control mechanism.",
+        "capability": "An attacker can exploit this by gaining tokens without transferring any.",
+        "outcome": "The attacker gains tokens without proper authorization."
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "27",
+      "function_name": "sell",
+      "evidence_snippet": "msg.sender.transfer(numTokens * PRICE_PER_TOKEN); // <yes> <report> ARITHMETIC\n",
+      "execution": {
+        "trigger": "The sell() function requires that the caller's balance is greater than or equal to numTokens.",
+        "state_issue": "The contract incorrectly transfers tokens back to the caller instead of transferring them out.",
+        "exploitable_behavior": "An attacker can prevent token transfer by exploiting this logic flaw."
+      },
+      "causality": {
+        "state": "The contract holds tokens and allows external users to sell tokens without transferring them out.",
+        "guard": "The sell() function checks that the caller's balance is greater than or equal to numTokens.",
+        "transition": "The incorrect transfer prevents proper token movement, leading to a denial of service attack.",
+        "capability": "An attacker can exploit this by preventing token transfers.",
+        "outcome": "The contract cannot transfer tokens out, leading to potential DoS."
+      }
+    }
+  ],
+  "analysis_time_seconds": 41.42,
+  "timestamp": "2026-04-26T21:42:55.762161",
+  "error": null
+}

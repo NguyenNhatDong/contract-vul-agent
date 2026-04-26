@@ -1,0 +1,10 @@
+{
+  "contract_name": "lotto.sol",
+  "contract_path": "contracts\\lotto.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 47.05,
+  "timestamp": "2026-04-26T21:27:07.610882",
+  "error": null
+}

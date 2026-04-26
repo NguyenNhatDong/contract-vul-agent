@@ -1,0 +1,29 @@
+{
+  "contract_name": "reentrancy_simple.sol",
+  "contract_path": "contracts\\reentrancy_simple.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "16",
+      "function_name": "withdrawBalance",
+      "evidence_snippet": "if( ! (msg.sender.call.value(userBalance[msg.sender])() ) )",
+      "execution": {
+        "trigger": "Calling withdrawBalance",
+        "state_issue": "Incorrect state check leading to potential underflow or overflow",
+        "exploitable_behavior": "The contract may revert incorrectly without properly handling the withdrawal"
+      },
+      "causality": {
+        "state": "userBalance[msg.sender] is not correctly checked for zero",
+        "guard": "if( ! (msg.sender.call.value(userBalance[msg.sender])() ) )",
+        "transition": "Incorrect evaluation of balance condition due to mismatched parentheses and improper value access",
+        "capability": "Attacker can exploit incorrect state checks leading to unintended behavior",
+        "outcome": "Reverts incorrectly or fails to withdraw funds properly"
+      }
+    }
+  ],
+  "analysis_time_seconds": 15.41,
+  "timestamp": "2026-04-26T21:37:59.193846",
+  "error": null
+}

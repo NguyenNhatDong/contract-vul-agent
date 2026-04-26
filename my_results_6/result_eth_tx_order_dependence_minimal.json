@@ -1,0 +1,10 @@
+{
+  "contract_name": "eth_tx_order_dependence_minimal.sol",
+  "contract_path": "contracts\\eth_tx_order_dependence_minimal.sol",
+  "status": "Error",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 0,
+  "timestamp": "2026-04-26T21:16:21.657247",
+  "error": "4 validation errors for DetectionOutput\nvulnerabilities.0.execution\n  Field required [type=missing, input_value={'vulnerability_type': '<...); reward = msg.value;'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nvulnerabilities.0.causality\n  Field required [type=missing, input_value={'vulnerability_type': '<...); reward = msg.value;'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nvulnerabilities.1.execution\n  Field required [type=missing, input_value={'vulnerability_type': '<...nder.transfer(reward);'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nvulnerabilities.1.causality\n  Field required [type=missing, input_value={'vulnerability_type': '<...nder.transfer(reward);'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing"
+}

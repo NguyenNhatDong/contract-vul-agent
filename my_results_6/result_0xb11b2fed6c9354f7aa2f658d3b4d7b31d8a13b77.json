@@ -1,0 +1,29 @@
+{
+  "contract_name": "0xb11b2fed6c9354f7aa2f658d3b4d7b31d8a13b77.sol",
+  "contract_path": "contracts\\0xb11b2fed6c9354f7aa2f658d3b4d7b31d8a13b77.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "9",
+      "function_name": "proxy",
+      "evidence_snippet": "target.call.value(msg.value)(data);",
+      "execution": {
+        "trigger": "The execution of the external call without proper error handling or validation.",
+        "state_issue": "Unchecked external calls can lead to arbitrary code execution and potential misuse by attackers.",
+        "exploitable_behavior": "Attackers could exploit this unhandled external call to execute malicious code."
+      },
+      "causality": {
+        "state": "The contract allows for arbitrary external calls without checks or error handling.",
+        "guard": "No validation is performed on the external call's source or potential side effects.",
+        "transition": "Execution of an external call bypasses normal transaction controls and security measures.",
+        "capability": "An attacker can exploit this by causing unintended behavior in the contract.",
+        "outcome": "Arbitrary code execution, leading to potential DoS or misuse."
+      }
+    }
+  ],
+  "analysis_time_seconds": 16.63,
+  "timestamp": "2026-04-26T21:11:13.798836",
+  "error": null
+}

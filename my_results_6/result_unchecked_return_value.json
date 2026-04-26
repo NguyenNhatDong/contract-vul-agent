@@ -1,0 +1,29 @@
+{
+  "contract_name": "unchecked_return_value.sol",
+  "contract_path": "contracts\\unchecked_return_value.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC10: Unchecked External Calls>",
+      "evidence": "11-12",
+      "function_name": "callnotchecked",
+      "evidence_snippet": "callled.call();",
+      "execution": {
+        "trigger": "calling an external function that may fail",
+        "state_issue": "Unsafe handling of external function calls leading to potential contract crashes or unintended behavior.",
+        "exploitable_behavior": "Attacker can trigger external function calls that cause the contract to crash."
+      },
+      "causality": {
+        "state": "The contract does not handle external function failures gracefully.",
+        "guard": "No guard against external function failures in callnotchecked.",
+        "transition": "Unchecked external calls lead to contract termination without proper handling.",
+        "capability": "Attacker can cause the contract to crash by triggering external function calls that fail.",
+        "outcome": "Contract crashes, potentially allowing attacker to exploit this behavior."
+      }
+    }
+  ],
+  "analysis_time_seconds": 19.82,
+  "timestamp": "2026-04-26T21:43:27.501012",
+  "error": null
+}
