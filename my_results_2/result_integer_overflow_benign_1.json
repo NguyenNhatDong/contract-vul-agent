@@ -1,0 +1,29 @@
+{
+  "contract_name": "integer_overflow_benign_1.sol",
+  "contract_path": "contracts\\integer_overflow_benign_1.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "7-8",
+      "function_name": "run",
+      "evidence_snippet": "uint res = count - input;",
+      "execution": {
+        "trigger": "The subtraction operation in line 8",
+        "state_issue": "Underflow causes negative numbers which wrap to large positive values due to modulo 2^256",
+        "exploitable_behavior": "The contract returns unexpected results when the input exceeds the count value"
+      },
+      "causality": {
+        "state": "count and res are uint256 variables with unsigned values",
+        "guard": "No explicit guard against underflow in the subtraction operation",
+        "transition": "Underflow causes negative numbers which wrap to large positive values due to modulo 2^256",
+        "capability": "An attacker can exploit this by providing inputs larger than expected count value",
+        "outcome": "Unexpected and potentially maliciously exploitable results"
+      }
+    }
+  ],
+  "analysis_time_seconds": 154.51,
+  "timestamp": "2026-04-25T22:37:11.934611",
+  "error": null
+}

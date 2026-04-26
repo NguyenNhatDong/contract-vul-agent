@@ -1,0 +1,29 @@
+{
+  "contract_name": "reentrance.sol",
+  "contract_path": "contracts\\reentrance.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "16-22",
+      "function_name": "withdraw",
+      "evidence_snippet": "if(balances[msg.sender] >= _amount) {\n  if(msg.sender.call.value(_amount)()) {\n    _amount;\n  }\n  balances[msg.sender] -= _amount;",
+      "execution": {
+        "trigger": "The use of msg.sender.call.value() without proper validation",
+        "state_issue": "The contract does not validate the caller's identity or parameter correctness when processing withdrawals.",
+        "exploitable_behavior": "An attacker can exploit this by providing incorrect parameters to withdrawal, bypassing validation checks."
+      },
+      "causality": {
+        "state": "The withdraw function lacks proper input validation for _amount and msg.sender.call.value().",
+        "guard": "No guard against improper parameter usage or caller identity verification.",
+        "transition": "Incorrect execution flow due to missing validations.",
+        "capability": "Attacker can bypass withdrawal checks by manipulating parameters.",
+        "outcome": "Invalid withdrawals may go unnoticed, allowing potential misuse."
+      }
+    }
+  ],
+  "analysis_time_seconds": 94.96,
+  "timestamp": "2026-04-25T23:47:22.961598",
+  "error": null
+}

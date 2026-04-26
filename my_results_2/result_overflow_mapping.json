@@ -1,0 +1,10 @@
+{
+  "contract_name": "overflow_mapping.sol",
+  "contract_path": "contracts\\overflow_mapping.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 60.84,
+  "timestamp": "2026-04-25T23:23:02.219621",
+  "error": null
+}

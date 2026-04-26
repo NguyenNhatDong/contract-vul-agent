@@ -1,0 +1,47 @@
+{
+  "contract_name": "0xb7c5c5aa4d42967efe906e1b66cb8df9cebf04f7.sol",
+  "contract_path": "contracts\\0xb7c5c5aa4d42967efe906e1b66cb8df9cebf04f7.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "19",
+      "function_name": "withdraw",
+      "evidence_snippet": "msg.sender.call.value(balances[msg.sender])();",
+      "execution": {
+        "trigger": "Calling the withdraw() function on an address that is not the contract's address.",
+        "state_issue": "The contract does not enforce any policies to prevent unauthorized calls, allowing external code execution.",
+        "exploitable_behavior": "An attacker can exploit this by triggering a withdrawal without proper authorization, leading to unintended code execution."
+      },
+      "causality": {
+        "state": "The contract's lack of security policies allows arbitrary code execution through unguarded calls.",
+        "guard": "None",
+        "transition": "Unauthorized external call execution due to missing policy enforcement.",
+        "capability": "An attacker can execute arbitrary code via the withdraw function without being authorized.",
+        "outcome": "Exploitation leads to unauthorized code execution and potential state corruption."
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Unchecked External Calls>",
+      "evidence": "19",
+      "function_name": "withdraw",
+      "evidence_snippet": "msg.sender.call.value(balances[msg.sender])();",
+      "execution": {
+        "trigger": "Calling the withdraw() function on an address that is not the contract's address.",
+        "state_issue": "The contract does not enforce any policies to prevent unauthorized calls, allowing external code execution.",
+        "exploitable_behavior": "An attacker can exploit this by triggering a withdrawal without proper authorization, leading to unintended code execution."
+      },
+      "causality": {
+        "state": "The contract's lack of security policies allows arbitrary code execution through unguarded calls.",
+        "guard": "None",
+        "transition": "Unauthorized external call execution due to missing policy enforcement.",
+        "capability": "An attacker can execute arbitrary code via the withdraw function without being authorized.",
+        "outcome": "Exploitation leads to unauthorized code execution and potential state corruption."
+      }
+    }
+  ],
+  "analysis_time_seconds": 127.0,
+  "timestamp": "2026-04-25T19:44:15.724096",
+  "error": null
+}

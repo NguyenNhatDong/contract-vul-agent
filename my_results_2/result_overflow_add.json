@@ -1,0 +1,29 @@
+{
+  "contract_name": "overflow_add.sol",
+  "contract_path": "contracts\\overflow_add.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "45-48",
+      "function_name": "overflowlocalonly, overflowmulocalonly, underflowlocalonly",
+      "evidence_snippet": "uint res = count + input;\nuint res = count * input;\nuint res = count - input;",
+      "execution": {
+        "trigger": "Any call to these functions with a large enough value for 'input'",
+        "state_issue": "The state variable 'count' is not updated by these functions, leading to incorrect behavior.",
+        "exploitable_behavior": "Functions do not modify the contract's state, allowing external manipulation."
+      },
+      "causality": {
+        "state": "The 'count' variable remains unchanged despite function calls",
+        "guard": "No conditions prevent execution; any call triggers the issue",
+        "transition": "Function operations bypass state updates",
+        "capability": "Attacker can exploit by calling these functions without affecting 'count'",
+        "outcome": "Unexpected results due to missing state updates"
+      }
+    }
+  ],
+  "analysis_time_seconds": 94.51,
+  "timestamp": "2026-04-25T23:22:01.378939",
+  "error": null
+}

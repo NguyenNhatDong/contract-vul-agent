@@ -1,0 +1,29 @@
+{
+  "contract_name": "reentrancy_simple.sol",
+  "contract_path": "contracts\\reentrancy_simple.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "16",
+      "function_name": "withdrawBalance",
+      "evidence_snippet": "if( ! (msg.sender.call.value(userBalance[msg.sender])() ) )",
+      "execution": {
+        "trigger": "Calling withdrawBalance without proper balance check",
+        "state_issue": "The function incorrectly uses msg.sender.call.value on a uint value, leading to undefined behavior.",
+        "exploitable_behavior": "Reverts unexpectedly or allows state manipulation."
+      },
+      "causality": {
+        "state": "userBalance[msg.sender] is accessed without proper checks and incorrect method calls",
+        "guard": "if( ! (msg.sender.call.value(userBalance[msg.sender])() ) )",
+        "transition": "Attempting to call a function on an integer value",
+        "capability": "Attacker can cause unintended state transitions or reverts.",
+        "outcome": "Unexpected contract behavior leading to potential attacks."
+      }
+    }
+  ],
+  "analysis_time_seconds": 109.12,
+  "timestamp": "2026-04-26T01:16:28.355374",
+  "error": null
+}

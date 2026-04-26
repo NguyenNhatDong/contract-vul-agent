@@ -1,0 +1,10 @@
+{
+  "contract_name": "mapping_write.sol",
+  "contract_path": "contracts\\mapping_write.sol",
+  "status": "Error",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 0,
+  "timestamp": "2026-04-25T23:02:45.799985",
+  "error": "1 validation error for DetectionOutput\n  Invalid JSON: key must be a string at line 2 column 5 [type=json_invalid, input_value='{\\n    if (key >= 0 && k..., throw an exception\\n}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/json_invalid"
+}

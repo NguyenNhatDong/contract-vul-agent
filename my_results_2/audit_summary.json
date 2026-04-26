@@ -1,0 +1,575 @@
+{
+  "audit_metadata": {
+    "timestamp": "2026-04-26T02:04:23.704024",
+    "model": "deepseek-r1:7b",
+    "owasp_categories": 10,
+    "total_time_seconds": 23477.08
+  },
+  "summary": {
+    "total_contracts": 77,
+    "successful_analyses": 59,
+    "failed_analyses": 18,
+    "vulnerable_contracts": 51,
+    "safe_contracts": 8,
+    "total_vulnerabilities_found": 83,
+    "average_analysis_time_seconds": 164.67,
+    "vulnerability_types_distribution": {
+      "<SC04:2023 - Access Control Vulnerabilities>": 14,
+      "<SC06:2023 - Unchecked External Calls>": 2,
+      "<SC10:2023 - Unchecked External Calls>": 6,
+      "<SC02:2023 - Integer Overflow and Underflow>": 17,
+      "<SC01:2023 - Reentrancy Attacks>": 12,
+      "Other": 1,
+      "<SC05:2023 - Front-running Attacks>": 5,
+      "<SC08:2023 - Insecure Randomness>": 9,
+      "<SC06:2023 - Denial of Service (DoS) Attacks>": 6,
+      "<SC07:2023 - Logic Errors>": 4,
+      "<SC08: Insecure Randomness>": 1,
+      "<SC06:2023 - Access Control Vulnerabilities>": 1,
+      "<SC03:2023 - Logic Errors>": 1,
+      "<SC03:2023 - Timestamp Dependence>": 3,
+      "<SC01:2023 - Parameter Validation Flaws>": 1
+    }
+  },
+  "contracts_analyzed": [
+    {
+      "contract_name": "0x0cbe050f75bc8f8c2d6c0d249fea125fd6e1acc9.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 67.6,
+      "result_file": "result_0x0cbe050f75bc8f8c2d6c0d249fea125fd6e1acc9.json"
+    },
+    {
+      "contract_name": "0x2972d548497286d18e92b5fa1f8f9139e5653fd2.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 92.13,
+      "result_file": "result_0x2972d548497286d18e92b5fa1f8f9139e5653fd2.json"
+    },
+    {
+      "contract_name": "0x3e013fc32a54c4c5b6991ba539dcd0ec4355c859.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 88.32,
+      "result_file": "result_0x3e013fc32a54c4c5b6991ba539dcd0ec4355c859.json"
+    },
+    {
+      "contract_name": "0xa46edd6a9a93feec36576ee5048146870ea2c3ae.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 89.22,
+      "result_file": "result_0xa46edd6a9a93feec36576ee5048146870ea2c3ae.json"
+    },
+    {
+      "contract_name": "0xb11b2fed6c9354f7aa2f658d3b4d7b31d8a13b77.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 121.33,
+      "result_file": "result_0xb11b2fed6c9354f7aa2f658d3b4d7b31d8a13b77.json"
+    },
+    {
+      "contract_name": "0xb37f18af15bafb869a065b61fc83cfc44ed9cc27.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 83.42,
+      "result_file": "result_0xb37f18af15bafb869a065b61fc83cfc44ed9cc27.json"
+    },
+    {
+      "contract_name": "0xb7c5c5aa4d42967efe906e1b66cb8df9cebf04f7.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 127.0,
+      "result_file": "result_0xb7c5c5aa4d42967efe906e1b66cb8df9cebf04f7.json"
+    },
+    {
+      "contract_name": "0xe82f0742a71a02b9e9ffc142fdcb6eb1ed06fb87.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 10,
+      "analysis_time_seconds": 1588.25,
+      "result_file": "result_0xe82f0742a71a02b9e9ffc142fdcb6eb1ed06fb87.json"
+    },
+    {
+      "contract_name": "0xe894d54dca59cb53fe9cbc5155093605c7068220.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 78.49,
+      "result_file": "result_0xe894d54dca59cb53fe9cbc5155093605c7068220.json"
+    },
+    {
+      "contract_name": "0xf2570186500a46986f3139f65afedc2afe4f445d.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_0xf2570186500a46986f3139f65afedc2afe4f445d.json"
+    },
+    {
+      "contract_name": "0xf29ebe930a539a60279ace72c707cba851a57707.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 73.48,
+      "result_file": "result_0xf29ebe930a539a60279ace72c707cba851a57707.json"
+    },
+    {
+      "contract_name": "0xf70d589d76eebdd7c12cc5eec99f8f6fa4233b9e.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 119.06,
+      "result_file": "result_0xf70d589d76eebdd7c12cc5eec99f8f6fa4233b9e.json"
+    },
+    {
+      "contract_name": "auction.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 90.46,
+      "result_file": "result_auction.json"
+    },
+    {
+      "contract_name": "crypto_roulette.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_crypto_roulette.json"
+    },
+    {
+      "contract_name": "dos_address.sol",
+      "status": "Normal",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 270.0,
+      "result_file": "result_dos_address.json"
+    },
+    {
+      "contract_name": "dos_number.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_dos_number.json"
+    },
+    {
+      "contract_name": "dos_simple.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_dos_simple.json"
+    },
+    {
+      "contract_name": "eth_tx_order_dependence_minimal.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 229.23,
+      "result_file": "result_eth_tx_order_dependence_minimal.json"
+    },
+    {
+      "contract_name": "ether_lotto.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 224.28,
+      "result_file": "result_ether_lotto.json"
+    },
+    {
+      "contract_name": "FibonacciBalance.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_FibonacciBalance.json"
+    },
+    {
+      "contract_name": "FindThisHash.sol",
+      "status": "Normal",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 540.08,
+      "result_file": "result_FindThisHash.json"
+    },
+    {
+      "contract_name": "governmental_survey.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_governmental_survey.json"
+    },
+    {
+      "contract_name": "guess_the_random_number.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_guess_the_random_number.json"
+    },
+    {
+      "contract_name": "incorrect_constructor_name1.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 101.88,
+      "result_file": "result_incorrect_constructor_name1.json"
+    },
+    {
+      "contract_name": "incorrect_constructor_name2.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 79.53,
+      "result_file": "result_incorrect_constructor_name2.json"
+    },
+    {
+      "contract_name": "incorrect_constructor_name3.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 157.68,
+      "result_file": "result_incorrect_constructor_name3.json"
+    },
+    {
+      "contract_name": "insecure_transfer.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 81.58,
+      "result_file": "result_insecure_transfer.json"
+    },
+    {
+      "contract_name": "integer_overflow_1.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 77.62,
+      "result_file": "result_integer_overflow_1.json"
+    },
+    {
+      "contract_name": "integer_overflow_add.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_integer_overflow_add.json"
+    },
+    {
+      "contract_name": "integer_overflow_benign_1.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 154.51,
+      "result_file": "result_integer_overflow_benign_1.json"
+    },
+    {
+      "contract_name": "integer_overflow_mapping_sym_1.sol",
+      "status": "Normal",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 61.43,
+      "result_file": "result_integer_overflow_mapping_sym_1.json"
+    },
+    {
+      "contract_name": "integer_overflow_minimal.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 72.92,
+      "result_file": "result_integer_overflow_minimal.json"
+    },
+    {
+      "contract_name": "integer_overflow_mul.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_integer_overflow_mul.json"
+    },
+    {
+      "contract_name": "integer_overflow_multitx_multifunc_feasible.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_integer_overflow_multitx_multifunc_feasible.json"
+    },
+    {
+      "contract_name": "integer_overflow_multitx_onefunc_feasible.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 70.03,
+      "result_file": "result_integer_overflow_multitx_onefunc_feasible.json"
+    },
+    {
+      "contract_name": "lottery.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 130.57,
+      "result_file": "result_lottery.json"
+    },
+    {
+      "contract_name": "lotto.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_lotto.json"
+    },
+    {
+      "contract_name": "lottopollo.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_lottopollo.json"
+    },
+    {
+      "contract_name": "mapping_write.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_mapping_write.json"
+    },
+    {
+      "contract_name": "mishandled.sol",
+      "status": "Normal",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 287.66,
+      "result_file": "result_mishandled.json"
+    },
+    {
+      "contract_name": "multiowned_vulnerable.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 94.96,
+      "result_file": "result_multiowned_vulnerable.json"
+    },
+    {
+      "contract_name": "mycontract.sol",
+      "status": "Normal",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 65.54,
+      "result_file": "result_mycontract.json"
+    },
+    {
+      "contract_name": "name_registrar.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 232.44,
+      "result_file": "result_name_registrar.json"
+    },
+    {
+      "contract_name": "odds_and_evens.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 8,
+      "analysis_time_seconds": 280.39,
+      "result_file": "result_odds_and_evens.json"
+    },
+    {
+      "contract_name": "old_blockhash.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 99.96,
+      "result_file": "result_old_blockhash.json"
+    },
+    {
+      "contract_name": "overflow_add.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 94.51,
+      "result_file": "result_overflow_add.json"
+    },
+    {
+      "contract_name": "overflow_mapping.sol",
+      "status": "Normal",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 60.84,
+      "result_file": "result_overflow_mapping.json"
+    },
+    {
+      "contract_name": "overflow_simple_add.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 72.61,
+      "result_file": "result_overflow_simple_add.json"
+    },
+    {
+      "contract_name": "overflow_single_tx.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 94.92,
+      "result_file": "result_overflow_single_tx.json"
+    },
+    {
+      "contract_name": "phishable.sol",
+      "status": "Normal",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 188.39,
+      "result_file": "result_phishable.json"
+    },
+    {
+      "contract_name": "proxy.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 84.08,
+      "result_file": "result_proxy.json"
+    },
+    {
+      "contract_name": "random_number_generator.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 3,
+      "analysis_time_seconds": 166.89,
+      "result_file": "result_random_number_generator.json"
+    },
+    {
+      "contract_name": "reen_dao.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 143.01,
+      "result_file": "result_reen_dao.json"
+    },
+    {
+      "contract_name": "reen_etherbank.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 286.93,
+      "result_file": "result_reen_etherbank.json"
+    },
+    {
+      "contract_name": "reen_etherstore.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 111.7,
+      "result_file": "result_reen_etherstore.json"
+    },
+    {
+      "contract_name": "reen_modifier.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 217.11,
+      "result_file": "result_reen_modifier.json"
+    },
+    {
+      "contract_name": "reentrance.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 94.96,
+      "result_file": "result_reentrance.json"
+    },
+    {
+      "contract_name": "reentrancy_bonus.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_reentrancy_bonus.json"
+    },
+    {
+      "contract_name": "reentrancy_crossfunc.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 165.05,
+      "result_file": "result_reentrancy_crossfunc.json"
+    },
+    {
+      "contract_name": "reentrancy_insecure.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_reentrancy_insecure.json"
+    },
+    {
+      "contract_name": "reentrancy_simple.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 109.12,
+      "result_file": "result_reentrancy_simple.json"
+    },
+    {
+      "contract_name": "roulette.sol",
+      "status": "Normal",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 132.27,
+      "result_file": "result_roulette.json"
+    },
+    {
+      "contract_name": "send_loop.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 95.12,
+      "result_file": "result_send_loop.json"
+    },
+    {
+      "contract_name": "shortaddress.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 128.33,
+      "result_file": "result_shortaddress.json"
+    },
+    {
+      "contract_name": "simple_dao.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_simple_dao.json"
+    },
+    {
+      "contract_name": "simple_suicide.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 74.53,
+      "result_file": "result_simple_suicide.json"
+    },
+    {
+      "contract_name": "time.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 119.51,
+      "result_file": "result_time.json"
+    },
+    {
+      "contract_name": "timed_crowdsale.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 181.8,
+      "result_file": "result_timed_crowdsale.json"
+    },
+    {
+      "contract_name": "timelock.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 185.82,
+      "result_file": "result_timelock.json"
+    },
+    {
+      "contract_name": "token.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_token.json"
+    },
+    {
+      "contract_name": "tokensalechallenge.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 300.12,
+      "result_file": "result_tokensalechallenge.json"
+    },
+    {
+      "contract_name": "uncheck_external_call.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 2,
+      "analysis_time_seconds": 98.54,
+      "result_file": "result_uncheck_external_call.json"
+    },
+    {
+      "contract_name": "unchecked_return_value.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 80.84,
+      "result_file": "result_unchecked_return_value.json"
+    },
+    {
+      "contract_name": "unprotected0.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 77.12,
+      "result_file": "result_unprotected0.json"
+    },
+    {
+      "contract_name": "wallet_02_refund_nosub.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 1,
+      "analysis_time_seconds": 91.27,
+      "result_file": "result_wallet_02_refund_nosub.json"
+    },
+    {
+      "contract_name": "wallet_03_wrong_constructor.sol",
+      "status": "Vulnerable",
+      "vulnerabilities_count": 5,
+      "analysis_time_seconds": 329.05,
+      "result_file": "result_wallet_03_wrong_constructor.json"
+    },
+    {
+      "contract_name": "wallet_04_confused_sign.sol",
+      "status": "Error",
+      "vulnerabilities_count": 0,
+      "analysis_time_seconds": 0,
+      "result_file": "result_wallet_04_confused_sign.json"
+    }
+  ]
+}

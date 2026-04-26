@@ -1,0 +1,47 @@
+{
+  "contract_name": "0xb11b2fed6c9354f7aa2f658d3b4d7b31d8a13b77.sol",
+  "contract_path": "contracts\\0xb11b2fed6c9354f7aa2f658d3b4d7b31d8a13b77.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "7-8",
+      "function_name": "proxy",
+      "evidence_snippet": "target.call.value(msg.value)(data);",
+      "execution": {
+        "trigger": "Calling another contract's function directly via target.call.value()",
+        "state_issue": "Unsafe execution of external code without proper control or validation.",
+        "exploitable_behavior": "An attacker can inject malicious code into the Proxy contract, leading to unintended behavior."
+      },
+      "causality": {
+        "state": "The Proxy allows any other contract's function to be called directly via target.call.value()",
+        "guard": "No explicit guard against calling arbitrary functions from other contracts.",
+        "transition": "Direct execution of external code bypasses normal control flow and state checks.",
+        "capability": "Attacker can execute arbitrary code in the Proxy contract.",
+        "outcome": "Exploitation leads to potential injection of malicious code or data manipulation."
+      }
+    },
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "18-23",
+      "function_name": "Vault",
+      "evidence_snippet": "Owner = msg.sender; deposit();",
+      "execution": {
+        "trigger": "Multiple calls to Vault may interfere with each other's deposits.",
+        "state_issue": "The Proxy's state isn't properly managed when multiple owners are set through the Vault function.",
+        "exploitable_behavior": "An attacker could exploit concurrent or chained calls to manipulate ownership and funds."
+      },
+      "causality": {
+        "state": "Proxy's state (Owner) is not validated against previous states",
+        "guard": "No checks ensure that only one owner can be set at a time.",
+        "transition": "Setting multiple owners without proper validation leads to inconsistent state transitions.",
+        "capability": "Attacker can exploit concurrent calls to alter Proxy ownership and deposit amounts.",
+        "outcome": "Exploitation could lead to unauthorized changes in funds or ownership."
+      }
+    }
+  ],
+  "analysis_time_seconds": 121.33,
+  "timestamp": "2026-04-25T19:40:45.266548",
+  "error": null
+}

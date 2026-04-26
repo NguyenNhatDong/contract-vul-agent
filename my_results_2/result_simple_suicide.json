@@ -1,0 +1,29 @@
+{
+  "contract_name": "simple_suicide.sol",
+  "contract_path": "contracts\\simple_suicide.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "6",
+      "function_name": "sudicideAnyone",
+      "evidence_snippet": "selfdestruct(msg.sender);",
+      "execution": {
+        "trigger": "Calling selfdestruct() within the same contract",
+        "state_issue": "The contract allows multiple executions without proper exit conditions, leading to reentrancy attacks.",
+        "exploitable_behavior": "An attacker can exploit this by repeatedly calling the function until the contract's gas is exhausted."
+      },
+      "causality": {
+        "state": "The contract does not have any exit conditions or guards against internal calls",
+        "guard": "None; no guard conditions prevent multiple executions",
+        "transition": "Multiple selfdestruct() calls proceed without checking for contract destruction",
+        "capability": "An attacker can exploit this by calling the function multiple times",
+        "outcome": "The contract's execution allows attackers to cause reentrancy attacks"
+      }
+    }
+  ],
+  "analysis_time_seconds": 74.53,
+  "timestamp": "2026-04-26T01:26:33.195968",
+  "error": null
+}

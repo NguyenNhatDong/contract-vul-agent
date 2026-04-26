@@ -1,0 +1,29 @@
+{
+  "contract_name": "reentrancy_crossfunc.sol",
+  "contract_path": "contracts\\reentrancy_crossfunc.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Parameter Validation Flaws>",
+      "evidence": "Line 5",
+      "function_name": "transfer",
+      "evidence_snippet": "(int256 x) => msg.sender.send(x)",
+      "execution": {
+        "trigger": "Missing parameter validation in the transfer function",
+        "state_issue": "Insufficient input validation leading to incorrect data processing",
+        "exploitable_behavior": "An attacker can exploit incorrect parameter handling"
+      },
+      "causality": {
+        "state": "The contract does not validate input parameters before execution",
+        "guard": "None, as the function does not check for valid inputs",
+        "transition": "Invalid parameters bypass validation checks and cause unintended behavior",
+        "capability": "Attacker can manipulate contract functionality through invalid parameter injection",
+        "outcome": "Data integrity is compromised or incorrect operations are performed"
+      }
+    }
+  ],
+  "analysis_time_seconds": 165.05,
+  "timestamp": "2026-04-26T01:11:14.019558",
+  "error": null
+}

@@ -1,0 +1,29 @@
+{
+  "contract_name": "unchecked_return_value.sol",
+  "contract_path": "contracts\\unchecked_return_value.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC10:2023 - Unchecked External Calls>",
+      "evidence": "11",
+      "function_name": "callnotchecked",
+      "evidence_snippet": "callled.call();",
+      "execution": {
+        "trigger": "An external caller making multiple calls to the function",
+        "state_issue": "No checks on how many times the external call is made, leading to potential gas usage issues",
+        "exploitable_behavior": "The function allows unlimited external calls without any guard against them"
+      },
+      "causality": {
+        "state": "No explicit state check for external call count",
+        "guard": "None",
+        "transition": "Multiple external calls without checks",
+        "capability": "Attacker can exploit multiple external calls",
+        "outcome": "Potential gas cost increase or contract vulnerabilities"
+      }
+    }
+  ],
+  "analysis_time_seconds": 80.84,
+  "timestamp": "2026-04-26T01:51:21.866656",
+  "error": null
+}

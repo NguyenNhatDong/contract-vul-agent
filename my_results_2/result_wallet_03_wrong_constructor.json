@@ -1,0 +1,101 @@
+{
+  "contract_name": "wallet_03_wrong_constructor.sol",
+  "contract_path": "contracts\\wallet_03_wrong_constructor.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 5,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Line 14",
+      "function_name": "initWallet",
+      "evidence_snippet": "creator = msg.sender;",
+      "execution": {
+        "trigger": "Setting creator to sender in initWallet",
+        "state_issue": "Creator is set without proper authorization",
+        "exploitable_behavior": "Any user can become creator"
+      },
+      "causality": {
+        "state": "Sender becomes creator",
+        "guard": "None",
+        "transition": "Direct assignment of creator",
+        "capability": "Attacker can create creator",
+        "outcome": "Funds can be withdrawn by any user"
+      }
+    },
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Line 31",
+      "function_name": "migrateTo",
+      "evidence_snippet": "require(creator == msg.sender);",
+      "execution": {
+        "trigger": "Migrating funds requires creator to be sender",
+        "state_issue": "Creator must be sender for migration",
+        "exploitable_behavior": "Creator can be any user due to initWallet vulnerability"
+      },
+      "causality": {
+        "state": "Sender is not the original owner",
+        "guard": "Creator == msg.sender",
+        "transition": "Migration requires creator role",
+        "capability": "Attacker can become creator and migrate funds",
+        "outcome": "Funds can be moved without proper authorization"
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "Line 17-19",
+      "function_name": "deposit",
+      "evidence_snippet": "assert(balances[msg.sender] + msg.value > balances[msg.sender]);\nbalances[msg.sender] += msg.value;",
+      "execution": {
+        "trigger": "Deposit function uses assertion for balance check",
+        "state_issue": "No error handling for insufficient funds",
+        "exploitable_behavior": "Deposit bypassed by exploiting assertion"
+      },
+      "causality": {
+        "state": "Balance is checked but not enforced",
+        "guard": "None",
+        "transition": "Assertion does not disable execution",
+        "capability": "Attacker can bypass balance check",
+        "outcome": "Funds deposited without funds being added"
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "Line 24-25",
+      "function_name": "withdraw",
+      "evidence_snippet": "require(amount <= balances[msg.sender]);\nbalances[msg.sender] -= amount;",
+      "execution": {
+        "trigger": "Withdraw function uses requirement for balance check",
+        "state_issue": "No error handling for insufficient funds",
+        "exploitable_behavior": "Withdraw bypassed by exploiting requirement"
+      },
+      "causality": {
+        "state": "Balance is checked but not enforced",
+        "guard": "None",
+        "transition": "Requirement does not disable execution",
+        "capability": "Attacker can withdraw more than balance",
+        "outcome": "Funds withdrawn without funds being subtracted"
+      }
+    },
+    {
+      "vulnerability_type": "<SC10:2023 - Unchecked External Calls>",
+      "evidence": "Line 32",
+      "function_name": "migrateTo",
+      "evidence_snippet": "to.transfer(this.balance);",
+      "execution": {
+        "trigger": "External call in migrateTo without error handling",
+        "state_issue": "No error checking for external transfer",
+        "exploitable_behavior": "Transfer can fail or steal funds"
+      },
+      "causality": {
+        "state": "to is not the same as creator",
+        "guard": "None",
+        "transition": "Direct call to external address",
+        "capability": "Attacker can execute arbitrary code",
+        "outcome": "Funds can be transferred without errors"
+      }
+    }
+  ],
+  "analysis_time_seconds": 329.05,
+  "timestamp": "2026-04-26T01:59:39.374102",
+  "error": null
+}

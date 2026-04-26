@@ -1,0 +1,10 @@
+{
+  "contract_name": "phishable.sol",
+  "contract_path": "contracts\\phishable.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 188.39,
+  "timestamp": "2026-04-25T23:28:58.171418",
+  "error": null
+}

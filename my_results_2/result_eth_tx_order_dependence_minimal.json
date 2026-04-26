@@ -1,0 +1,29 @@
+{
+  "contract_name": "eth_tx_order_dependence_minimal.sol",
+  "contract_path": "contracts\\eth_tx_order_dependence_minimal.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "17-18",
+      "function_name": "setReward",
+      "evidence_snippet": "owner.transfer(reward); reward = msg.value;",
+      "execution": {
+        "trigger": "Calling setReward() with a valid address and amount.",
+        "state_issue": "The 'reward' variable is overwritten after transferring, potentially altering the contract's state incorrectly.",
+        "exploitable_behavior": "The attacker can exploit this by calling setReward() without proper checks on the reward value or source."
+      },
+      "causality": {
+        "state": "The 'reward' variable holds ETH transferred from an external address and is then overwritten with msg.value.",
+        "guard": "None, as there's no explicit guard against overwriting after transfer.",
+        "transition": "The transfer operation does not prevent the subsequent assignment of reward to msg.value.",
+        "capability": "An attacker can exploit this by calling setReward() without verifying that the transferred ETH is intended.",
+        "outcome": "The contract's internal 'reward' variable may be manipulated, leading to unintended distribution."
+      }
+    }
+  ],
+  "analysis_time_seconds": 229.23,
+  "timestamp": "2026-04-25T22:00:34.643002",
+  "error": null
+}

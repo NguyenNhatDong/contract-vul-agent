@@ -1,0 +1,29 @@
+{
+  "contract_name": "reen_dao.sol",
+  "contract_path": "contracts\\reen_dao.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "12",
+      "function_name": "withdrawAll",
+      "evidence_snippet": "bool callResult = msg.sender.call.value(oCredit)();",
+      "execution": {
+        "trigger": "Calling withdrawAll() from another address after transferring funds.",
+        "state_issue": "The function does not properly handle integer overflow when calling the internal method with a large argument.",
+        "exploitable_behavior": "An attacker could exploit this by passing an excessively large value to cause an overflow."
+      },
+      "causality": {
+        "state": "The contract's withdrawAll() function uses msg.sender.call.value(oCredit)(), which can lead to integer overflow if oCredit is too large.",
+        "guard": "No guard against integer overflow in the argument passed to call.value().",
+        "transition": "The use of .call.value() without bounds checking allows for potential overflow attacks.",
+        "capability": "Attacker can exploit this by passing a value exceeding the maximum allowed, causing undefined behavior.",
+        "outcome": "Potential security vulnerability due to integer overflow."
+      }
+    }
+  ],
+  "analysis_time_seconds": 143.01,
+  "timestamp": "2026-04-25T23:35:32.192289",
+  "error": null
+}

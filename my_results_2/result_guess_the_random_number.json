@@ -1,0 +1,10 @@
+{
+  "contract_name": "guess_the_random_number.sol",
+  "contract_path": "contracts\\guess_the_random_number.sol",
+  "status": "Error",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 0,
+  "timestamp": "2026-04-25T22:23:48.344663",
+  "error": "1 validation error for DetectionOutput\n  Invalid JSON: expected `,` or `]` at line 9 column 18 [type=json_invalid, input_value='{\\n  \"vulnerabilities\": ...n      }\\n    }\\n  ]\\n}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/json_invalid"
+}

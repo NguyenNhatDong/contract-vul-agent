@@ -1,0 +1,29 @@
+{
+  "contract_name": "0x0cbe050f75bc8f8c2d6c0d249fea125fd6e1acc9.sol",
+  "contract_path": "contracts\\0x0cbe050f75bc8f8c2d6c0d249fea125fd6e1acc9.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "6",
+      "function_name": "callAddress",
+      "evidence_snippet": "a.call();",
+      "execution": {
+        "trigger": "a.call()",
+        "state_issue": "Contract does not control external calls.",
+        "exploitable_behavior": "An attacker can exploit this by calling the Caller contract, triggering an unauthorized external call."
+      },
+      "causality": {
+        "state": "No authorization for external calls in the contract's configuration.",
+        "guard": "None",
+        "transition": "Execution of a.call() bypasses normal contract controls.",
+        "capability": "Attacker can make unauthorized external calls.",
+        "outcome": "This could lead to gas limits or network permission issues."
+      }
+    }
+  ],
+  "analysis_time_seconds": 67.6,
+  "timestamp": "2026-04-25T19:34:14.230112",
+  "error": null
+}

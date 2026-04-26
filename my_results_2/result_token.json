@@ -1,0 +1,10 @@
+{
+  "contract_name": "token.sol",
+  "contract_path": "contracts\\token.sol",
+  "status": "Error",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 0,
+  "timestamp": "2026-04-26T01:43:22.316716",
+  "error": "1 validation error for DetectionOutput\n  Invalid JSON: expected `,` or `}` at line 7 column 81 [type=json_invalid, input_value='{\\n  \"vulnerabilities\": ...n      }\\n    }\\n  ]\\n}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/json_invalid"
+}

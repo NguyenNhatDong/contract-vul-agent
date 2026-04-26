@@ -1,0 +1,29 @@
+{
+  "contract_name": "0x2972d548497286d18e92b5fa1f8f9139e5653fd2.sol",
+  "contract_path": "contracts\\0x2972d548497286d18e92b5fa1f8f9139e5653fd2.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Unchecked External Calls>",
+      "evidence": "8",
+      "function_name": "transfer",
+      "evidence_snippet": "caddress.call(id, from, _tos[i], v[i]);",
+      "execution": {
+        "trigger": "Making an external call without proper validation",
+        "state_issue": "The contract does not validate the inputs before making external calls.",
+        "exploitable_behavior": "Attacker can exploit these calls by providing incorrect parameters."
+      },
+      "causality": {
+        "state": "The contract's state allows for external interactions without input validation.",
+        "guard": "No guard checks are in place for the external call arguments.",
+        "transition": "Direct execution of external calls bypasses validation logic.",
+        "capability": "Attacker can manipulate or exploit these external calls.",
+        "outcome": "Potential attacks like front running, DoS, or state manipulation."
+      }
+    }
+  ],
+  "analysis_time_seconds": 92.13,
+  "timestamp": "2026-04-25T19:35:46.375761",
+  "error": null
+}

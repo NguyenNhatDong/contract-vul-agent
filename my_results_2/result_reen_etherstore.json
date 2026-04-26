@@ -1,0 +1,47 @@
+{
+  "contract_name": "reen_etherstore.sol",
+  "contract_path": "contracts\\reen_etherstore.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 20",
+      "function_name": "withdrawFunds",
+      "evidence_snippet": "msg.sender.call.value(_weiToWithdraw)()",
+      "execution": {
+        "trigger": "An attacker can call withdrawFunds from another address using a reentrancy attack.",
+        "state_issue": "The use of msg.sender.call.value allows an external attacker to trigger the withdrawal function without proper authorization.",
+        "exploitable_behavior": "The attacker can bypass access control by exploiting the call method."
+      },
+      "causality": {
+        "state": "The withdrawFunds function is called from another address with sufficient _weiToWithdraw.",
+        "guard": "None, as there's no check preventing external calls to this function.",
+        "transition": "An attacker can trigger line 20 without being the sender.",
+        "capability": "The attacker can bypass access control by exploiting the call method in line 20.",
+        "outcome": "Withdrawal proceeds despite unauthorized access."
+      }
+    },
+    {
+      "vulnerability_type": "<SC03:2023 - Timestamp Dependence>",
+      "evidence": "Lines 18-22",
+      "function_name": "withdrawFunds",
+      "evidence_snippet": "require(now >= lastWithdrawTime[msg.sender] + 1 weeks); require(msg.sender.call.value(_weiToWithdraw)()); balances[msg.sender] -= _weiToWithdraw; lastWithdrawTime[msg.sender] = now;",
+      "execution": {
+        "trigger": "A withdrawal is attempted within the same week as a previous one.",
+        "state_issue": "The time check doesn't account for multiple withdrawals in the same week, allowing subsequent withdrawals to bypass the time limit.",
+        "exploitable_behavior": "An attacker can withdraw funds multiple times within the same week without triggering an alert."
+      },
+      "causality": {
+        "state": "Multiple withdrawals occur within a single week.",
+        "guard": "The time check doesn't prevent multiple withdrawals in the same week.",
+        "transition": "After one withdrawal, subsequent withdrawals within the same week bypass the time limit.",
+        "capability": "An attacker can withdraw funds multiple times without triggering an alert.",
+        "outcome": "Withdrawals are allowed despite not meeting the time requirement."
+      }
+    }
+  ],
+  "analysis_time_seconds": 111.7,
+  "timestamp": "2026-04-25T23:42:10.855869",
+  "error": null
+}

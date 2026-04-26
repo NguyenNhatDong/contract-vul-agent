@@ -1,0 +1,29 @@
+{
+  "contract_name": "timelock.sol",
+  "contract_path": "contracts\\timelock.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "14",
+      "function_name": "increaseLockTime",
+      "evidence_snippet": "lockTime[msg.sender] += _secondsToIncrease;",
+      "execution": {
+        "trigger": "increaseLockTime() function call with large values",
+        "state_issue": "The lockTime is not being checked against integer overflow limits.",
+        "exploitable_behavior": "An attacker can exploit this by causing an arithmetic overflow in the lockTime, bypassing withdrawal checks."
+      },
+      "causality": {
+        "state": "The lockTime mapping's value exceeds the maximum allowed integer value due to addition without bounds checking.",
+        "guard": "No guard against integer overflow during addition.",
+        "transition": "Arithmetic operation causing state transition beyond expected limits.",
+        "capability": "Attacker can cause an overflow by adding large values.",
+        "outcome": "Invalid lockTime values allowing unauthorized transactions."
+      }
+    }
+  ],
+  "analysis_time_seconds": 185.82,
+  "timestamp": "2026-04-26T01:34:40.360511",
+  "error": null
+}

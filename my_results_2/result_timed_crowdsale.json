@@ -1,0 +1,29 @@
+{
+  "contract_name": "timed_crowdsale.sol",
+  "contract_path": "contracts\\timed_crowdsale.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 7",
+      "function_name": "isSaleFinished",
+      "evidence_snippet": "return block.timestamp >= 1546300800;",
+      "execution": {
+        "trigger": "The timestamp check in the isSaleFinished function",
+        "state_issue": "The timestamp comparison does not account for time zone differences or daylight saving changes, which can cause incorrect evaluation of the condition.",
+        "exploitable_behavior": "An attacker could manipulate the block's timestamp to prematurely trigger or delay the sale completion."
+      },
+      "causality": {
+        "state": "The contract's logic relies on a specific timestamp value without considering external factors that affect time.",
+        "guard": "No explicit guard against external time manipulations, relying solely on block.timestamp.",
+        "transition": "Incorrect handling of time zones or daylight saving can cause the sale to finish early or extend beyond the intended date.",
+        "capability": "An attacker could exploit this by affecting the block's timestamp through network manipulation or clock tampering.",
+        "outcome": "The sale may complete before January 1, 2019, if the timestamp is adjusted."
+      }
+    }
+  ],
+  "analysis_time_seconds": 181.8,
+  "timestamp": "2026-04-26T01:31:34.527248",
+  "error": null
+}

@@ -1,0 +1,10 @@
+{
+  "contract_name": "integer_overflow_mul.sol",
+  "contract_path": "contracts\\integer_overflow_mul.sol",
+  "status": "Error",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 0,
+  "timestamp": "2026-04-25T22:42:06.621453",
+  "error": "1 validation error for DetectionOutput\n  Invalid JSON: trailing comma at line 12 column 7 [type=json_invalid, input_value='{\\n  \"vulnerabilities\": ...n      }\\n    }\\n  ]\\n}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/json_invalid"
+}

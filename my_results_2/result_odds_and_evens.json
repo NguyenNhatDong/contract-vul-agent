@@ -1,0 +1,155 @@
+{
+  "contract_name": "odds_and_evens.sol",
+  "contract_path": "contracts\\odds_and_evens.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 8,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "25",
+      "function_name": "andTheWinnerIs",
+      "evidence_snippet": "if (tot==2) andTheWinnerIs();",
+      "execution": {
+        "trigger": "calling the function after tot reaches 2",
+        "state_issue": "Players array has exactly two elements, but tot is incremented before calling andTheWinnerIs",
+        "exploitable_behavior": "Incorrect winner calculation or data loss"
+      },
+      "causality": {
+        "state": "Players[0] and Players[1] exist",
+        "guard": "tot == 2",
+        "transition": "calling a function that deletes the players array",
+        "capability": "external contract",
+        "outcome": "data loss or incorrect winner"
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Access Control Vulnerabilities>",
+      "evidence": "28-39",
+      "function_name": "andTheWinnerIs",
+      "evidence_snippet": "bool res ;\nuint n = players[0].number+players[1].number;\nif (n%2==0) {\n  res = players[0].addr.send(1800 finney);\n}\nelse {\n  res = players[1].addr.send(1800 finney);\n}\ndelete players;\ntot=0;",
+      "execution": {
+        "trigger": "external access to debug data",
+        "state_issue": "Players are public but used in private function",
+        "exploitable_behavior": "external attacker can read player data"
+      },
+      "causality": {
+        "state": "Players exist",
+        "guard": "none",
+        "transition": "reading a public array",
+        "capability": "external contract",
+        "outcome": "data exposure"
+      }
+    },
+    {
+      "vulnerability_type": "<SC07:2023 - Logic Errors>",
+      "evidence": "30-36",
+      "function_name": "andTheWinnerIs",
+      "evidence_snippet": "uint n = players[0].number+players[1].number;\nif (n%2==0) {\n  res = players[0].addr.send(1800 finney);\n}\nelse {\n  res = players[1].addr.send(1800 finney);\n}",
+      "execution": {
+        "trigger": "sum of numbers",
+        "state_issue": "even sum sends to first player, odd to second",
+        "exploitable_behavior": "incorrect payment recipient"
+      },
+      "causality": {
+        "state": "players[0].number and players[1].number exist",
+        "guard": "none",
+        "transition": "sum calculation",
+        "capability": "external contract",
+        "outcome": "wrong payment"
+      }
+    },
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "20",
+      "function_name": "play",
+      "evidence_snippet": "if (msg.value != 1 ether) throw;",
+      "execution": {
+        "trigger": "wrong gas payment",
+        "state_issue": "msg.value must be exactly 1 ether",
+        "exploitable_behavior": "allowing multiple transactions"
+      },
+      "causality": {
+        "state": "msg.value is not equal to 1 ether",
+        "guard": "if (msg.value != 1 ether) throw;",
+        "transition": "gas usage uncertainty",
+        "capability": "external contract",
+        "outcome": "payment mishandling"
+      }
+    },
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "10",
+      "function_name": "OddsAndEvens",
+      "evidence_snippet": "Player[2] public players;         //public only for debug purpose",
+      "execution": {
+        "trigger": "read-only access to debug data",
+        "state_issue": "Players are public but used in private function",
+        "exploitable_behavior": "external attacker can read player data"
+      },
+      "causality": {
+        "state": "players exist",
+        "guard": "none",
+        "transition": "read-only access",
+        "capability": "external contract",
+        "outcome": "data exposure"
+      }
+    },
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "28-39",
+      "function_name": "andTheWinnerIs",
+      "evidence_snippet": "bool res ;\nuint n = players[0].number+players[1].number;\nif (n%2==0) {\n  res = players[0].addr.send(1800 finney);\n}\nelse {\n  res = players[1].addr.send(1800 finney);\n}\ndelete players;",
+      "execution": {
+        "trigger": "reentrancy",
+        "state_issue": "players array is deleted",
+        "exploitable_behavior": "data loss"
+      },
+      "causality": {
+        "state": "players exist",
+        "guard": "none",
+        "transition": "calling a function that deletes the players array",
+        "capability": "external contract",
+        "outcome": "data loss"
+      }
+    },
+    {
+      "vulnerability_type": "<SC03:2023 - Logic Errors>",
+      "evidence": "15-24",
+      "function_name": "play",
+      "evidence_snippet": "function play(uint number) payable{\n  if (msg.value != 1 ether) throw;\n  players[tot] = Player(msg.sender, number);\n  tot++;\n\n  if (tot==2) andTheWinnerIs();\n}",
+      "execution": {
+        "trigger": "calling play after tot reaches 2",
+        "state_issue": "players array has exactly two elements but tot is incremented before calling andTheWinnerIs",
+        "exploitable_behavior": "incorrect winner calculation or data loss"
+      },
+      "causality": {
+        "state": "Players[0] and Players[1] exist",
+        "guard": "none",
+        "transition": "calling a function that deletes the players array",
+        "capability": "external contract",
+        "outcome": "data loss or incorrect winner"
+      }
+    },
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "44-45",
+      "function_name": "getProfit",
+      "evidence_snippet": "bool res = msg.sender.send(this.balance);",
+      "execution": {
+        "trigger": "transfer of balance",
+        "state_issue": "msg.sender must send this.balance",
+        "exploitable_behavior": "allowing external transfer"
+      },
+      "causality": {
+        "state": "msg.sender is not owner",
+        "guard": "if(msg.sender!=owner) throw;",
+        "transition": "sending balance",
+        "capability": "external contract",
+        "outcome": "balance exposure"
+      }
+    }
+  ],
+  "analysis_time_seconds": 280.39,
+  "timestamp": "2026-04-25T23:18:46.868899",
+  "error": null
+}

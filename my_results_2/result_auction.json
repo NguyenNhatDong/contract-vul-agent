@@ -1,0 +1,29 @@
+{
+  "contract_name": "auction.sol",
+  "contract_path": "contracts\\auction.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "14-18",
+      "function_name": "bid",
+      "evidence_snippet": "if (currentFrontrunner != 0) {\n  require(currentFrontrunner.send(currentBid));\n}",
+      "execution": {
+        "trigger": "The `bid()` function is called with a value higher than the current bid.",
+        "state_issue": "The contract does not prevent multiple bidders from interfering with each other's bids, leading to potential race conditions and DoS attacks.",
+        "exploitable_behavior": "An attacker can exploit this by sending multiple messages or timing their bid submissions to cause interference."
+      },
+      "causality": {
+        "state": "The currentFrontrunner is not zero (an active frontrunner exists).",
+        "guard": "The `if` statement on line 14 allows execution only if the condition is met.",
+        "transition": "A race condition occurs when multiple bidders interfere with each other's bids, leading to incorrect execution order.",
+        "capability": "An attacker can manipulate the frontrunner by interfering with bid submissions.",
+        "outcome": "The DoS attack results in a denial of service as intended."
+      }
+    }
+  ],
+  "analysis_time_seconds": 90.46,
+  "timestamp": "2026-04-25T20:19:55.015989",
+  "error": null
+}

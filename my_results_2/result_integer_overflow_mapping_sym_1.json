@@ -1,0 +1,10 @@
+{
+  "contract_name": "integer_overflow_mapping_sym_1.sol",
+  "contract_path": "contracts\\integer_overflow_mapping_sym_1.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 61.43,
+  "timestamp": "2026-04-25T22:38:13.372811",
+  "error": null
+}

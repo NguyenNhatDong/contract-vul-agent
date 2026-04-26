@@ -1,0 +1,29 @@
+{
+  "contract_name": "send_loop.sol",
+  "contract_path": "contracts\\send_loop.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "15-18",
+      "function_name": "refundAll",
+      "evidence_snippet": "for(uint x; x < refundAddresses.length) { require(refundAddresses[x].send(refunds[refundAddresses[x]])); }",
+      "execution": {
+        "trigger": "The loop in the refundAll function triggers when it is called.",
+        "state_issue": "The state of the addresses may not have funds to send, causing a Denial of Service attack.",
+        "exploitable_behavior": "An attacker can deploy addresses with zero balance to cause all sends to fail."
+      },
+      "causality": {
+        "state": "The addresses in refundAddresses may have zero balance or insufficient funds.",
+        "guard": "None; the loop does not check if an address has funds before sending.",
+        "transition": "The loop attempts to send from each address without checking for available funds, leading to a Denial of Service attack.",
+        "capability": "An attacker can deploy addresses with zero balance to cause all sends to fail.",
+        "outcome": "A Denial of Service attack where the system halts due to failed sends."
+      }
+    }
+  ],
+  "analysis_time_seconds": 95.12,
+  "timestamp": "2026-04-26T01:20:15.774456",
+  "error": null
+}
