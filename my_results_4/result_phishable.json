@@ -1,0 +1,29 @@
+{
+  "contract_name": "phishable.sol",
+  "contract_path": "contracts\\phishable.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "12-15",
+      "function_name": "withdrawAll",
+      "evidence_snippet": "function withdrawAll(address _recipient) public {\n  require(tx.origin == owner);\n  _recipient.transfer(this.balance);\n}",
+      "execution": {
+        "trigger": "Calling the withdrawAll function with tx.origin == owner",
+        "state_issue": "The contract transfers all available balance to a recipient address without proper validation or control.",
+        "exploitable_behavior": "An attacker can exploit this by calling the function with valid tx.origin and manipulate the _recipient address to gain control over funds."
+      },
+      "causality": {
+        "state": "The contract's state allows any allowed caller (with tx.origin == owner) to transfer all available balance.",
+        "guard": "tx.origin == owner",
+        "transition": "Transfer of entire balance without validation on _recipient address.",
+        "capability": "Attacker can take full control of the contract's funds by calling withdrawAll with valid tx.origin and a manipulated _recipient address.",
+        "outcome": "The attacker gains complete control over the contract's Ether."
+      }
+    }
+  ],
+  "analysis_time_seconds": 13.39,
+  "timestamp": "2026-04-26T18:04:06.454784",
+  "error": null
+}

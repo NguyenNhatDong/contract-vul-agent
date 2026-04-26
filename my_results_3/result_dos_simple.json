@@ -1,0 +1,29 @@
+{
+  "contract_name": "dos_simple.sol",
+  "contract_path": "contracts\\dos_simple.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "8-12",
+      "function_name": "ifillArray",
+      "evidence_snippet": "// <yes> <report> DENIAL_OF_SERVICE\nfor(uint i=0;i<350;i++) {\n    listAddresses.push(msg.sender);\n}",
+      "execution": {
+        "trigger": "The function ifillArray is called multiple times without proper checks, causing the state to be modified in unintended ways.",
+        "state_issue": "The listAddresses variable can be unintentionally modified by multiple executions of the function, leading to a Denial of Service attack.",
+        "exploitable_behavior": "An attacker could exploit this by causing the function to run multiple times, leading to an unexpected increase in the number of addresses stored."
+      },
+      "causality": {
+        "state": "The listAddresses variable's length is checked before modifying it. However, if the check fails (length >=1500), the state is reset.",
+        "guard": "No guard against multiple executions causing repeated modifications to listAddresses.",
+        "transition": "The function modifies the state without ensuring that it won't be modified again in subsequent executions.",
+        "capability": "An attacker can cause the function to run multiple times, leading to an unintended modification of the state.",
+        "outcome": "A Denial of Service attack occurs due to unexpected state changes."
+      }
+    }
+  ],
+  "analysis_time_seconds": 16.03,
+  "timestamp": "2026-04-26T16:05:30.183775",
+  "error": null
+}

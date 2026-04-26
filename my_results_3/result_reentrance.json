@@ -1,0 +1,83 @@
+{
+  "contract_name": "reentrance.sol",
+  "contract_path": "contracts\\reentrance.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 4,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 8",
+      "function_name": "donate",
+      "evidence_snippet": "balances[_to] += msg.value;",
+      "execution": {
+        "trigger": "Writing to balances without type conversion",
+        "state_issue": "msg.value may not be a uint256, leading to overflow/underflow",
+        "exploitable_behavior": "Arbitrary value writes can corrupt state"
+      },
+      "causality": {
+        "state": "balances[_to] += msg.value",
+        "guard": "None",
+        "transition": "Arbitrary value write bypasses type conversion",
+        "capability": "Attacker can inject arbitrary values",
+        "outcome": "State corruption or overflow"
+      }
+    },
+    {
+      "vulnerability_type": "<SC03:2023 - Logic Errors>",
+      "evidence": "Lines 18-21",
+      "function_name": "withdraw",
+      "evidence_snippet": "if(msg.sender.call.value(_amount)()) { _amount; } balances[msg.sender] -= _amount;",
+      "execution": {
+        "trigger": "Incorrect logic in withdrawal",
+        "state_issue": "Missing condition check on amount subtraction",
+        "exploitable_behavior": "Arbitrary deduction without proper validation"
+      },
+      "causality": {
+        "state": "balances[msg.sender] >= _amount",
+        "guard": "if(msg.sender.call.value(_amount)())",
+        "transition": "Incorrect order of checks leads to invalid deduction",
+        "capability": "Attacker can exploit incorrect logic",
+        "outcome": "Invalid deduction or overflow"
+      }
+    },
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Line 18",
+      "function_name": "withdraw",
+      "evidence_snippet": "if(msg.sender.call.value(_amount)()) { _amount; }",
+      "execution": {
+        "trigger": "Call to msg.sender without proper access control",
+        "state_issue": "Missing access checks on call",
+        "exploitable_behavior": "Arbitrary code execution by external parties"
+      },
+      "causality": {
+        "state": "balances[msg.sender] >= _amount",
+        "guard": "if(msg.sender.call.value(_amount)())",
+        "transition": "Call without proper access control bypasses checks",
+        "capability": "External code can execute arbitrary actions",
+        "outcome": "Arbitrary execution of external code"
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Unchecked External Calls>",
+      "evidence": "Line 18",
+      "function_name": "withdraw",
+      "evidence_snippet": "msg.sender.call.value(_amount)()",
+      "execution": {
+        "trigger": "Unchecked external call",
+        "state_issue": "Missing checks on external calls",
+        "exploitable_behavior": "Arbitrary code execution by external parties"
+      },
+      "causality": {
+        "state": "external code can execute arbitrary actions",
+        "guard": "None",
+        "transition": "Unchecked external call allows arbitrary execution",
+        "capability": "External code can execute arbitrary actions",
+        "outcome": "Arbitrary execution of external code"
+      }
+    }
+  ],
+  "analysis_time_seconds": 22.69,
+  "timestamp": "2026-04-26T16:26:12.220101",
+  "error": null
+}

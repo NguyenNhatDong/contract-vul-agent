@@ -1,0 +1,29 @@
+{
+  "contract_name": "token.sol",
+  "contract_path": "contracts\\token.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "14-16",
+      "function_name": "transfer",
+      "evidence_snippet": "require(balances[msg.sender] - _value >= 0);\nbalances[msg.sender] -= _value;\nbalances[_to] += _value;",
+      "execution": {
+        "trigger": "The transfer function allows sending more tokens than the sender has.",
+        "state_issue": "The contract does not check for integer overflow when subtracting token amounts.",
+        "exploitable_behavior": "An attacker can exploit this by transferring a larger amount than available, causing unintended negative balances."
+      },
+      "causality": {
+        "state": "Sender's balance is less than the value being transferred",
+        "guard": "No explicit guard against integer overflow in subtraction operation",
+        "transition": "Overflow leads to incorrect calculation of sender's balance without error handling",
+        "capability": "Attacker can exploit this by sending more tokens than available, leading to negative balances.",
+        "outcome": "Negative token balance which may allow further exploitation"
+      }
+    }
+  ],
+  "analysis_time_seconds": 14.69,
+  "timestamp": "2026-04-26T16:31:54.258101",
+  "error": null
+}

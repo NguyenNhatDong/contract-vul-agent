@@ -1,0 +1,29 @@
+{
+  "contract_name": "auction.sol",
+  "contract_path": "contracts\\auction.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC05:2023 - Front-running Attacks>",
+      "evidence": "14-18",
+      "function_name": "bid",
+      "evidence_snippet": "if (currentFrontrunner != 0) {\n   require(currentFrontrunner.send(currentBid));\n}",
+      "execution": {
+        "trigger": "The successful placement of a bid by the current frontrunner",
+        "state_issue": "The current frontrunner can manipulate other participants to fail their bids",
+        "exploitable_behavior": "Attacker can cause many failed transactions"
+      },
+      "causality": {
+        "state": "currentFrontrunner != 0 and msg.sender != currentFrontrunner",
+        "guard": "if (currentFrontrunner != 0)",
+        "transition": "The requirement check on send() causes a revert unless the sender is the current frontrunner",
+        "capability": "Attacker can cause multiple failed transactions by flooding messages to the current frontrunner",
+        "outcome": "DoS attack"
+      }
+    }
+  ],
+  "analysis_time_seconds": 12.95,
+  "timestamp": "2026-04-26T17:43:36.252865",
+  "error": null
+}

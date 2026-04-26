@@ -1,0 +1,10 @@
+{
+  "contract_name": "mycontract.sol",
+  "contract_path": "contracts\\mycontract.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 27.73,
+  "timestamp": "2026-04-26T17:59:54.189109",
+  "error": null
+}

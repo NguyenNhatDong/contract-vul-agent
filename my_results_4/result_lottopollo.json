@@ -1,0 +1,47 @@
+{
+  "contract_name": "lottopollo.sol",
+  "contract_path": "contracts\\lottopollo.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Line 8",
+      "function_name": "payOut",
+      "evidence_snippet": "msg.sender.send( msg.value );",
+      "execution": {
+        "trigger": "An unauthorized external call is made to send Ether.",
+        "state_issue": "The contract allows sending unauthenticated Ether, potentially leading to DoS or other attacks.",
+        "exploitable_behavior": "The send function can be exploited by attackers who can trigger it without proper authorization."
+      },
+      "causality": {
+        "state": "The contract's payOut function uses an external method (send) without proper authorization checks.",
+        "guard": "None",
+        "transition": "Sending unauthenticated Ether bypasses the intended security measures.",
+        "capability": "An attacker can exploit this by triggering unauthorized sends.",
+        "outcome": "Ether is sent without verification, leading to potential DoS or other vulnerabilities."
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Line 8",
+      "function_name": "payOut",
+      "evidence_snippet": "msg.sender.send( msg.value );",
+      "execution": {
+        "trigger": "An unauthorized external call is made to send Ether.",
+        "state_issue": "The contract allows sending unauthenticated Ether, potentially leading to DoS or other attacks.",
+        "exploitable_behavior": "The send function can be exploited by attackers who can trigger it without proper authorization."
+      },
+      "causality": {
+        "state": "The contract's payOut function uses an external method (send) without proper authorization checks.",
+        "guard": "None",
+        "transition": "Sending unauthenticated Ether bypasses the intended security measures.",
+        "capability": "An attacker can exploit this by triggering unauthorized sends.",
+        "outcome": "Ether is sent without verification, leading to potential DoS or other vulnerabilities."
+      }
+    }
+  ],
+  "analysis_time_seconds": 20.03,
+  "timestamp": "2026-04-26T17:57:22.497165",
+  "error": null
+}

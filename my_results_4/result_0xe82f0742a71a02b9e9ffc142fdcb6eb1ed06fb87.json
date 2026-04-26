@@ -1,0 +1,47 @@
+{
+  "contract_name": "0xe82f0742a71a02b9e9ffc142fdcb6eb1ed06fb87.sol",
+  "contract_path": "contracts\\0xe82f0742a71a02b9e9ffc142fdcb6eb1ed06fb87.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 14",
+      "function_name": "GetFreebie",
+      "evidence_snippet": "Owner.transfer(this.balance);\nmsg.sender.transfer(this.balance);",
+      "execution": {
+        "trigger": "Execution of the two transfer statements in GetFreebie",
+        "state_issue": "The contract transfers its own balance to itself, leading to loss of funds.",
+        "exploitable_behavior": "An attacker can exploit this by triggering the function with sufficient ether."
+      },
+      "causality": {
+        "state": "msg.value > 1 ether and correct function call",
+        "guard": "if(msg.value>1 ether)",
+        "transition": "Execution of transfers without proper checks",
+        "capability": "Attacker can cause self-transfer",
+        "outcome": "Contract loses its own balance"
+      }
+    },
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "Line 33",
+      "function_name": "Command",
+      "evidence_snippet": "adr.call.value(msg.value)(data);",
+      "execution": {
+        "trigger": "Calling the command method with any data",
+        "state_issue": "No checks on who is calling the command",
+        "exploitable_behavior": "External parties can invoke this method without authorization."
+      },
+      "causality": {
+        "state": "Any call to the command method",
+        "guard": "None",
+        "transition": "Direct execution of external calls",
+        "capability": "Attacker can perform arbitrary actions",
+        "outcome": "Unrestricted operations on other contracts"
+      }
+    }
+  ],
+  "analysis_time_seconds": 23.54,
+  "timestamp": "2026-04-26T17:41:51.465489",
+  "error": null
+}

@@ -1,0 +1,10 @@
+{
+  "contract_name": "roulette.sol",
+  "contract_path": "contracts\\roulette.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 51.12,
+  "timestamp": "2026-04-26T16:28:28.210422",
+  "error": null
+}

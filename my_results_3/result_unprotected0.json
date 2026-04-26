@@ -1,0 +1,29 @@
+{
+  "contract_name": "unprotected0.sol",
+  "contract_path": "contracts\\unprotected0.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "20-23",
+      "function_name": "changeOwner",
+      "evidence_snippet": "public\n owner = _newOwner;",
+      "execution": {
+        "trigger": "Calling the changeOwner function without any restrictions.",
+        "state_issue": "The owner property is not protected by access control.",
+        "exploitable_behavior": "An attacker can set the owner to any address they want."
+      },
+      "causality": {
+        "state": "The contract's owner is vulnerable to external changes.",
+        "guard": "None, as there is no access control modifier applied to this function.",
+        "transition": "The function allows setting the owner without any restrictions.",
+        "capability": "An attacker can set the owner address.",
+        "outcome": "The owner of the contract is changed maliciously."
+      }
+    }
+  ],
+  "analysis_time_seconds": 24.73,
+  "timestamp": "2026-04-26T16:33:32.846769",
+  "error": null
+}

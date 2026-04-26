@@ -1,0 +1,29 @@
+{
+  "contract_name": "simple_dao.sol",
+  "contract_path": "contracts\\simple_dao.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 13",
+      "function_name": "withdraw",
+      "evidence_snippet": "bool res = msg.sender.call.value(amount)();",
+      "execution": {
+        "trigger": "An attacker can call the withdraw function with a large amount.",
+        "state_issue": "The contract's withdraw function allows external calls without proper state checks, leading to potential over-withdrawals or other state manipulations.",
+        "exploitable_behavior": "Attackers can exploit this by making external calls that bypass intended logic."
+      },
+      "causality": {
+        "state": "The contract's withdraw function uses an external call which allows any caller to execute it without proper checks.",
+        "guard": "None, as the method is called externally and there are no guards preventing this action.",
+        "transition": "An attacker can trigger the external call with a large amount, leading to potential over-withdrawal or other state issues.",
+        "capability": "The attacker can manipulate the contract's funds by exploiting the external call mechanism.",
+        "outcome": "The attacker can cause unintended withdrawals of funds from the contract."
+      }
+    }
+  ],
+  "analysis_time_seconds": 16.57,
+  "timestamp": "2026-04-26T16:29:37.227935",
+  "error": null
+}

@@ -1,0 +1,29 @@
+{
+  "contract_name": "name_registrar.sol",
+  "contract_path": "contracts\\name_registrar.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC07:2023 - Logic Errors>",
+      "evidence": "18-20",
+      "function_name": "register",
+      "evidence_snippet": "newRecord.name = _name;\n newRecord.mappedAddress = _mappedAddress;",
+      "execution": {
+        "trigger": "Calling register with invalid or empty name parameter",
+        "state_issue": "The function does not validate input parameters, allowing the storage of invalid names in the state.",
+        "exploitable_behavior": "An attacker can exploit this by providing an invalid or empty _name to overwrite legitimate records."
+      },
+      "causality": {
+        "state": "The contract's state contains unverified or corrupted name records due to improper input validation.",
+        "guard": "No checks are in place for valid _name values, allowing any bytes32 value.",
+        "transition": "Invalid names are stored without validation, leading to potential data corruption.",
+        "capability": "An attacker can overwrite legitimate records with invalid names.",
+        "outcome": "Corrupted or fake name records may be created."
+      }
+    }
+  ],
+  "analysis_time_seconds": 17.95,
+  "timestamp": "2026-04-26T18:00:12.140632",
+  "error": null
+}

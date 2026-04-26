@@ -1,0 +1,29 @@
+{
+  "contract_name": "integer_overflow_mapping_sym_1.sol",
+  "contract_path": "contracts\\integer_overflow_mapping_sym_1.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "8",
+      "function_name": "init",
+      "evidence_snippet": "map[k] -= v;",
+      "execution": {
+        "trigger": "Calling init with a value larger than the current map[k]",
+        "state_issue": "The mapping's value underflows when subtracted, leading to incorrect values.",
+        "exploitable_behavior": "An attacker can exploit this by providing large 'v' values that cause underflow."
+      },
+      "causality": {
+        "state": "map contains a key k with a value less than v",
+        "guard": "init function is called with parameters k and v",
+        "transition": "Incorrect subtraction without checking for underflow leads to wrapping.",
+        "capability": "Attacker can replace or modify mapping values by exploiting integer overflow/underflow.",
+        "outcome": "Mapping's value becomes incorrect, potentially allowing attacks."
+      }
+    }
+  ],
+  "analysis_time_seconds": 18.33,
+  "timestamp": "2026-04-26T16:11:40.576987",
+  "error": null
+}

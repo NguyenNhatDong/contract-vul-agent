@@ -1,0 +1,29 @@
+{
+  "contract_name": "proxy.sol",
+  "contract_path": "contracts\\proxy.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC02:2023 - Integer Overflow and Underflow>",
+      "evidence": "Line 13",
+      "function_name": "forward",
+      "evidence_snippet": "require(callee.delegatecall(_data));",
+      "execution": {
+        "trigger": "When _data is zero or negative, leading to an invalid argument in delegatecall.",
+        "state_issue": "The contract does not validate the _data parameter, allowing underflow attacks.",
+        "exploitable_behavior": "Attacker can exploit by passing invalid data to cause unintended delegate calls."
+      },
+      "causality": {
+        "state": "Invalid _data (zero or negative) in the forward function's parameters.",
+        "guard": "The require statement does not check for valid _data values.",
+        "transition": "Incorrect handling of invalid _data leads to potential security vulnerabilities.",
+        "capability": "Attacker can bypass data validation by providing invalid _data.",
+        "outcome": "Invalid _data may cause delegatecall to fail or behave incorrectly, allowing attackers to exploit."
+      }
+    }
+  ],
+  "analysis_time_seconds": 12.8,
+  "timestamp": "2026-04-26T18:04:19.251332",
+  "error": null
+}

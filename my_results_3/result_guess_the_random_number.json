@@ -1,0 +1,29 @@
+{
+  "contract_name": "guess_the_random_number.sol",
+  "contract_path": "contracts\\guess_the_random_number.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC08:2023 - Insecure Randomness>",
+      "evidence": "7-9",
+      "function_name": "guess",
+      "evidence_snippet": "require(msg.value == 1 ether);\nanswer = uint8(keccak256(block.blockhash(block.number - 1), now));",
+      "execution": {
+        "trigger": "The guess function requires exactly 1 ether to execute, allowing an attacker with sufficient gas to exploit the contract.",
+        "state_issue": "The answer variable is set once when the contract is deployed and cannot be changed after deployment. This makes it predictable if the block number or time can be controlled by an attacker.",
+        "exploitable_behavior": "An attacker who can predict or manipulate the block number or time before calling guess with the correct number could exploit this contract."
+      },
+      "causality": {
+        "state": "The answer is set based on a predictable calculation using block number and time, which are not truly random.",
+        "guard": "None",
+        "transition": "The guess function's execution flow does not check for the correct answer after requiring 1 ether.",
+        "capability": "An attacker can exploit this contract by predicting or controlling the block number/time to match their guess.",
+        "outcome": "The attacker sends 1 ether and receives 2 ether if their guess matches the predictable answer."
+      }
+    }
+  ],
+  "analysis_time_seconds": 17.61,
+  "timestamp": "2026-04-26T16:07:49.033737",
+  "error": null
+}

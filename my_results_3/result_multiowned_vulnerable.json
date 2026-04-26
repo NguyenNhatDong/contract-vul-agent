@@ -1,0 +1,29 @@
+{
+  "contract_name": "multiowned_vulnerable.sol",
+  "contract_path": "contracts\\multiowned_vulnerable.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "Line 33",
+      "function_name": "newOwner",
+      "evidence_snippet": "require(_owner != 0);",
+      "execution": {
+        "trigger": "Calling newOwner with a non-zero address.",
+        "state_issue": "The function allows any non-zero address to set itself as the owner.",
+        "exploitable_behavior": "An attacker can bypass normal access controls by passing their own address."
+      },
+      "causality": {
+        "state": "The _owner parameter is not validated against ownership rights.",
+        "guard": "The onlyOwner modifier does not check if _owner has permission to set themselves as owner.",
+        "transition": "The function bypasses access control checks by directly setting the owner.",
+        "capability": "An attacker can assign any non-zero address as their own owner.",
+        "outcome": "Unauthorized assignment of ownership rights."
+      }
+    }
+  ],
+  "analysis_time_seconds": 18.25,
+  "timestamp": "2026-04-26T16:19:04.705552",
+  "error": null
+}

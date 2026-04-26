@@ -1,0 +1,29 @@
+{
+  "contract_name": "0x2972d548497286d18e92b5fa1f8f9139e5653fd2.sol",
+  "contract_path": "contracts\\0x2972d548497286d18e92b5fa1f8f9139e5653fd2.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC07:2023 - Logic Errors>",
+      "evidence": "8",
+      "function_name": "transfer",
+      "evidence_snippet": "caddress.call(id,from,_tos[i],v[i]);",
+      "execution": {
+        "trigger": "call to caddress.call",
+        "state_issue": "Unchecked External Calls",
+        "exploitable_behavior": "Arbitrary code execution through external calls"
+      },
+      "causality": {
+        "state": "_tos has elements",
+        "guard": "None",
+        "transition": "Incorrect execution order or logic flaw in calling external method without proper checks",
+        "capability": "Attacker can exploit external call vulnerabilities",
+        "outcome": "Unauthorized code execution"
+      }
+    }
+  ],
+  "analysis_time_seconds": 14.69,
+  "timestamp": "2026-04-26T17:39:37.803245",
+  "error": null
+}
