@@ -1,0 +1,10 @@
+{
+  "contract_name": "governmental_survey.sol",
+  "contract_path": "contracts\\governmental_survey.sol",
+  "status": "Error",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 0,
+  "timestamp": "2026-04-26T18:25:49.140139",
+  "error": "3 validation errors for DetectionOutput\nvulnerabilities.0.causality\n  Field required [type=missing, input_value={'vulnerability_type': '<...to cause an overflow.'}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nvulnerabilities.1.execution.exploitable_behavior\n  Field required [type=missing, input_value={'trigger': \"Subtracting ...which is not intended.\"}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nvulnerabilities.1.causality\n  Field required [type=missing, input_value={'vulnerability_type': '<...hich is not intended.\"}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing"
+}

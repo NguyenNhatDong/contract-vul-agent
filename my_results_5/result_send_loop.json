@@ -1,0 +1,29 @@
+{
+  "contract_name": "send_loop.sol",
+  "contract_path": "contracts\\send_loop.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC06:2023 - Denial of Service (DoS) Attacks>",
+      "evidence": "17",
+      "function_name": "refundAll",
+      "evidence_snippet": "require(refundAddresses[x].send(refunds[refundAddresses[x]]));",
+      "execution": {
+        "trigger": "The require statement inside the loop without any guards against insufficient funds.",
+        "state_issue": "No check for whether an address has funds before attempting to send them.",
+        "exploitable_behavior": "Even if one address can't send, all other addresses' funds are processed incorrectly."
+      },
+      "causality": {
+        "state": "Presence of addresses with zero funds",
+        "guard": "Missing guard (check for sufficient funds)",
+        "transition": "Execution flow allows the require to fail immediately",
+        "capability": "Attackers can exploit this to cause a DoS",
+        "outcome": "Failure in sending funds or exception being thrown"
+      }
+    }
+  ],
+  "analysis_time_seconds": 17.84,
+  "timestamp": "2026-04-26T18:47:19.867683",
+  "error": null
+}

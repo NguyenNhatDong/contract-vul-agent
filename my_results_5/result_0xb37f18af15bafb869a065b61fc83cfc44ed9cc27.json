@@ -1,0 +1,29 @@
+{
+  "contract_name": "0xb37f18af15bafb869a065b61fc83cfc44ed9cc27.sol",
+  "contract_path": "contracts\\0xb37f18af15bafb869a065b61fc83cfc44ed9cc27.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC10:2023 - Unchecked External Calls>",
+      "evidence": "27",
+      "function_name": "sendMoney",
+      "evidence_snippet": "_target.call.value(_value)();",
+      "execution": {
+        "trigger": "The external call in sendMoney() executes without proper checks.",
+        "state_issue": "Unsafe external calls can bypass security measures and manipulate the contract's state or execution flow.",
+        "exploitable_behavior": "An attacker could exploit this by calling _target.call.value() with malicious parameters."
+      },
+      "causality": {
+        "state": "The sendMoney function allows an external address to call its value method without verification.",
+        "guard": "None; the code directly calls the target's function.",
+        "transition": "Direct execution of the target's function bypasses security checks.",
+        "capability": "An attacker can exploit this by calling _target.call.value() with malicious arguments.",
+        "outcome": "The attacker can manipulate the contract's state or allow unintended behavior."
+      }
+    }
+  ],
+  "analysis_time_seconds": 11.4,
+  "timestamp": "2026-04-26T18:19:13.285573",
+  "error": null
+}

@@ -1,0 +1,29 @@
+{
+  "contract_name": "simple_suicide.sol",
+  "contract_path": "contracts\\simple_suicide.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC04:2023 - Access Control Vulnerabilities>",
+      "evidence": "6",
+      "function_name": "sudicideAnyone",
+      "evidence_snippet": "selfdestruct(msg.sender);\n",
+      "execution": {
+        "trigger": "The function is called with msg.sender as an argument.",
+        "state_issue": "There is no restriction on the sender of the message.",
+        "exploitable_behavior": "Any sender can trigger this function, bypassing access control."
+      },
+      "causality": {
+        "state": "The contract's funds are accessible to any sender without proper authorization.",
+        "guard": "No conditions prevent unauthorized calls to the function.",
+        "transition": "The function does not check the sender before execution.",
+        "capability": "An attacker can call the function from any address.",
+        "outcome": "The contract performs a selfdestruct, transferring funds without proper authorization."
+      }
+    }
+  ],
+  "analysis_time_seconds": 19.13,
+  "timestamp": "2026-04-26T18:48:30.092480",
+  "error": null
+}

@@ -1,0 +1,29 @@
+{
+  "contract_name": "wallet_02_refund_nosub.sol",
+  "contract_path": "contracts\\wallet_02_refund_nosub.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<SC01:2023 - Reentrancy Attacks>",
+      "evidence": "Line 28",
+      "function_name": "refund",
+      "evidence_snippet": "msg.sender.transfer(balances[msg.sender]);",
+      "execution": {
+        "trigger": "Calling refund() without checking balance",
+        "state_issue": "Contract's balance isn't zeroed after refund",
+        "exploitable_behavior": "Attacker can drain contract by repeatedly calling refund"
+      },
+      "causality": {
+        "state": "balances[msg.sender] > 0",
+        "guard": "None",
+        "transition": "balance decreases after transfer",
+        "capability": "Transfer all balance",
+        "outcome": "Funds drained from contract"
+      }
+    }
+  ],
+  "analysis_time_seconds": 11.2,
+  "timestamp": "2026-04-26T18:52:18.095196",
+  "error": null
+}
