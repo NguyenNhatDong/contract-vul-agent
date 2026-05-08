@@ -1,0 +1,65 @@
+{
+  "contract_name": "0x0312855BB6E548578a36fA8DE63B8F0d3D7D7dc2.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x0312855BB6E548578a36fA8DE63B8F0d3D7D7dc2.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 3,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 75",
+      "function_name": "finishRound",
+      "evidence_snippet": "if(p.bet < 0x80 && betByte < 0x80 || p.bet >= 0x80 && betByte >= 0x80)",
+      "execution": {
+        "trigger": "The calculation of winners in the finishRound function",
+        "state_issue": "Incorrect arithmetic condition for determining winners",
+        "exploitable_behavior": "Players may win unintentionally due to incorrect comparison logic"
+      },
+      "causality": {
+        "state": "Players' bets and block hashes are compared using an incorrect logical operation",
+        "guard": "No explicit guard against invalid comparisons",
+        "transition": "The condition should use XOR instead of OR for accurate winner determination",
+        "capability": "An attacker could exploit this by manipulating the comparison logic to win more than intended",
+        "outcome": "Players may receive payouts they shouldn't, affecting the winner pool"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 75",
+      "function_name": "finishRound",
+      "evidence_snippet": "if(p.bet < 0x80 && betByte < 0x80 || p.bet >= 0x80 && betByte >= 0x80)",
+      "execution": {
+        "trigger": "The calculation of winners in the finishRound function",
+        "state_issue": "Incorrect arithmetic condition for determining winners",
+        "exploitable_behavior": "Players may win unintentionally due to incorrect comparison logic"
+      },
+      "causality": {
+        "state": "Players' bets and block hashes are compared using an incorrect logical operation",
+        "guard": "No explicit guard against invalid comparisons",
+        "transition": "The condition should use XOR instead of OR for accurate winner determination",
+        "capability": "N/A",
+        "outcome": "Players may receive payouts they shouldn't, affecting the winner pool"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 75",
+      "function_name": "finishRound",
+      "evidence_snippet": "if(p.bet < 0x80 && betByte < 0x80 || p.bet >= 0x80 && betByte >= 0x80)",
+      "execution": {
+        "trigger": "The calculation of winners in the finishRound function",
+        "state_issue": "Incorrect arithmetic condition for determining winners",
+        "exploitable_behavior": "Players may win unintentionally due to incorrect comparison logic"
+      },
+      "causality": {
+        "state": "Players' bets and block hashes are compared using an incorrect logical operation",
+        "guard": "No explicit guard against invalid comparisons",
+        "transition": "The condition should use XOR instead of OR for accurate winner determination",
+        "capability": "N/A",
+        "outcome": "Players may receive payouts they shouldn't, affecting the winner pool"
+      }
+    }
+  ],
+  "analysis_time_seconds": 29.74,
+  "timestamp": "2026-05-07T17:23:08.878285",
+  "error": null
+}

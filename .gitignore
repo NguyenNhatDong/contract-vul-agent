@@ -1,13 +1,149 @@
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.pyc
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
 
-# OS files
-.DS_Store
-Thumbs.db
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv
+env.bak/
+venv.bak/
 
-# IDE
+# IDE & Editors
 .vscode/
 .idea/
+.project
+.pydevproject
+.settings/
+*.swp
+*.swo
+*~
+.DS_Store
+.sublime-project
+.sublime-workspace
+*.iml
+*.sublime-settings
+.classpath
+.c9/
+*.launch
+.tern-port
+
+# Testing & Coverage
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+
+# Environment & Configuration
+.env
+.env.local
+.env*.local
+.secrets
+secrets.json
+config/private/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Blockchain & Solidity
+node_modules/
+artifacts/
+cache/
+.hardhat/
+.openzeppelin/
+contracts/build/
+contracts/artifacts/
+build/contracts/
+flattened/
+*.abi
+*.bin
+*.bytecode
+
+# Pentest & Security Tools
+*.bak
+*.backup
+*.orig
+*.temp
+*.tmp
+network_scan_results/
+exploit_logs/
+vulnerability_reports/
+raw_data/
+sensitive_data/
+credentials/
+tokens/
+api_keys/
+
+# Output & Results
+outputs/
+results/
+logs/
+*.log
+analysis_results/
+findings/
+reports/
+*.csv
+*.xlsx
+
+# Package Managers
+package-lock.json
+yarn.lock
+poetry.lock
+Pipfile.lock
+
+# Jupyter & Notebooks
+.ipynb_checkpoints/
+*.ipynb
+.jupyter/
+
+# System Files
+Thumbs.db
+.DS_Store
+*.lnk
+.AppleDouble
+.LSOverride
+
+# Git
+.git/
+.gitignore
+
+# Misc
+*.tar.gz
+*.zip
+.idea
+.history
+debug/
+temp/
+tmp/
+.tmp/
+dump.rdb
+db.sqlite3

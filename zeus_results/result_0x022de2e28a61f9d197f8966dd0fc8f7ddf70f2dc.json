@@ -1,0 +1,10 @@
+{
+  "contract_name": "0x022de2e28a61f9d197f8966dd0fc8f7ddf70f2dc.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x022de2e28a61f9d197f8966dd0fc8f7ddf70f2dc.sol",
+  "status": "Normal",
+  "vulnerabilities_count": 0,
+  "vulnerabilities": [],
+  "analysis_time_seconds": 104.34,
+  "timestamp": "2026-05-07T17:21:06.387820",
+  "error": null
+}

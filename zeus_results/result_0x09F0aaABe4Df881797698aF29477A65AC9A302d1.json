@@ -1,0 +1,29 @@
+{
+  "contract_name": "0x09F0aaABe4Df881797698aF29477A65AC9A302d1.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x09F0aaABe4Df881797698aF29477A65AC9A302d1.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 92-105",
+      "function_name": "checkIfExploded",
+      "evidence_snippet": "if (red.lastUpdate == blue.lastUpdate && red.lastUpdate + DELAY < block.timestamp) { ... }",
+      "execution": {
+        "trigger": "Red and Blue teams update their last timestamp within the same hour.",
+        "state_issue": "Unsafe redistribution of ETH without proper authorization.",
+        "exploitable_behavior": "Exploitation allows attackers to manipulate team balances."
+      },
+      "causality": {
+        "state": "Both Red and Blue teams have updated their last timestamp within the same hour.",
+        "guard": "No guard against simultaneous updates; only checks for one being older.",
+        "transition": "Redistribution of ETH without proper authorization.",
+        "capability": "Attacker can manipulate team balances.",
+        "outcome": "Unintended redistribution of funds."
+      }
+    }
+  ],
+  "analysis_time_seconds": 22.92,
+  "timestamp": "2026-05-07T17:28:30.794220",
+  "error": null
+}

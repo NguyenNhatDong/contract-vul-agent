@@ -1,0 +1,227 @@
+{
+  "contract_name": "0x0f26c26318872e8fa85dee5d30cba45ed53b3d3e.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x0f26c26318872e8fa85dee5d30cba45ed53b3d3e.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 12,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 29",
+      "function_name": "enter",
+      "evidence_snippet": "if (msg.value < 80/100 ether) {",
+      "execution": {
+        "trigger": "The condition checking msg.value < 80/100 ether",
+        "state_issue": "The arithmetic operation truncates decimals, leading to incorrect comparison.",
+        "exploitable_behavior": "The contract incorrectly calculates the threshold for sending ether."
+      },
+      "causality": {
+        "state": "msg.value is being compared using integer division which results in 0 when msg.value < 100",
+        "guard": "No guard condition provided as it's a calculation issue without any conditional check.",
+        "transition": "The transition from incorrect arithmetic to potential exploit",
+        "capability": "An attacker can exploit this by sending less than 80/100 ether, leading to unintended behavior.",
+        "outcome": "Ether is not sent when it should be or sent incorrectly."
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 35",
+      "function_name": "enter",
+      "evidence_snippet": "if (msg.value > 40 ether) {",
+      "execution": {
+        "trigger": "The condition checking msg.value > 40 ether",
+        "state_issue": "The comparison uses integer values without considering the actual amount sent.",
+        "exploitable_behavior": "The contract hardcodes 10 ether regardless of msg.value."
+      },
+      "causality": {
+        "state": "msg.value is being compared using integer values which may not reflect the actual amount sent",
+        "guard": "No guard condition provided as it's a comparison issue without any conditional check.",
+        "transition": "The transition from incorrect arithmetic to potential exploit",
+        "capability": "An attacker can exploit this by sending more than 40 ether, leading to unintended behavior.",
+        "outcome": "Ether is sent when it shouldn't be or not enough."
+      }
+    },
+    {
+      "vulnerability_type": "Unchecked External Calls",
+      "evidence": "Line 36",
+      "function_name": "enter",
+      "evidence_snippet": "msg.sender.send(msg.value - 40 ether);",
+      "execution": {
+        "trigger": "The external call to send msg.value - 40 ether",
+        "state_issue": "No check for sufficient balance before sending.",
+        "exploitable_behavior": "The contract allows sending ether without verifying the sender's balance."
+      },
+      "causality": {
+        "state": "Balance is not checked before sending ether",
+        "guard": "None provided as there's no condition around the external call.",
+        "transition": "The transition from allowing an external call to exploit",
+        "capability": "An attacker can exploit this by sending enough ether to trigger the call without sufficient balance.",
+        "outcome": "Ether is sent to an unknown address."
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 45-46",
+      "function_name": "enter",
+      "evidence_snippet": "persons.length += 1; persons[idx].etherAddress = msg.sender;",
+      "execution": {
+        "trigger": "Incrementing persons.length and setting the ether address",
+        "state_issue": "No check for existing index before assignment.",
+        "exploitable_behavior": "The contract allows adding a person with an unknown address."
+      },
+      "causality": {
+        "state": "persons.length is incremented without checking if idx is within bounds",
+        "guard": "None provided as there's no condition around the increment or assignment.",
+        "transition": "The transition from allowing index assignment to exploit",
+        "capability": "An attacker can exploit this by causing an out-of-bounds index access.",
+        "outcome": "Invalid person data is added."
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 51",
+      "function_name": "enter",
+      "evidence_snippet": "collectedFees += 0;",
+      "execution": {
+        "trigger": "Adding zero to collectedFees",
+        "state_issue": "No effect on the state variable.",
+        "exploitable_behavior": "The contract allows adding zero to a variable without impact."
+      },
+      "causality": {
+        "state": "collectedFees is being incremented by zero",
+        "guard": "None provided as there's no condition around the increment.",
+        "transition": "The transition from allowing an increment of zero to exploit",
+        "capability": "N/A",
+        "outcome": "N/A"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 61-67",
+      "function_name": "enter",
+      "evidence_snippet": "while (balance > persons[payoutIdx].amount / 100 * 180) {",
+      "execution": {
+        "trigger": "The while loop condition checking balance",
+        "state_issue": "No check for sufficient balance before transferring.",
+        "exploitable_behavior": "The contract allows transferring without verifying the balance."
+      },
+      "causality": {
+        "state": "Balance is not checked before transferring ether",
+        "guard": "None provided as there's no condition around the loop execution.",
+        "transition": "The transition from allowing a transfer to exploit",
+        "capability": "N/A",
+        "outcome": "N/A"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 62",
+      "function_name": "enter",
+      "evidence_snippet": "persons[payoutIdx].amount / 100 * 180",
+      "execution": {
+        "trigger": "Calculating the transaction amount",
+        "state_issue": "No check for integer division truncation.",
+        "exploitable_behavior": "The contract uses integer arithmetic which may truncate values."
+      },
+      "causality": {
+        "state": "persons[payoutIdx].amount is being truncated due to integer division",
+        "guard": "None provided as there's no condition around the calculation.",
+        "transition": "The transition from allowing a truncation to exploit",
+        "capability": "N/A",
+        "outcome": "N/A"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 63",
+      "function_name": "enter",
+      "evidence_snippet": "persons[payoutIdx].etherAddress.send(transactionAmount);",
+      "execution": {
+        "trigger": "Sending ether to a contract address",
+        "state_issue": "No check for sufficient balance before sending.",
+        "exploitable_behavior": "The contract allows sending ether without verifying the sender's balance."
+      },
+      "causality": {
+        "state": "Balance is not checked before sending ether",
+        "guard": "None provided as there's no condition around the external call.",
+        "transition": "The transition from allowing an external call to exploit",
+        "capability": "N/A",
+        "outcome": "N/A"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 64",
+      "function_name": "enter",
+      "evidence_snippet": "balance -= transactionAmount;",
+      "execution": {
+        "trigger": "Subtracting the transaction amount from balance",
+        "state_issue": "No check for sufficient balance before subtraction.",
+        "exploitable_behavior": "The contract allows reducing balance without verifying the transfer."
+      },
+      "causality": {
+        "state": "Balance is being reduced without checking if enough ether exists",
+        "guard": "None provided as there's no condition around the subtraction.",
+        "transition": "The transition from allowing a reduction to exploit",
+        "capability": "N/A",
+        "outcome": "N/A"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 65",
+      "function_name": "enter",
+      "evidence_snippet": "balance = 0;",
+      "execution": {
+        "trigger": "Setting balance to zero",
+        "state_issue": "No check for previous balance before setting to zero.",
+        "exploitable_behavior": "The contract allows resetting the balance without context."
+      },
+      "causality": {
+        "state": "Balance is being set to zero without checking if it was already zero",
+        "guard": "None provided as there's no condition around the assignment.",
+        "transition": "The transition from allowing a reset of balance to exploit",
+        "capability": "N/A",
+        "outcome": "N/A"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 67-68",
+      "function_name": "enter",
+      "evidence_snippet": "while (balance > persons[payoutIdx].amount / 100 * 180) { ... }",
+      "execution": {
+        "trigger": "The while loop condition checking balance",
+        "state_issue": "No check for sufficient balance before transferring.",
+        "exploitable_behavior": "The contract allows transferring without verifying the balance."
+      },
+      "causality": {
+        "state": "Balance is not checked before transferring ether",
+        "guard": "None provided as there's no condition around the loop execution.",
+        "transition": "The transition from allowing a transfer to exploit",
+        "capability": "N/A",
+        "outcome": "N/A"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 71-73",
+      "function_name": "setOwner",
+      "evidence_snippet": "owner = _owner;",
+      "execution": {
+        "trigger": "Assigning a new owner",
+        "state_issue": "No check for existing owner before assignment.",
+        "exploitable_behavior": "The contract allows changing the owner without restrictions."
+      },
+      "causality": {
+        "state": "Owner is being assigned without checking if it's already set",
+        "guard": "None provided as there's no condition around the assignment.",
+        "transition": "The transition from allowing an assignment to exploit",
+        "capability": "N/A",
+        "outcome": "N/A"
+      }
+    }
+  ],
+  "analysis_time_seconds": 63.63,
+  "timestamp": "2026-05-07T17:32:01.797909",
+  "error": null
+}

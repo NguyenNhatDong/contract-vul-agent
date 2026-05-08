@@ -1,0 +1,101 @@
+{
+  "contract_name": "0x0b983fa1bcbdf24bdbfacb660faa76c586a16c64.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x0b983fa1bcbdf24bdbfacb660faa76c586a16c64.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 5,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 119-120 in receiveFunds()",
+      "function_name": "receiveFunds",
+      "evidence_snippet": "if (total_received_amount + msg.value > MAX_TOTAL_AMOUNT_TO_RECEIVE) {",
+      "execution": {
+        "trigger": "An external caller sends more than allowed amount",
+        "state_issue": "The contract incorrectly handles cases where the total received is exactly equal to MAX",
+        "exploitable_behavior": "The contract allows an external caller to send a larger amount without proper handling"
+      },
+      "causality": {
+        "state": "total_received_amount + msg.value > MAX_TOTAL_AMOUNT_TO_RECEIVE",
+        "guard": "No guard against this condition",
+        "transition": "The contract does not handle the case where total equals MAX",
+        "capability": "An external caller can send a larger amount",
+        "outcome": "Invalid state transition"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 120-127 in receiveFunds()",
+      "function_name": "receiveFunds",
+      "evidence_snippet": "var change_to_return = total_received_amount + msg.value - MAX_TOTAL_AMOUNT_TO_RECEIVE;",
+      "execution": {
+        "trigger": "An external caller sends more than allowed amount",
+        "state_issue": "The contract incorrectly handles cases where the total received is exactly equal to MAX",
+        "exploitable_behavior": "The contract allows an external caller to send a larger amount without proper handling"
+      },
+      "causality": {
+        "state": "total_received_amount + msg.value > MAX_TOTAL_AMOUNT_TO_RECEIVE",
+        "guard": "No guard against this condition",
+        "transition": "The contract does not handle the case where total equals MAX",
+        "capability": "N/A",
+        "outcome": "Invalid state transition"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 120-127 in receiveFunds()",
+      "function_name": "receiveFunds",
+      "evidence_snippet": "var change_to_return = total_received_amount + msg.value - MAX_TOTAL_AMOUNT_TO_RECEIVE;",
+      "execution": {
+        "trigger": "An external caller sends more than allowed amount",
+        "state_issue": "The contract incorrectly handles cases where the total received is exactly equal to MAX",
+        "exploitable_behavior": "The contract allows an external caller to send a larger amount without proper handling"
+      },
+      "causality": {
+        "state": "total_received_amount + msg.value > MAX_TOTAL_AMOUNT_TO_RECEIVE",
+        "guard": "No guard against this condition",
+        "transition": "The contract does not handle the case where total equals MAX",
+        "capability": "N/A",
+        "outcome": "Invalid state transition"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 120-127 in receiveFunds()",
+      "function_name": "receiveFunds",
+      "evidence_snippet": "var change_to_return = total_received_amount + msg.value - MAX_TOTAL_AMOUNT_TO_RECEIVE;",
+      "execution": {
+        "trigger": "An external caller sends more than allowed amount",
+        "state_issue": "The contract incorrectly handles cases where the total received is exactly equal to MAX",
+        "exploitable_behavior": "The contract allows an external caller to send a larger amount without proper handling"
+      },
+      "causality": {
+        "state": "total_received_amount + msg.value > MAX_TOTAL_AMOUNT_TO_RECEIVE",
+        "guard": "No guard against this condition",
+        "transition": "The contract does not handle the case where total equals MAX",
+        "capability": "N/A",
+        "outcome": "Invalid state transition"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 120-127 in receiveFunds()",
+      "function_name": "receiveFunds",
+      "evidence_snippet": "var change_to_return = total_received_amount + msg.value - MAX_TOTAL_AMOUNT_TO_RECEIVE;",
+      "execution": {
+        "trigger": "An external caller sends more than allowed amount",
+        "state_issue": "The contract incorrectly handles cases where the total received is exactly equal to MAX",
+        "exploitable_behavior": "The contract allows an external caller to send a larger amount without proper handling"
+      },
+      "causality": {
+        "state": "total_received_amount + msg.value > MAX_TOTAL_AMOUNT_TO_RECEIVE",
+        "guard": "No guard against this condition",
+        "transition": "The contract does not handle the case where total equals MAX",
+        "capability": "N/A",
+        "outcome": "Invalid state transition"
+      }
+    }
+  ],
+  "analysis_time_seconds": 39.19,
+  "timestamp": "2026-05-07T17:29:09.990014",
+  "error": null
+}

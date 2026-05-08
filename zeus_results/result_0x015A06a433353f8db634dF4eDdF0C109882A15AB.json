@@ -1,0 +1,29 @@
+{
+  "contract_name": "0x015A06a433353f8db634dF4eDdF0C109882A15AB.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x015A06a433353f8db634dF4eDdF0C109882A15AB.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Lines 36-40",
+      "function_name": "buyTile",
+      "evidence_snippet": "if (tiles[location].owner == 0x0) { price = 2000000000000000000; owner = creator; } else { owner = tiles[location].owner; }",
+      "execution": {
+        "trigger": "N/A",
+        "state_issue": "N/A",
+        "exploitable_behavior": "N/A"
+      },
+      "causality": {
+        "state": "tiles[location].owner == 0x0",
+        "guard": "No check for unclaimed tiles being sold",
+        "transition": "Setting owner and price without verifying tile ownership",
+        "capability": "Attacker can set tile owner and price",
+        "outcome": "Unintended tile ownership and price settings"
+      }
+    }
+  ],
+  "analysis_time_seconds": 32.96,
+  "timestamp": "2026-05-07T17:19:22.038438",
+  "error": null
+}

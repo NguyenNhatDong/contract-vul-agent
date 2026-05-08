@@ -1,0 +1,65 @@
+{
+  "contract_name": "0x131288b47c92409d0778d0aa2fbb8367e3399d33.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x131288b47c92409d0778d0aa2fbb8367e3399d33.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 3,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "40-61",
+      "function_name": "create",
+      "evidence_snippet": "if (msg.value == 0) throw; var numTokens = msg.value * tokenCreationRate; totalTokens += numTokens;",
+      "execution": {
+        "trigger": "Calling create() with a value that causes integer overflow",
+        "state_issue": "The multiplication of msg.value by tokenCreationRate can cause an overflow in the uint256 type, leading to incorrect token counts.",
+        "exploitable_behavior": "An attacker could exploit this by sending a large number of tokens, causing unintended behavior."
+      },
+      "causality": {
+        "state": "The multiplication operation exceeds the maximum value for uint256",
+        "guard": "No guard against integer overflow in the multiplication step",
+        "transition": "The totalTokens variable is updated with an incorrect value due to overflow",
+        "capability": "An attacker can exploit this by sending a large number of tokens, leading to incorrect token counts or self-destruction.",
+        "outcome": "Incorrect token balances and potential self-destruction."
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "54-61",
+      "function_name": "refund",
+      "evidence_snippet": "var tokenValue = balances[msg.sender]; if (tokenValue == 0) throw; balances[msg.sender] = 0; totalTokens -= tokenValue; var ethValue = tokenValue / tokenCreationRate; Refund(msg.sender, ethValue); Transfer(msg.sender, 0x0, tokenValue);",
+      "execution": {
+        "trigger": "Performing integer division without checking for exact multiples of tokenCreationRate",
+        "state_issue": "The division operation truncates any fractional part if the tokenValue isn't a multiple of 1000.",
+        "exploitable_behavior": "An attacker could exploit this by attempting to refund an amount that isn't exactly divisible by 1000, leading to incorrect refunds or losses."
+      },
+      "causality": {
+        "state": "The tokenValue must be a multiple of tokenCreationRate (1000) for the division operation",
+        "guard": "No guard against non-multiples of tokenCreationRate in the refund calculation",
+        "transition": "The ethValue is calculated incorrectly if tokenValue isn't divisible by 1000, leading to incorrect refunds or losses",
+        "capability": "N/A",
+        "outcome": "Incorrect refunds and potential loss of ETH."
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "47-52",
+      "function_name": "create",
+      "evidence_snippet": "balances[msg.sender] += numTokens; totalTokens += numTokens;",
+      "execution": {
+        "trigger": "Adding tokens without checking for overflow in the token creation rate",
+        "state_issue": "The addition of numTokens can cause an overflow in the uint256 type, leading to incorrect token counts.",
+        "exploitable_behavior": "An attacker could exploit this by creating a large number of tokens, causing unintended behavior."
+      },
+      "causality": {
+        "state": "The addition operation exceeds the maximum value for uint256",
+        "guard": "No guard against integer overflow in the addition step",
+        "transition": "The totalTokens variable is updated with an incorrect value due to overflow",
+        "capability": "N/A",
+        "outcome": "Incorrect token balances and potential self-destruction."
+      }
+    }
+  ],
+  "analysis_time_seconds": 37.26,
+  "timestamp": "2026-05-07T17:34:39.660495",
+  "error": null
+}

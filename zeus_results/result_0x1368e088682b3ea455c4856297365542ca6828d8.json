@@ -1,0 +1,65 @@
+{
+  "contract_name": "0x1368e088682b3ea455c4856297365542ca6828d8.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x1368e088682b3ea455c4856297365542ca6828d8.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 3,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Reentrancy_Attacks",
+      "evidence": "Line 27",
+      "function_name": "funnel",
+      "evidence_snippet": "beta.send(this.balance);",
+      "execution": {
+        "trigger": "external call",
+        "state_issue": "external function called without sender validation",
+        "exploitable_behavior": "ether sent to an unintended address"
+      },
+      "causality": {
+        "state": "external caller can send ether",
+        "guard": "none",
+        "transition": "external call bypassed",
+        "capability": "external caller",
+        "outcome": "ether transferred to invalid address"
+      }
+    },
+    {
+      "vulnerability_type": "Unchecked_External_Calls",
+      "evidence": "Lines 56-59",
+      "function_name": "main",
+      "evidence_snippet": "while (this.balance >= 10 ether) {\n persons[payoutIdx].addr.send(10 ether);\n payoutIdx += 1;\n }",
+      "execution": {
+        "trigger": "balance check",
+        "state_issue": "external call without sender validation",
+        "exploitable_behavior": "ether sent to an unintended address"
+      },
+      "causality": {
+        "state": "balance >= 10 ether",
+        "guard": "none",
+        "transition": "external call bypassed",
+        "capability": "external caller",
+        "outcome": "ether transferred to invalid address"
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Lines 45 and 44",
+      "function_name": "main",
+      "evidence_snippet": "niceGuys.length += 1; persons.length += 1;",
+      "execution": {
+        "trigger": "length increment",
+        "state_issue": "array index out of bounds",
+        "exploitable_behavior": "out-of-bounds access"
+      },
+      "causality": {
+        "state": "array length incremented",
+        "guard": "none",
+        "transition": "index assignment after length increase",
+        "capability": "attacker",
+        "outcome": "invalid index access"
+      }
+    }
+  ],
+  "analysis_time_seconds": 26.92,
+  "timestamp": "2026-05-07T17:35:06.582562",
+  "error": null
+}

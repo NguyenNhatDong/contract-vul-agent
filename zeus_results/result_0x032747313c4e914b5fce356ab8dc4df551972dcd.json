@@ -1,0 +1,29 @@
+{
+  "contract_name": "0x032747313c4e914b5fce356ab8dc4df551972dcd.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x032747313c4e914b5fce356ab8dc4df551972dcd.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Line 204",
+      "function_name": "rate",
+      "evidence_snippet": "N/A",
+      "execution": {
+        "trigger": "When a seller receives multiple ratings",
+        "state_issue": "The average rating calculation uses integer division, causing truncation of the actual average value.",
+        "exploitable_behavior": "An attacker could manipulate the average rating by adding high or low values strategically to influence the seller's reputation."
+      },
+      "causality": {
+        "state": "Integer division in the average rating calculation",
+        "guard": "No explicit guard against integer truncation",
+        "transition": "Calculation of average without considering precision loss",
+        "capability": "An attacker can exploit this by adding or removing ratings to manipulate the average value.",
+        "outcome": "Seller's average rating is miscalculated, potentially misleading."
+      }
+    }
+  ],
+  "analysis_time_seconds": 42.22,
+  "timestamp": "2026-05-07T17:23:51.109396",
+  "error": null
+}

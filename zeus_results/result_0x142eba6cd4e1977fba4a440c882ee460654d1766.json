@@ -1,0 +1,47 @@
+{
+  "contract_name": "0x142eba6cd4e1977fba4a440c882ee460654d1766.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x142eba6cd4e1977fba4a440c882ee460654d1766.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 2,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Lines 21, 24, 38, 42",
+      "function_name": "send",
+      "evidence_snippet": "balanceOf[msg.sender] -= _value;\n balanceOf[_to] += (_value*(100-tokenTaxRate))/100;",
+      "execution": {
+        "trigger": "Integer division truncation in token redistribution.",
+        "state_issue": "Truncation leads to loss of tokens due to integer division discarding fractional parts.",
+        "exploitable_behavior": "The contract allows for a permanent loss of coins when redistributing tokens or ether."
+      },
+      "causality": {
+        "state": "Integer division truncation in token redistribution calculations.",
+        "guard": "No guard against the issue; calculations are performed as is.",
+        "transition": "Truncation occurs during redistribution without adjustment for remainders.",
+        "capability": "An attacker can exploit this by causing a remainder, leading to loss of tokens.",
+        "outcome": "Permanent loss of coins in the bank address."
+      }
+    },
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "Lines 21, 38, 42",
+      "function_name": "agreeToTrade",
+      "evidence_snippet": "balanceOf[_from] -= tokensOfferedOf[_from];\n balanceOf[msg.sender] += (tokensOfferedOf[_from]*(100-tokenTaxRate))/100;",
+      "execution": {
+        "trigger": "Integer division truncation in token redistribution.",
+        "state_issue": "Truncation leads to loss of tokens due to integer division discarding fractional parts.",
+        "exploitable_behavior": "The contract allows for a permanent loss of coins when redistributing tokens or ether."
+      },
+      "causality": {
+        "state": "Integer division truncation in token redistribution calculations.",
+        "guard": "No guard against the issue; calculations are performed as is.",
+        "transition": "Truncation occurs during redistribution without adjustment for remainders.",
+        "capability": "N/A",
+        "outcome": "Permanent loss of coins in the bank address."
+      }
+    }
+  ],
+  "analysis_time_seconds": 22.72,
+  "timestamp": "2026-05-07T17:35:29.310271",
+  "error": null
+}

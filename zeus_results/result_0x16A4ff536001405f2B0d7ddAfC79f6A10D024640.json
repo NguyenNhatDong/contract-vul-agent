@@ -1,0 +1,29 @@
+{
+  "contract_name": "0x16A4ff536001405f2B0d7ddAfC79f6A10D024640.sol",
+  "contract_path": "zeus_vulnerable_contracts\\0x16A4ff536001405f2B0d7ddAfC79f6A10D024640.sol",
+  "status": "Vulnerable",
+  "vulnerabilities_count": 1,
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "Arithmetic",
+      "evidence": "28-31",
+      "function_name": "plusOnePonzi",
+      "evidence_snippet": "while (payouts[payoutIndex].yield < this.balance) {\n  payoutTotal += payouts[payoutIndex].yield;\n  payouts[payoutIndex].addr.send(payouts[payoutIndex].yield);\n  payoutIndex += 1;\n}",
+      "execution": {
+        "trigger": "The loop condition checks if the current payout's yield is less than this.balance",
+        "state_issue": "Unsafe handling of payout yields based on contract balance",
+        "exploitable_behavior": "The function may process payouts incorrectly when contract balance drops below certain thresholds"
+      },
+      "causality": {
+        "state": "contract balance decreases below a payout's yield",
+        "guard": "No explicit guard against balance changes that affect loop condition",
+        "transition": "Incorrect processing of payouts due to arithmetic conditions",
+        "capability": "Attacker can manipulate contract balance to cause incorrect payout handling",
+        "outcome": "Ether loss or unexpected behavior"
+      }
+    }
+  ],
+  "analysis_time_seconds": 18.59,
+  "timestamp": "2026-05-07T17:37:49.536975",
+  "error": null
+}
