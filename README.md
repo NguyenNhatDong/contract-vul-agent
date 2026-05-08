@@ -1,1 +1,0 @@
-Day la project cua INSECLAB
