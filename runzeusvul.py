@@ -4,9 +4,8 @@ Automate smart contract vulnerability auditing on Zeus vulnerable contracts.
 
 Processes all Solidity contracts in the zeus_vulnerable_contracts/ directory:
 1. Loads vulnerability categories from OWASP 2023 Smart Contract Top 10
-2. Formats each contract with line numbers
-3. Analyzes each contract for vulnerabilities
-4. Saves individual JSON results for each contract with naming: result_<CONTRACT_NAME>.json
+2. Analyzes each contract for vulnerabilities
+3. Saves individual JSON results for each contract with naming: result_<CONTRACT_NAME>.json
 
 Optimizations over run.py:
 - Concurrent analysis via ThreadPoolExecutor (configurable workers)
@@ -28,7 +27,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 
 from app.agent import SmartContractVulnAgent
-from app.chunker import chunk_whole_file
 
 
 # ─── Helpers ────────────────────────────────────────────────────────────────
@@ -37,11 +35,6 @@ def load_categories(path: str) -> List[str]:
     """Load OWASP vulnerability categories from config file."""
     lines = Path(path).read_text(encoding="utf-8").splitlines()
     return [ln.strip() for ln in lines if ln.strip()]
-
-
-def format_code_with_lines(sol_text: str) -> str:
-    """Format Solidity code by adding line numbers to each line."""
-    return chunk_whole_file(sol_text).code_with_lines
 
 
 def _format_duration(seconds: float) -> str:
@@ -70,10 +63,9 @@ def analyze_contract(
 
     try:
         sol_text = contract_path.read_text(encoding="utf-8")
-        code_with_lines = format_code_with_lines(sol_text)
 
         start_time = time.perf_counter()
-        result = agent.analyze(code_with_lines)
+        result = agent.analyze(sol_text)
         analysis_time = time.perf_counter() - start_time
 
         vulnerabilities = []
