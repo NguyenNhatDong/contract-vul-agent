@@ -1,0 +1,66 @@
+# ========================
+# Python
+# ========================
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ========================
+# OS generated files
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# Logs
+# ========================
+LOGs/
+*.log
+
+# ========================
+# Output / Results (generated data)
+# ========================
+outputs/
+my_results/
+my_results_2/
+my_results_3/
+my_results_4/
+my_results_5/
+my_results_6/
+
+# ========================
+# Environment variables
+# ========================
+.env
+.env.*
+
+# ========================
+# Misc
+# ========================
+hello.txt

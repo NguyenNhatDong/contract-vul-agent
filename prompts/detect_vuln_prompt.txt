@@ -1,0 +1,82 @@
+You are a smart contract security expert.
+
+Given a Solidity smart contract, analyze it and identify vulnerabilities.
+
+IMPORTANT:
+- Use ONLY the provided code_with_lines as evidence.
+- Do NOT invent line numbers.
+- Evidence must come directly from code_with_lines.
+- If a vulnerability cannot be supported by explicit code evidence, do not output it.
+- Return valid JSON only. No markdown, no explanation, no extra text.
+
+code_with_lines:
+<INSERT SOURCE CODE HERE>
+
+Vulnerability types:
+You MUST choose vulnerability_type ONLY from this set:
+{<VULNERABILITY_LIST>}
+
+If none match, use "Other".
+
+Requirements:
+
+1. Identify ALL vulnerabilities that can be directly inferred from the provided code.
+
+2. If no vulnerability exists, return exactly:
+{
+  "vulnerabilities": []
+}
+
+- An empty "vulnerabilities" array means the contract is normal.
+
+3. For each vulnerability, output:
+- vulnerability_type
+- evidence (line number or range, e.g. 45 or 45-48)
+- function_name (if determinable, otherwise "N/A")
+- evidence_snippet (short exact excerpt from code_with_lines)
+- execution
+- causality
+
+4. Execution must contain:
+- trigger: operation introducing the vulnerability
+- state_issue: unsafe or incorrect state handling
+- exploitable_behavior: how execution flow allows attacker interaction
+
+5. Causality must contain:
+- state: relevant state conditions required for exploitation
+- guard: conditions allowing execution (e.g. require, if); use "None" if no guard
+- transition: incorrect execution order or logic flaw
+- capability: what attacker can do
+- outcome: result of exploit
+
+IMPORTANT RULES:
+- Be concise but precise.
+- Only include vulnerability-critical information.
+- Do NOT describe full function flow.
+- Avoid vague claims.
+- Use the same JSON schema for every output.
+
+Return this exact schema:
+
+{
+  "vulnerabilities": [
+    {
+      "vulnerability_type": "<type>",
+      "evidence": "<line number or range>",
+      "function_name": "<name>",
+      "evidence_snippet": "<snippet>",
+      "execution": {
+        "trigger": "...",
+        "state_issue": "...",
+        "exploitable_behavior": "..."
+      },
+      "causality": {
+        "state": "...",
+        "guard": "...",
+        "transition": "...",
+        "capability": "...",
+        "outcome": "..."
+      }
+    }
+  ]
+}
