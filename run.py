@@ -5,8 +5,9 @@ Automate smart contract vulnerability auditing process.
 Processes all Solidity contracts in smartbugs_dataset/:
 1. Iterates over each sub-folder (e.g. access_control, reentrancy, …)
 2. Loads vulnerability categories from OWASP 2023 Smart Contract Top 10
-3. Analyzes each contract for vulnerabilities
-4. Saves individual JSON results per contract into LOGs/my_results/<FOLDER_NAME>/
+3. Formats each contract with line numbers
+4. Analyzes each contract for vulnerabilities
+5. Saves individual JSON results per contract into LOGs/my_results/<FOLDER_NAME>/
    Example: LOGs/my_results/access_control/result_arbitrary_location_write_simple.json
 """
 
@@ -19,6 +20,25 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 
 from app.agent import SmartContractVulnAgent
+
+
+def format_with_line_numbers(source_code: str) -> str:
+    """Formats contract source code with line numbers.
+
+    Prepends each line with its 1-based line number so the LLM can
+    reference exact locations when reporting vulnerabilities.
+
+    Example::
+
+        1: pragma solidity ^0.8.0;
+        2: contract Foo {
+        3:     ...
+    """
+    lines = source_code.splitlines()
+    width = len(str(len(lines)))
+    return "\n".join(
+        f"{i:{width}d}: {line}" for i, line in enumerate(lines, 1)
+    )
 
 
 def load_categories(path: str) -> List[str]:
@@ -50,12 +70,13 @@ def analyze_contract(
     contract_name = contract_path.name
     
     try:
-        # Read contract
+        # Read contract and format with line numbers
         sol_text = contract_path.read_text(encoding="utf-8")
+        sol_with_lines = format_with_line_numbers(sol_text)
         
         # Analyze contract
         start_time = time.time()
-        result = agent.analyze(sol_text)
+        result = agent.analyze(sol_with_lines)
         analysis_time = time.time() - start_time
         
         # Process results
