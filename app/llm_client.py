@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 _DEFAULT_OPTIONS = {
     "temperature": 0.0,       # near-deterministic for structured output
     "top_p": 0.9,
+    "num_ctx": 16384,         # 16K context: still fits within 8GB VRAM / 16GB RAM
     "num_predict": 4096,      # leave room for long JSON responses
     "repeat_penalty": 1.1,    # discourage repetitive output
 }
@@ -67,16 +68,16 @@ class LLMClient:
 
     # ── Public API ──────────────────────────────────────────────────────
 
-    def generate(self, system_prompt: str, user_prompt: str) -> str:
+    def generate(self, system_prompt: str, user_prompt: str) -> tuple[str, Optional[str]]:
         """
-        Send a chat completion request and return the raw assistant text.
+        Send a chat completion request and return the raw assistant text and thinking process.
 
         Args:
             system_prompt: System-level instructions.
             user_prompt:   User-level message (typically the contract code).
 
         Returns:
-            Raw text content of the assistant's reply.
+            Tuple of (raw text content, thinking process if available).
 
         Raises:
             RuntimeError: After all retries are exhausted.
@@ -96,13 +97,22 @@ class LLMClient:
                     options=self.options,
                     keep_alive=f"{self.timeout_seconds}s",
                 )
-                content = response["message"]["content"]
+                
+                msg = getattr(response, "message", None) or response.get("message", {})
+                content = getattr(msg, "content", None)
+                if content is None:
+                    content = msg.get("content", "")
+                    
+                thinking = getattr(msg, "thinking", None)
+                if thinking is None and isinstance(msg, dict):
+                    thinking = msg.get("thinking")
+
                 logger.debug(
                     "LLM response received (attempt %d, %d chars)",
                     attempt,
                     len(content),
                 )
-                return content
+                return content, thinking
 
             except Exception as exc:
                 last_error = exc

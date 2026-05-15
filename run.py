@@ -112,6 +112,7 @@ def analyze_contract(
             "status": status,
             "vulnerabilities_count": len(vulnerabilities),
             "vulnerabilities": vulnerabilities,
+            "thinking_process": result.thinking_process,
             "analysis_time_seconds": round(analysis_time, 2),
             "timestamp": datetime.now().isoformat(),
             "error": None
@@ -124,6 +125,7 @@ def analyze_contract(
             "status": "Error",
             "vulnerabilities_count": 0,
             "vulnerabilities": [],
+            "thinking_process": None,
             "analysis_time_seconds": 0,
             "timestamp": datetime.now().isoformat(),
             "error": str(e)

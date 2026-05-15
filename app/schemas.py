@@ -77,3 +77,7 @@ class AnalysisResult(BaseModel):
         default_factory=list,
         description="List of detected vulnerabilities; empty means contract is normal",
     )
+    thinking_process: Optional[str] = Field(
+        default=None,
+        description="Model's internal reasoning process if available",
+    )

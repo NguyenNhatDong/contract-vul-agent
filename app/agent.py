@@ -50,14 +50,23 @@ class SmartContractVulnAgent:
         last_error: Optional[Exception] = None
 
         for attempt in range(1, _MAX_PARSE_RETRIES + 2):
-            raw = self._llm.generate(system_prompt, code_with_lines)
+            raw, native_thinking = self._llm.generate(system_prompt, code_with_lines)
             logger.debug("LLM response attempt %d: %s…", attempt, raw[:300])
+
+            import re
+            think_match = re.search(r"<think>(.*?)</think>", raw, re.DOTALL)
+            thinking_process = native_thinking
+            if not thinking_process and think_match:
+                thinking_process = think_match.group(1).strip()
 
             parsed = extract_json(raw)
             if parsed is None:
                 last_error = ValueError(f"No JSON found (attempt {attempt})")
                 logger.warning("%s", last_error)
                 continue
+
+            if thinking_process and isinstance(parsed, dict):
+                parsed["thinking_process"] = thinking_process
 
             try:
                 return AnalysisResult.model_validate(parsed)
