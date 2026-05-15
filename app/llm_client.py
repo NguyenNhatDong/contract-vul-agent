@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 _DEFAULT_OPTIONS = {
     "temperature": 0.0,       # near-deterministic for structured output
     "top_p": 0.9,
-    "num_ctx": 24576,          # deepseek-r1:7b supports 24k context
+    "num_ctx": 131072,        # deepseek-r1 supports 128k context
     "num_predict": 4096,      # leave room for long JSON responses
     "repeat_penalty": 1.1,    # discourage repetitive output
 }
