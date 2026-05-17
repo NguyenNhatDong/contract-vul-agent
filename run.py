@@ -16,7 +16,7 @@ import json
 import time
 import argparse
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Sequence
 from datetime import datetime
 
 from app.agent import SmartContractVulnAgent
@@ -132,11 +132,163 @@ def analyze_contract(
         }
 
 
+def discover_contract_files(dataset_dir: Path) -> List[Path]:
+    """Return all Solidity contracts under *dataset_dir* in a stable order."""
+    return sorted(
+        [p for p in dataset_dir.glob("**/*.sol") if p.is_file()],
+        key=lambda p: p.as_posix().lower(),
+    )
+
+
+def print_contract_index(dataset_dir: Path) -> None:
+    """Print the 1-based contract index used by --file-range."""
+    sol_files = discover_contract_files(dataset_dir)
+
+    if not sol_files:
+        print(f"No .sol files found in {dataset_dir}")
+        return
+
+    print(f"\nContracts in {dataset_dir} ({len(sol_files)} total)")
+    print(f"{'=' * 60}")
+    for idx, contract_path in enumerate(sol_files, 1):
+        try:
+            display_path = contract_path.relative_to(dataset_dir)
+        except ValueError:
+            display_path = contract_path
+        print(f"{idx:4d}: {display_path}")
+
+
+def _parse_file_range(file_range: str, total_files: int) -> range:
+    """
+    Parse a 1-based inclusive file range.
+
+    Supported forms:
+      - "5" selects contract #5
+      - "5:10" or "5-10" selects contracts #5 through #10
+      - ":10" selects contracts #1 through #10
+      - "10:" selects contract #10 through the last contract
+    """
+    raw_range = file_range.strip()
+    separator = ":" if ":" in raw_range else "-" if "-" in raw_range else None
+
+    if separator is None:
+        start = end = int(raw_range)
+    else:
+        start_raw, end_raw = raw_range.split(separator, 1)
+        start = int(start_raw.strip()) if start_raw.strip() else 1
+        end = int(end_raw.strip()) if end_raw.strip() else total_files
+
+    if start < 1 or end < 1:
+        raise ValueError("--file-range uses 1-based positive indexes")
+    if start > end:
+        raise ValueError(f"Invalid --file-range {file_range!r}: start is greater than end")
+    if end > total_files:
+        raise ValueError(
+            f"Invalid --file-range {file_range!r}: only {total_files} contracts are available"
+        )
+
+    return range(start - 1, end)
+
+
+def _expand_contract_file_args(contract_files: Optional[Sequence[str]]) -> List[str]:
+    """Expand repeated/comma-separated --contract-file arguments."""
+    expanded: List[str] = []
+    for value in contract_files or []:
+        expanded.extend(part.strip() for part in value.split(",") if part.strip())
+    return expanded
+
+
+def _resolve_contract_file(selector: str, dataset_dir: Path, all_files: List[Path]) -> Path:
+    """Resolve a contract selector to one .sol file."""
+    selector_path = Path(selector)
+    candidates: List[Path] = []
+
+    if selector_path.is_file():
+        candidates = [selector_path]
+    else:
+        dataset_candidate = dataset_dir / selector_path
+        if dataset_candidate.is_file():
+            candidates = [dataset_candidate]
+        else:
+            normalized_selector = selector.replace("\\", "/")
+            candidates = [
+                contract_path
+                for contract_path in all_files
+                if contract_path.name == selector
+                or contract_path.relative_to(dataset_dir).as_posix() == normalized_selector
+            ]
+
+    if not candidates:
+        raise ValueError(f"Contract file not found: {selector}")
+    if len(candidates) > 1:
+        matches = "\n".join(
+            f"  - {path.relative_to(dataset_dir).as_posix()}" for path in candidates[:20]
+        )
+        raise ValueError(
+            f"Contract selector {selector!r} matched multiple files. Use a relative path:\n{matches}"
+        )
+
+    contract_path = candidates[0]
+    if contract_path.suffix.lower() != ".sol":
+        raise ValueError(f"Contract file must be a .sol file: {contract_path}")
+
+    return contract_path
+
+
+def select_contract_files(
+    dataset_dir: Path,
+    contract_files: Optional[Sequence[str]] = None,
+    file_range: Optional[str] = None,
+) -> List[Path]:
+    """
+    Select contracts by explicit file selector and/or 1-based range.
+
+    File selectors can be absolute paths, paths relative to the current working
+    directory, paths relative to *dataset_dir*, or unique file names under
+    *dataset_dir*.
+    """
+    all_files = discover_contract_files(dataset_dir)
+    selected: List[Path] = []
+
+    for selector in _expand_contract_file_args(contract_files):
+        selected.append(_resolve_contract_file(selector, dataset_dir, all_files))
+
+    if file_range:
+        selected.extend(all_files[idx] for idx in _parse_file_range(file_range, len(all_files)))
+
+    deduped: List[Path] = []
+    seen = set()
+    for contract_path in selected:
+        resolved = contract_path.resolve()
+        if resolved not in seen:
+            seen.add(resolved)
+            deduped.append(contract_path)
+
+    if not deduped:
+        raise ValueError("No contracts selected")
+
+    return deduped
+
+
+def _selected_output_folder_name(contract_path: Path, dataset_dir: Path) -> str:
+    """Create a stable output folder name for a selected contract."""
+    try:
+        relative_parent = contract_path.parent.relative_to(dataset_dir)
+    except ValueError:
+        return contract_path.parent.name or "selected_contracts"
+
+    if relative_parent == Path("."):
+        return dataset_dir.name
+
+    return "__".join(relative_parent.parts)
+
+
 def run_folder_audit(
     folder_path: Path,
     agent: SmartContractVulnAgent,
     output_dir: Path,
     max_files: Optional[int] = None,
+    contract_files: Optional[List[Path]] = None,
 ) -> Dict[str, Any]:
     """
     Run vulnerability audit on all .sol files in a single category folder.
@@ -146,6 +298,7 @@ def run_folder_audit(
         agent: SmartContractVulnAgent instance (reused across folders)
         output_dir: Directory to save result files for this folder
         max_files: Limit number of files to analyze (None = all)
+        contract_files: Optional pre-selected .sol files to analyze
     
     Returns:
         Dictionary with audit summary for this folder
@@ -153,8 +306,8 @@ def run_folder_audit(
     output_dir.mkdir(parents=True, exist_ok=True)
     folder_name = folder_path.name
     
-    # Find all .sol files in this folder
-    sol_files = sorted(folder_path.glob("**/*.sol"))
+    # Find all .sol files in this folder, or use an explicit selection.
+    sol_files = sorted(contract_files or folder_path.glob("**/*.sol"))
     
     if max_files:
         sol_files = sol_files[:max_files]
@@ -404,6 +557,140 @@ def run_audit(
         print(f"  📂 {s['folder_name']:30s} | {sm['vulnerable_contracts']} vuln, {sm['safe_contracts']} safe, {sm['failed_analyses']} fail | {sm['total_vulnerabilities_found']} findings")
     
     # Auto-generate vulnerability report after audit
+    generate_summary_report(output_base)
+
+    return overall_summary
+
+
+def run_selected_contract_audit(
+    contract_paths: List[Path],
+    dataset_dir: Path = Path("smartbugs_dataset"),
+    config_path: str = "config/owasp_2023_categories.txt",
+    prompt_path: str = "prompts/detect_vuln_prompt.txt",
+    model: str = "deepseek-r1:8b",
+    output_base: Path = Path("LOGs/my_results"),
+) -> Dict[str, Any]:
+    """
+    Run vulnerability audit on a selected set of contract files.
+
+    Results are still grouped under *output_base* by each contract's parent
+    folder, matching the normal folder-audit output shape.
+    """
+    if not contract_paths:
+        print("❌ No contracts selected")
+        return {}
+
+    owasp_categories = load_categories(config_path)
+
+    agent = SmartContractVulnAgent(
+        model=model,
+        prompt_path=prompt_path,
+        owasp_categories=owasp_categories
+    )
+
+    grouped_contracts: Dict[str, List[Path]] = {}
+    for contract_path in contract_paths:
+        folder_name = _selected_output_folder_name(contract_path, dataset_dir)
+        grouped_contracts.setdefault(folder_name, []).append(contract_path)
+
+    print(f"\n🔐 Selected Contract Vulnerability Audit")
+    print(f"{'=' * 60}")
+    print(f"Model              : {model}")
+    print(f"Categories         : {len(owasp_categories)}")
+    print(f"Selected contracts : {len(contract_paths)}")
+    print(f"Output base        : {output_base}")
+    print(f"{'=' * 60}")
+
+    all_folder_summaries = []
+    audit_start = time.time()
+
+    for folder_idx, (folder_name, sol_files) in enumerate(sorted(grouped_contracts.items()), 1):
+        sol_files = sorted(sol_files, key=lambda p: p.as_posix().lower())
+
+        print(f"\n{'━' * 60}")
+        print(f"📁 [{folder_idx}/{len(grouped_contracts)}] Processing: {folder_name}")
+        print(f"{'━' * 60}")
+
+        folder_output = output_base / folder_name
+        folder_summary = run_folder_audit(
+            folder_path=sol_files[0].parent,
+            agent=agent,
+            output_dir=folder_output,
+            contract_files=sol_files,
+        )
+
+        if folder_summary:
+            folder_summary["folder_name"] = folder_name
+            all_folder_summaries.append(folder_summary)
+
+    total_time = time.time() - audit_start
+
+    total_contracts = sum(s["summary"]["total_contracts"] for s in all_folder_summaries)
+    total_successful = sum(s["summary"]["successful_analyses"] for s in all_folder_summaries)
+    total_failed = sum(s["summary"]["failed_analyses"] for s in all_folder_summaries)
+    total_vulnerable = sum(s["summary"]["vulnerable_contracts"] for s in all_folder_summaries)
+    total_safe = sum(s["summary"]["safe_contracts"] for s in all_folder_summaries)
+    total_vulns = sum(s["summary"]["total_vulnerabilities_found"] for s in all_folder_summaries)
+
+    overall_vuln_types = {}
+    for s in all_folder_summaries:
+        for vt, count in s["summary"]["vulnerability_types_distribution"].items():
+            overall_vuln_types[vt] = overall_vuln_types.get(vt, 0) + count
+
+    overall_summary = {
+        "audit_metadata": {
+            "timestamp": datetime.now().isoformat(),
+            "model": model,
+            "dataset": str(dataset_dir),
+            "selection_mode": "selected_contracts",
+            "owasp_categories": len(owasp_categories),
+            "total_time_seconds": round(total_time, 2)
+        },
+        "summary": {
+            "total_folders": len(all_folder_summaries),
+            "total_contracts": total_contracts,
+            "successful_analyses": total_successful,
+            "failed_analyses": total_failed,
+            "vulnerable_contracts": total_vulnerable,
+            "safe_contracts": total_safe,
+            "total_vulnerabilities_found": total_vulns,
+            "vulnerability_types_distribution": overall_vuln_types
+        },
+        "selected_contracts": [
+            str(contract_path) for contract_path in contract_paths
+        ],
+        "per_folder": [
+            {
+                "folder_name": s["folder_name"],
+                "total_contracts": s["summary"]["total_contracts"],
+                "vulnerable": s["summary"]["vulnerable_contracts"],
+                "safe": s["summary"]["safe_contracts"],
+                "failed": s["summary"]["failed_analyses"],
+                "vulns_found": s["summary"]["total_vulnerabilities_found"],
+                "time_seconds": s["audit_metadata"]["total_time_seconds"],
+                "output_dir": str(output_base / s["folder_name"]),
+            }
+            for s in all_folder_summaries
+        ]
+    }
+
+    output_base.mkdir(parents=True, exist_ok=True)
+    overall_summary_file = output_base / "overall_audit_summary.json"
+    with open(overall_summary_file, "w", encoding="utf-8") as f:
+        json.dump(overall_summary, f, indent=2, ensure_ascii=False)
+
+    print(f"\n{'=' * 60}")
+    print(f"✅ Selected Contract Audit Complete!")
+    print(f"{'=' * 60}")
+    print(f"Total contracts analyzed : {total_contracts}")
+    print(f"Vulnerable contracts     : {total_vulnerable}")
+    print(f"Safe contracts           : {total_safe}")
+    print(f"Failed analyses          : {total_failed}")
+    print(f"Total vulnerabilities    : {total_vulns}")
+    print(f"Total time               : {total_time:.2f}s")
+    print(f"\n📁 Results saved to: {output_base}")
+    print(f"📋 Overall summary: {overall_summary_file}")
+
     generate_summary_report(output_base)
 
     return overall_summary
@@ -738,6 +1025,32 @@ def main():
         help="Limit number of files per folder (default: all)"
     )
     parser.add_argument(
+        "--contract-file",
+        action="append",
+        default=None,
+        help=(
+            "Analyze a specific .sol contract. Accepts an absolute path, path "
+            "relative to the current directory, path relative to --dataset-dir, "
+            "or unique file name under --dataset-dir. Can be repeated or "
+            "comma-separated."
+        )
+    )
+    parser.add_argument(
+        "--file-range",
+        type=str,
+        default=None,
+        help=(
+            "Analyze a 1-based inclusive range from the sorted contract index, "
+            "for example 5, 5:10, 5-10, :10, or 10:. Use --list-contracts to "
+            "see the index."
+        )
+    )
+    parser.add_argument(
+        "--list-contracts",
+        action="store_true",
+        help="List indexed contracts under --dataset-dir, then exit"
+    )
+    parser.add_argument(
         "--report",
         action="store_true",
         help="Generate vulnerability summary report from existing results (no analysis)"
@@ -745,9 +1058,29 @@ def main():
     
     args = parser.parse_args()
     
-    if args.report:
+    if args.list_contracts:
+        print_contract_index(args.dataset_dir)
+    elif args.report:
         # Report-only mode: skip analysis, just build the summary report
         generate_summary_report(args.output_dir)
+    elif args.contract_file or args.file_range:
+        try:
+            selected_contracts = select_contract_files(
+                dataset_dir=args.dataset_dir,
+                contract_files=args.contract_file,
+                file_range=args.file_range,
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
+
+        run_selected_contract_audit(
+            contract_paths=selected_contracts,
+            dataset_dir=args.dataset_dir,
+            config_path=args.config,
+            prompt_path=args.prompt,
+            model=args.model,
+            output_base=args.output_dir,
+        )
     else:
         # Run audit across all folders (report is auto-generated at the end)
         run_audit(
