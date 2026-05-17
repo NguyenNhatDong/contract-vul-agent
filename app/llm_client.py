@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Optional
+from typing import Any, Optional
 
 import ollama
 
@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 _DEFAULT_OPTIONS = {
     "temperature": 0.0,       # near-deterministic for structured output
     "top_p": 0.9,
-    "num_ctx": 16384,         # 16K context: still fits within 8GB VRAM / 16GB RAM
-    "num_predict": 4096,      # leave room for long JSON responses
+    "num_ctx": 8192,          # 8K context: still fits within 8GB VRAM / 16GB RAM
+    "num_predict": 8192,      # headroom for separate thinking plus final JSON
     "repeat_penalty": 1.1,    # discourage repetitive output
 }
 
@@ -36,12 +36,14 @@ class LLMClient:
 
     def __init__(
         self,
-        model: str = "deepseek-r1:7b",
+        model: str = "deepseek-r1:8b",
         host: Optional[str] = None,
         max_retries: int = 3,
         retry_delay: float = 2.0,
         timeout_seconds: int = 300,
         options: Optional[dict] = None,
+        response_format: str | dict[str, Any] | None = "json",
+        think: bool | str | None = True,
     ) -> None:
         """
         Args:
@@ -51,11 +53,15 @@ class LLMClient:
             retry_delay:     Base delay (seconds) between retries (doubles each time).
             timeout_seconds: Per-request timeout for the Ollama server.
             options:         Override default generation options.
+            response_format: Ollama response format. Use "json" for structured output.
+            think:           Controls separate thinking for supported Ollama models.
         """
         self.model = model
         self.max_retries = max_retries
         self.retry_delay = retry_delay
         self.timeout_seconds = timeout_seconds
+        self.response_format = response_format
+        self.think = think
 
         # Merge caller overrides on top of defaults
         self.options = {**_DEFAULT_OPTIONS, **(options or {})}
@@ -94,6 +100,8 @@ class LLMClient:
                 response = self._client.chat(
                     model=self.model,
                     messages=messages,
+                    think=self.think,
+                    format=self.response_format,
                     options=self.options,
                     keep_alive=f"{self.timeout_seconds}s",
                 )

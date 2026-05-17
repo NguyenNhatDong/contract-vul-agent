@@ -1,0 +1,11 @@
+label,queries,found,not_found,mrr
+Access_Control,18,10,8,0.435185
+Arithmetic,15,14,1,0.900000
+Denial_of_Service_Attacks,6,3,3,0.500000
+Front-running_Attacks,4,0,4,0.000000
+Insecure_Randomness,8,3,5,0.250000
+Other,3,0,3,0.000000
+Reentrancy_Attacks,31,28,3,0.903226
+Short_Addresses,1,0,1,0.000000
+Time_Manipulation,5,2,3,0.400000
+Unchecked_External_Calls,52,29,23,0.365385

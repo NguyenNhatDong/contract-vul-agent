@@ -1,0 +1,11 @@
+label,sum_predicted_labels,N_contracts,APL
+Access_Control,41,36,1.138889
+Arithmetic,51,45,1.133333
+Denial_of_Service_Attacks,12,12,1.000000
+Front-running_Attacks,1,1,1.000000
+Insecure_Randomness,11,11,1.000000
+Other,2,2,1.000000
+Reentrancy_Attacks,85,73,1.164384
+Short_Addresses,2,2,1.000000
+Time_Manipulation,4,4,1.000000
+Unchecked_External_Calls,37,32,1.156250

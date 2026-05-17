@@ -132,7 +132,7 @@ def analyze_contract(
             "status": "Error",
             "vulnerabilities_count": 0,
             "vulnerabilities": [],
-            "thinking_process": None,
+            "thinking_process": getattr(e, "thinking_process", None),
             "analysis_time_seconds": 0,
             "timestamp": datetime.now().isoformat(),
             "error": str(e),

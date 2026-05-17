@@ -1,0 +1,11 @@
+label,N_contracts,O_top1_hits,TOP1_accuracy,T_top3_hits,TOP3_accuracy,M_topmax_hits,TOPMAX_accuracy
+Access_Control,18,6,0.333333,10,0.555556,10,0.555556
+Arithmetic,15,13,0.866667,14,0.933333,14,0.933333
+Denial_of_Service_Attacks,6,3,0.500000,3,0.500000,3,0.500000
+Front-running_Attacks,4,0,0.000000,0,0.000000,0,0.000000
+Insecure_Randomness,8,1,0.125000,3,0.375000,3,0.375000
+Other,3,0,0.000000,0,0.000000,0,0.000000
+Reentrancy_Attacks,31,28,0.903226,28,0.903226,28,0.903226
+Short_Addresses,1,0,0.000000,0,0.000000,0,0.000000
+Time_Manipulation,5,2,0.400000,2,0.400000,2,0.400000
+Unchecked_External_Calls,52,12,0.230769,27,0.519231,29,0.557692

@@ -72,6 +72,7 @@ def analyze_contract(
             "status": "Normal" if not vulns else "Vulnerable",
             "vulnerabilities_count": len(vulns),
             "vulnerabilities": vulns,
+            "thinking_process": result.thinking_process,
             "analysis_time_seconds": round(elapsed, 2),
             "timestamp": datetime.now().isoformat(),
             "error": None,
@@ -83,6 +84,7 @@ def analyze_contract(
             "status": "Error",
             "vulnerabilities_count": 0,
             "vulnerabilities": [],
+            "thinking_process": getattr(e, "thinking_process", None),
             "analysis_time_seconds": 0,
             "timestamp": datetime.now().isoformat(),
             "error": str(e),
@@ -93,7 +95,7 @@ def run_audit(
     contracts_dir: Path = Path("contracts"),
     config_path: str = "config/owasp_2023_categories.txt",
     prompt_path: str = "prompts/detect_vuln_prompt.txt",
-    model: str = "deepseek-r1:7b",
+    model: str = "deepseek-r1:8b",
     output_dir: Path = Path("my_results"),
     max_files: Optional[int] = None,
 ) -> Dict[str, Any]:
@@ -174,7 +176,7 @@ def main():
     parser.add_argument("--contracts-dir", type=Path, default=Path("contracts"))
     parser.add_argument("--config", type=str, default="config/owasp_2023_categories.txt")
     parser.add_argument("--prompt", type=str, default="prompts/detect_vuln_prompt.txt")
-    parser.add_argument("--model", type=str, default="deepseek-r1:7b")
+    parser.add_argument("--model", type=str, default="deepseek-r1:8b")
     parser.add_argument("--output-dir", type=Path, default=Path("my_results"))
     parser.add_argument("--max-files", type=int, default=None)
     args = parser.parse_args()

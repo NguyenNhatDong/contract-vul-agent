@@ -125,7 +125,7 @@ def analyze_contract(
             "status": "Error",
             "vulnerabilities_count": 0,
             "vulnerabilities": [],
-            "thinking_process": None,
+            "thinking_process": getattr(e, "thinking_process", None),
             "analysis_time_seconds": 0,
             "timestamp": datetime.now().isoformat(),
             "error": str(e)
@@ -251,7 +251,7 @@ def run_audit(
     dataset_dir: Path = Path("smartbugs_dataset"),
     config_path: str = "config/owasp_2023_categories.txt",
     prompt_path: str = "prompts/detect_vuln_prompt.txt",
-    model: str = "deepseek-r1:7b",
+    model: str = "deepseek-r1:8b",
     output_base: Path = Path("LOGs/my_results"),
     max_files: Optional[int] = None,
 ) -> Dict[str, Any]:
@@ -263,7 +263,7 @@ def run_audit(
         dataset_dir: Root directory containing category sub-folders (default: smartbugs_dataset)
         config_path: Path to OWASP categories config file
         prompt_path: Path to system prompt template
-        model: Ollama model to use (default: deepseek-r1:7b)
+        model: Ollama model to use (default: deepseek-r1:8b)
         output_base: Base output directory (default: LOGs/my_results)
         max_files: Limit number of files per folder (None = all)
     
@@ -461,6 +461,12 @@ def generate_summary_report(results_base: Path) -> Path:
 
             if status == "Error":
                 contracts_error += 1
+                all_rows.append({
+                    "file_name": file_name,
+                    "folder": folder.name,
+                    "vulnerability_type": "error",
+                    "evidence": "--",
+                })
                 continue
 
             vulns = data.get("vulnerabilities", [])
@@ -487,7 +493,7 @@ def generate_summary_report(results_base: Path) -> Path:
     vuln_type_counts: Dict[str, int] = {}
     for row in all_rows:
         vt = row["vulnerability_type"]
-        if vt != "(none)":
+        if vt not in {"(none)", "error"}:
             vuln_type_counts[vt] = vuln_type_counts.get(vt, 0) + 1
 
     # ── Write overall Markdown report ───────────────────────────────────
@@ -609,6 +615,11 @@ def _generate_folder_report(folder: Path) -> Path:
 
         if status == "Error":
             contracts_error += 1
+            rows.append({
+                "file_name": file_name,
+                "vulnerability_type": "error",
+                "evidence": "--",
+            })
             continue
 
         vulns = data.get("vulnerabilities", [])
@@ -632,7 +643,7 @@ def _generate_folder_report(folder: Path) -> Path:
     vuln_type_counts: Dict[str, int] = {}
     for row in rows:
         vt = row["vulnerability_type"]
-        if vt != "(none)":
+        if vt not in {"(none)", "error"}:
             vuln_type_counts[vt] = vuln_type_counts.get(vt, 0) + 1
 
     # Markdown
@@ -711,8 +722,8 @@ def main():
     parser.add_argument(
         "--model",
         type=str,
-        default="deepseek-r1:7b",
-        help="Ollama model to use (default: deepseek-r1:7b)"
+        default="deepseek-r1:8b",
+        help="Ollama model to use (default: deepseek-r1:8b)"
     )
     parser.add_argument(
         "--output-dir",
