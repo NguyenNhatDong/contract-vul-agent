@@ -137,6 +137,9 @@ python run.py
 | `--model` | `deepseek-r1:7b` | Ollama model to use |
 | `--output-dir` | `LOGs/my_results` | Base directory for results |
 | `--max-files` | all | Limit files per folder |
+| `--contract-file` | — | Analyze a specific `.sol` file. Can be repeated or comma-separated |
+| `--file-range` | — | Analyze a 1-based inclusive range from the sorted contract index |
+| `--list-contracts` | — | Print the indexed contract list used by `--file-range` |
 | `--report` | — | Generate report only (no analysis) |
 
 #### Examples
@@ -148,12 +151,35 @@ python run.py --model llama3:8b
 # Limit to 5 contracts per folder
 python run.py --max-files 5
 
+# Show the sorted contract index for range selection
+python run.py --list-contracts
+
+# Audit a specific contract by path relative to smartbugs_dataset/
+python run.py --contract-file access_control/FibonacciBalance.sol
+
+# Audit multiple specific contracts
+python run.py --contract-file access_control/FibonacciBalance.sol --contract-file arithmetic/token.sol
+
+# Audit contracts 5 through 10 from the --list-contracts index
+python run.py --file-range 5:10
+
+# Audit from the first contract through contract 10
+python run.py --file-range :10
+
+# Audit from contract 10 through the last contract
+python run.py --file-range 10:
+
+# Combine explicit files and ranges
+python run.py --contract-file access_control/FibonacciBalance.sol --file-range 20:22
+
 # Generate reports from existing results (no re-analysis)
 python run.py --report
 
 # Generate reports from a specific output directory
 python run.py --report --output-dir LOGs/my_results
 ```
+
+`--file-range` accepts `5`, `5:10`, `5-10`, `:10`, and `10:`. The indexes are 1-based and inclusive.
 
 #### Output Structure
 
@@ -424,6 +450,9 @@ Robust extraction from noisy LLM output (handles `<think>` tags, markdown fences
 | `python run.py` | Audit all SmartBugs dataset folders + auto-generate reports |
 | `python run.py --report` | Generate reports from existing SmartBugs results (no analysis) |
 | `python run.py --max-files 5` | Audit max 5 contracts per folder |
+| `python run.py --list-contracts` | Show the indexed SmartBugs contract list |
+| `python run.py --contract-file access_control/FibonacciBalance.sol` | Audit one specific SmartBugs contract |
+| `python run.py --file-range 5:10` | Audit contracts 5 through 10 from the indexed list |
 | `python runzeusvul.py` | Audit Zeus contracts (with resume support) |
 | `python runzeusvul.py --workers 4` | Parallel audit with 4 workers |
 | `python runzeusvul.py --no-skip` | Re-analyze all Zeus contracts |
