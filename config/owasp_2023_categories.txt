@@ -2,8 +2,8 @@ Reentrancy_Attacks
 Arithmetic
 Time_Manipulation
 Access_Control
-Front-running_Attacks
+Logic_Error
 Denial_of_Service_Attacks
 Short_Addresses
 Insecure_Randomness
-Unchecked_External_Calls
+Delegatecall

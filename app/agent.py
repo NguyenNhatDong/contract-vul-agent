@@ -70,7 +70,10 @@ class SmartContractVulnAgent:
         last_thinking_process: Optional[str] = None
 
         for attempt in range(1, _MAX_PARSE_RETRIES + 2):
-            raw, native_thinking = self._llm.generate(system_prompt, code_with_lines)
+            raw, native_thinking = self._llm.generate(
+                system_prompt,
+                "Analyze the provided code_with_lines and return valid JSON only.",
+            )
             logger.debug("LLM response attempt %d: %s…", attempt, raw[:300])
 
             thinking_process = native_thinking or _extract_thinking(raw)

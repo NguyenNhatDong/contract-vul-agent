@@ -49,10 +49,13 @@ venv\Scripts\Activate
 # 2. Run audit on SmartBugs dataset (auto-generates reports)
 python run.py
 
-# 3. Or run audit on Zeus contracts
+# 3. Or run audit on a plain Solidity folder like CVE_dataset
+python run.py --contracts-dir CVE_dataset
+
+# 4. Or run audit on Zeus contracts
 python runzeusvul.py
 
-# 4. Or audit custom contracts
+# 5. Or audit custom contracts with the simpler app CLI
 python -m app --contracts-dir contracts
 ```
 
@@ -96,7 +99,7 @@ contract-vul-agent/
 │   └── unchecked_low_level_calls/
 │
 ├── LOGs/                           # Output directory for run.py
-│   └── my_results/
+│   └── my_results_<input_folder_name>/
 │       ├── <folder>/               # Per-category results
 │       │   ├── result_<name>.json
 │       │   ├── audit_summary.json
@@ -117,9 +120,9 @@ contract-vul-agent/
 
 ## Usage Guide
 
-### 1. `run.py` — SmartBugs Dataset Audit
+### 1. `run.py` — SmartBugs Dataset and Folder Audit
 
-Audits all Solidity contracts across **all category sub-folders** in `smartbugs_dataset/`. Automatically generates vulnerability reports (MD + CSV) after the audit completes.
+Audits all Solidity contracts across **all category sub-folders** in `smartbugs_dataset/`, or recursively audits a plain Solidity folder such as `CVE_dataset/`. Automatically generates vulnerability reports (MD + CSV) after the audit completes.
 
 #### Run Full Audit
 
@@ -132,10 +135,11 @@ python run.py
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--dataset-dir` | `smartbugs_dataset` | Root directory with category sub-folders |
+| `--contracts-dir` | — | Plain directory containing `.sol` files, for example `CVE_dataset` |
 | `--config` | `config/owasp_2023_categories.txt` | OWASP categories config file |
 | `--prompt` | `prompts/detect_vuln_prompt.txt` | LLM system prompt template |
-| `--model` | `deepseek-r1:7b` | Ollama model to use |
-| `--output-dir` | `LOGs/my_results` | Base directory for results |
+| `--model` | `deepseek-r1:8b` | Ollama model to use |
+| `--output-dir` | `LOGs/my_results_<input_folder_name>` | Base directory for results |
 | `--max-files` | all | Limit files per folder |
 | `--contract-file` | — | Analyze a specific `.sol` file. Can be repeated or comma-separated |
 | `--file-range` | — | Analyze a 1-based inclusive range from the sorted contract index |
@@ -151,17 +155,35 @@ python run.py --model llama3:8b
 # Limit to 5 contracts per folder
 python run.py --max-files 5
 
+# Audit every .sol file in CVE_dataset recursively
+python run.py --contracts-dir CVE_dataset
+
+# Audit only the first 3 .sol files in CVE_dataset
+python run.py --contracts-dir CVE_dataset --max-files 3
+
+# Output defaults to LOGs/my_results_CVE_dataset for this command
+python run.py --contracts-dir CVE_dataset
+
 # Show the sorted contract index for range selection
 python run.py --list-contracts
 
+# Show the sorted contract index for CVE_dataset
+python run.py --contracts-dir CVE_dataset --list-contracts
+
 # Audit a specific contract by path relative to smartbugs_dataset/
 python run.py --contract-file access_control/FibonacciBalance.sol
+
+# Audit a specific contract by path relative to CVE_dataset/
+python run.py --contracts-dir CVE_dataset --contract-file CVE-2018-14085.sol
 
 # Audit multiple specific contracts
 python run.py --contract-file access_control/FibonacciBalance.sol --contract-file arithmetic/token.sol
 
 # Audit contracts 5 through 10 from the --list-contracts index
 python run.py --file-range 5:10
+
+# Audit CVE_dataset contracts 5 through 10 from its own --list-contracts index
+python run.py --contracts-dir CVE_dataset --file-range 5:10
 
 # Audit from the first contract through contract 10
 python run.py --file-range :10
@@ -176,15 +198,15 @@ python run.py --contract-file access_control/FibonacciBalance.sol --file-range 2
 python run.py --report
 
 # Generate reports from a specific output directory
-python run.py --report --output-dir LOGs/my_results
+python run.py --report --output-dir LOGs/my_results_smartbugs_dataset
 ```
 
-`--file-range` accepts `5`, `5:10`, `5-10`, `:10`, and `10:`. The indexes are 1-based and inclusive.
+`--file-range` accepts `5`, `5:10`, `5-10`, `:10`, and `10:`. The indexes are 1-based and inclusive. When `--contracts-dir` is provided, listing, file selection, ranges, and default output naming all use that folder instead of `smartbugs_dataset`.
 
 #### Output Structure
 
 ```
-LOGs/my_results/
+LOGs/my_results_smartbugs_dataset/
 ├── access_control/
 │   ├── result_arbitrary_location_write_simple.json
 │   ├── result_mapping_write.json
@@ -196,6 +218,21 @@ LOGs/my_results/
 │   └── ...
 ├── overall_audit_summary.json
 ├── vulnerability_report.md            ← overall report
+└── vulnerability_report.csv
+```
+
+For a plain folder such as `CVE_dataset`, the default output becomes:
+
+```
+LOGs/my_results_CVE_dataset/
+├── CVE_dataset/
+│   ├── result_CVE-2018-14085.json
+│   ├── ...
+│   ├── audit_summary.json
+│   ├── vulnerability_report.md
+│   └── vulnerability_report.csv
+├── overall_audit_summary.json
+├── vulnerability_report.md
 └── vulnerability_report.csv
 ```
 
@@ -306,7 +343,7 @@ python generate_vul_report.py <results_directory>
 python generate_vul_report.py zeus_results
 
 # Generate report from SmartBugs results (specific folder)
-python generate_vul_report.py LOGs/my_results/access_control
+python generate_vul_report.py LOGs/my_results_smartbugs_dataset/access_control
 
 # Custom output paths
 python generate_vul_report.py zeus_results --output reports/vuln_report.md --csv reports/vuln_report.csv
@@ -448,11 +485,14 @@ Robust extraction from noisy LLM output (handles `<think>` tags, markdown fences
 | Command | What It Does |
 |---------|-------------|
 | `python run.py` | Audit all SmartBugs dataset folders + auto-generate reports |
-| `python run.py --report` | Generate reports from existing SmartBugs results (no analysis) |
+| `python run.py --contracts-dir CVE_dataset` | Audit all `.sol` files in `CVE_dataset` |
+| `python run.py --report` | Generate reports from existing `LOGs/my_results_smartbugs_dataset` results |
 | `python run.py --max-files 5` | Audit max 5 contracts per folder |
 | `python run.py --list-contracts` | Show the indexed SmartBugs contract list |
+| `python run.py --contracts-dir CVE_dataset --list-contracts` | Show the indexed CVE dataset contract list |
 | `python run.py --contract-file access_control/FibonacciBalance.sol` | Audit one specific SmartBugs contract |
 | `python run.py --file-range 5:10` | Audit contracts 5 through 10 from the indexed list |
+| `python run.py --contracts-dir CVE_dataset --file-range 5:10` | Audit CVE dataset contracts 5 through 10 |
 | `python runzeusvul.py` | Audit Zeus contracts (with resume support) |
 | `python runzeusvul.py --workers 4` | Parallel audit with 4 workers |
 | `python runzeusvul.py --no-skip` | Re-analyze all Zeus contracts |

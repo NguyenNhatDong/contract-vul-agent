@@ -1,0 +1,39 @@
+scope,scenario,label,samples,total_predicted_lines,apl_line
+All Labels,Global,Access_Control,18,28,1.555556
+All Labels,Global,Arithmetic,15,22,1.466667
+All Labels,Global,Denial_of_Service_Attacks,6,14,2.333333
+All Labels,Global,Front-running_Attacks,4,4,1.000000
+All Labels,Global,Insecure_Randomness,8,17,2.125000
+All Labels,Global,Other,3,6,2.000000
+All Labels,Global,Reentrancy_Attacks,31,72,2.322581
+All Labels,Global,Short_Addresses,1,2,2.000000
+All Labels,Global,Time_Manipulation,5,6,1.200000
+All Labels,Global,Unchecked_External_Calls,52,109,2.096154
+All Labels,Global,Overall,143,280,1.958042
+All Labels,Conditional,Access_Control,10,19,1.900000
+All Labels,Conditional,Arithmetic,13,20,1.538462
+All Labels,Conditional,Denial_of_Service_Attacks,3,9,3.000000
+All Labels,Conditional,Insecure_Randomness,7,16,2.285714
+All Labels,Conditional,Reentrancy_Attacks,29,70,2.413793
+All Labels,Conditional,Time_Manipulation,1,2,2.000000
+All Labels,Conditional,Unchecked_External_Calls,36,80,2.222222
+All Labels,Conditional,Overall,99,216,2.181818
+Correct Label Only,Global,Access_Control,18,13,0.722222
+Correct Label Only,Global,Arithmetic,15,16,1.066667
+Correct Label Only,Global,Denial_of_Service_Attacks,6,8,1.333333
+Correct Label Only,Global,Front-running_Attacks,4,0,0.000000
+Correct Label Only,Global,Insecure_Randomness,8,12,1.500000
+Correct Label Only,Global,Other,3,0,0.000000
+Correct Label Only,Global,Reentrancy_Attacks,31,29,0.935484
+Correct Label Only,Global,Short_Addresses,1,0,0.000000
+Correct Label Only,Global,Time_Manipulation,5,1,0.200000
+Correct Label Only,Global,Unchecked_External_Calls,52,44,0.846154
+Correct Label Only,Global,Overall,143,123,0.860140
+Correct Label Only,Conditional,Access_Control,10,13,1.300000
+Correct Label Only,Conditional,Arithmetic,13,16,1.230769
+Correct Label Only,Conditional,Denial_of_Service_Attacks,3,8,2.666667
+Correct Label Only,Conditional,Insecure_Randomness,7,12,1.714286
+Correct Label Only,Conditional,Reentrancy_Attacks,29,29,1.000000
+Correct Label Only,Conditional,Time_Manipulation,1,1,1.000000
+Correct Label Only,Conditional,Unchecked_External_Calls,36,44,1.222222
+Correct Label Only,Conditional,Overall,99,123,1.242424

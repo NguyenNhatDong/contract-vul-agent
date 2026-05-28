@@ -47,6 +47,12 @@ def load_categories(path: str) -> List[str]:
     return [ln.strip() for ln in lines if ln.strip()]
 
 
+def default_output_base(input_dir: Path) -> Path:
+    """Build the default output directory for an input contract folder."""
+    folder_name = input_dir.resolve().name or input_dir.name or "contracts"
+    return Path("LOGs") / f"my_results_{folder_name}"
+
+
 def analyze_contract(
     contract_path: Path,
     agent: SmartContractVulnAgent,
@@ -405,24 +411,26 @@ def run_audit(
     config_path: str = "config/owasp_2023_categories.txt",
     prompt_path: str = "prompts/detect_vuln_prompt.txt",
     model: str = "deepseek-r1:8b",
-    output_base: Path = Path("LOGs/my_results"),
+    output_base: Optional[Path] = None,
     max_files: Optional[int] = None,
 ) -> Dict[str, Any]:
     """
     Run vulnerability audit on all .sol files across all folders in smartbugs_dataset.
-    Each folder's results are saved to LOGs/my_results/<FOLDER_NAME>/.
+    Each folder's results are saved to LOGs/my_results_<DATASET_NAME>/<FOLDER_NAME>/.
     
     Args:
         dataset_dir: Root directory containing category sub-folders (default: smartbugs_dataset)
         config_path: Path to OWASP categories config file
         prompt_path: Path to system prompt template
         model: Ollama model to use (default: deepseek-r1:8b)
-        output_base: Base output directory (default: LOGs/my_results)
+        output_base: Base output directory (default: LOGs/my_results_<DATASET_NAME>)
         max_files: Limit number of files per folder (None = all)
     
     Returns:
         Dictionary with overall audit summary
     """
+    output_base = output_base or default_output_base(dataset_dir)
+
     # Discover all category sub-folders
     category_folders = sorted([
         d for d in dataset_dir.iterdir()
@@ -562,13 +570,53 @@ def run_audit(
     return overall_summary
 
 
+def run_contract_directory_audit(
+    contracts_dir: Path,
+    config_path: str = "config/owasp_2023_categories.txt",
+    prompt_path: str = "prompts/detect_vuln_prompt.txt",
+    model: str = "deepseek-r1:8b",
+    output_base: Optional[Path] = None,
+    max_files: Optional[int] = None,
+) -> Dict[str, Any]:
+    """
+    Run vulnerability audit on all .sol files under a plain contract directory.
+
+    This supports folders such as CVE_dataset/ that contain contracts directly
+    instead of SmartBugs-style category sub-folders.
+    """
+    if not contracts_dir.is_dir():
+        print(f"❌ Contract directory not found: {contracts_dir}")
+        return {}
+
+    contract_paths = discover_contract_files(contracts_dir)
+    if max_files:
+        contract_paths = contract_paths[:max_files]
+
+    if not contract_paths:
+        print(f"❌ No .sol files found in {contracts_dir}")
+        return {}
+
+    return run_selected_contract_audit(
+        contract_paths=contract_paths,
+        dataset_dir=contracts_dir,
+        config_path=config_path,
+        prompt_path=prompt_path,
+        model=model,
+        output_base=output_base,
+        audit_title="Contract Folder Vulnerability Audit",
+        selection_mode="contract_folder",
+    )
+
+
 def run_selected_contract_audit(
     contract_paths: List[Path],
     dataset_dir: Path = Path("smartbugs_dataset"),
     config_path: str = "config/owasp_2023_categories.txt",
     prompt_path: str = "prompts/detect_vuln_prompt.txt",
     model: str = "deepseek-r1:8b",
-    output_base: Path = Path("LOGs/my_results"),
+    output_base: Optional[Path] = None,
+    audit_title: str = "Selected Contract Vulnerability Audit",
+    selection_mode: str = "selected_contracts",
 ) -> Dict[str, Any]:
     """
     Run vulnerability audit on a selected set of contract files.
@@ -579,6 +627,8 @@ def run_selected_contract_audit(
     if not contract_paths:
         print("❌ No contracts selected")
         return {}
+
+    output_base = output_base or default_output_base(dataset_dir)
 
     owasp_categories = load_categories(config_path)
 
@@ -593,7 +643,7 @@ def run_selected_contract_audit(
         folder_name = _selected_output_folder_name(contract_path, dataset_dir)
         grouped_contracts.setdefault(folder_name, []).append(contract_path)
 
-    print(f"\n🔐 Selected Contract Vulnerability Audit")
+    print(f"\n🔐 {audit_title}")
     print(f"{'=' * 60}")
     print(f"Model              : {model}")
     print(f"Categories         : {len(owasp_categories)}")
@@ -642,7 +692,7 @@ def run_selected_contract_audit(
             "timestamp": datetime.now().isoformat(),
             "model": model,
             "dataset": str(dataset_dir),
-            "selection_mode": "selected_contracts",
+            "selection_mode": selection_mode,
             "owasp_categories": len(owasp_categories),
             "total_time_seconds": round(total_time, 2)
         },
@@ -986,13 +1036,22 @@ def _generate_folder_report(folder: Path) -> Path:
 def main():
     """Main entry point"""
     parser = argparse.ArgumentParser(
-        description="Automate smart contract vulnerability auditing on SmartBugs dataset"
+        description="Automate smart contract vulnerability auditing on SmartBugs or custom folders"
     )
     parser.add_argument(
         "--dataset-dir",
         type=Path,
         default=Path("smartbugs_dataset"),
         help="Root directory containing category sub-folders (default: smartbugs_dataset)"
+    )
+    parser.add_argument(
+        "--contracts-dir",
+        type=Path,
+        default=None,
+        help=(
+            "Plain directory containing .sol files to audit recursively, "
+            "for example CVE_dataset. Uses LOGs/my_results_<folder> by default."
+        )
     )
     parser.add_argument(
         "--config",
@@ -1015,8 +1074,8 @@ def main():
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("LOGs/my_results"),
-        help="Base directory for result files (default: LOGs/my_results)"
+        default=None,
+        help="Base directory for result files (default: LOGs/my_results_<input_folder_name>)"
     )
     parser.add_argument(
         "--max-files",
@@ -1030,9 +1089,9 @@ def main():
         default=None,
         help=(
             "Analyze a specific .sol contract. Accepts an absolute path, path "
-            "relative to the current directory, path relative to --dataset-dir, "
-            "or unique file name under --dataset-dir. Can be repeated or "
-            "comma-separated."
+            "relative to the current directory, path relative to the active "
+            "input directory, or unique file name under the active input "
+            "directory. Can be repeated or comma-separated."
         )
     )
     parser.add_argument(
@@ -1048,7 +1107,7 @@ def main():
     parser.add_argument(
         "--list-contracts",
         action="store_true",
-        help="List indexed contracts under --dataset-dir, then exit"
+        help="List indexed contracts under the active input directory, then exit"
     )
     parser.add_argument(
         "--report",
@@ -1058,15 +1117,18 @@ def main():
     
     args = parser.parse_args()
     
+    input_dir = args.contracts_dir or args.dataset_dir
+    output_dir = args.output_dir or default_output_base(input_dir)
+
     if args.list_contracts:
-        print_contract_index(args.dataset_dir)
+        print_contract_index(input_dir)
     elif args.report:
         # Report-only mode: skip analysis, just build the summary report
-        generate_summary_report(args.output_dir)
+        generate_summary_report(output_dir)
     elif args.contract_file or args.file_range:
         try:
             selected_contracts = select_contract_files(
-                dataset_dir=args.dataset_dir,
+                dataset_dir=input_dir,
                 contract_files=args.contract_file,
                 file_range=args.file_range,
             )
@@ -1075,11 +1137,20 @@ def main():
 
         run_selected_contract_audit(
             contract_paths=selected_contracts,
-            dataset_dir=args.dataset_dir,
+            dataset_dir=input_dir,
             config_path=args.config,
             prompt_path=args.prompt,
             model=args.model,
-            output_base=args.output_dir,
+            output_base=output_dir,
+        )
+    elif args.contracts_dir:
+        run_contract_directory_audit(
+            contracts_dir=args.contracts_dir,
+            config_path=args.config,
+            prompt_path=args.prompt,
+            model=args.model,
+            output_base=output_dir,
+            max_files=args.max_files,
         )
     else:
         # Run audit across all folders (report is auto-generated at the end)
@@ -1088,7 +1159,7 @@ def main():
             config_path=args.config,
             prompt_path=args.prompt,
             model=args.model,
-            output_base=args.output_dir,
+            output_base=output_dir,
             max_files=args.max_files,
         )
 

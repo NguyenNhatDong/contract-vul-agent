@@ -1,0 +1,39 @@
+scope,scenario,label,samples,finite_at_1,found_rate_at_1_percent,mean_fclr_at_1,inf_count_at_1,finite_at_3,found_rate_at_3_percent,mean_fclr_at_3,inf_count_at_3,finite_at_5,found_rate_at_5_percent,mean_fclr_at_5,inf_count_at_5
+All Labels,Global,Access_Control,18,11,61.11,1.272727,7,11,61.11,1.181818,7,12,66.67,1.166667,6
+All Labels,Global,Arithmetic,15,14,93.33,1.142857,1,15,100.00,1.133333,0,15,100.00,1.133333,0
+All Labels,Global,Denial_of_Service_Attacks,6,5,83.33,1.000000,1,5,83.33,1.000000,1,5,83.33,1.000000,1
+All Labels,Global,Front-running_Attacks,4,1,25.00,1.000000,3,1,25.00,1.000000,3,1,25.00,1.000000,3
+All Labels,Global,Insecure_Randomness,8,6,75.00,1.333333,2,7,87.50,1.285714,1,7,87.50,1.285714,1
+All Labels,Global,Other,3,1,33.33,1.000000,2,1,33.33,1.000000,2,2,66.67,1.500000,1
+All Labels,Global,Reentrancy_Attacks,31,28,90.32,1.000000,3,28,90.32,1.000000,3,28,90.32,1.000000,3
+All Labels,Global,Short_Addresses,1,0,0.00,NA,1,1,100.00,1.000000,0,1,100.00,1.000000,0
+All Labels,Global,Time_Manipulation,5,2,40.00,1.000000,3,3,60.00,1.000000,2,3,60.00,1.000000,2
+All Labels,Global,Unchecked_External_Calls,52,45,86.54,1.711111,7,46,88.46,1.695652,6,46,88.46,1.608696,6
+All Labels,Global,Overall,143,113,79.02,1.345133,30,118,82.52,1.322034,25,120,83.92,1.291667,23
+All Labels,Conditional,Access_Control,10,9,90.00,1.222222,1,9,90.00,1.111111,1,9,90.00,1.111111,1
+All Labels,Conditional,Arithmetic,13,13,100.00,1.153846,0,13,100.00,1.153846,0,13,100.00,1.153846,0
+All Labels,Conditional,Denial_of_Service_Attacks,3,3,100.00,1.000000,0,3,100.00,1.000000,0,3,100.00,1.000000,0
+All Labels,Conditional,Insecure_Randomness,7,6,85.71,1.333333,1,6,85.71,1.333333,1,6,85.71,1.333333,1
+All Labels,Conditional,Reentrancy_Attacks,29,28,96.55,1.000000,1,28,96.55,1.000000,1,28,96.55,1.000000,1
+All Labels,Conditional,Time_Manipulation,1,1,100.00,1.000000,0,1,100.00,1.000000,0,1,100.00,1.000000,0
+All Labels,Conditional,Unchecked_External_Calls,36,36,100.00,1.666667,0,36,100.00,1.638889,0,36,100.00,1.555556,0
+All Labels,Conditional,Overall,99,96,96.97,1.312500,3,96,96.97,1.291667,3,96,96.97,1.260417,3
+Correct Label Only,Global,Access_Control,18,7,38.89,1.000000,11,7,38.89,1.000000,11,7,38.89,1.000000,11
+Correct Label Only,Global,Arithmetic,15,13,86.67,1.076923,2,13,86.67,1.076923,2,13,86.67,1.076923,2
+Correct Label Only,Global,Denial_of_Service_Attacks,6,2,33.33,1.000000,4,2,33.33,1.000000,4,3,50.00,1.000000,3
+Correct Label Only,Global,Front-running_Attacks,4,0,0.00,NA,4,0,0.00,NA,4,0,0.00,NA,4
+Correct Label Only,Global,Insecure_Randomness,8,6,75.00,1.000000,2,6,75.00,1.000000,2,6,75.00,1.000000,2
+Correct Label Only,Global,Other,3,0,0.00,NA,3,0,0.00,NA,3,0,0.00,NA,3
+Correct Label Only,Global,Reentrancy_Attacks,31,28,90.32,1.000000,3,28,90.32,1.000000,3,28,90.32,1.000000,3
+Correct Label Only,Global,Short_Addresses,1,0,0.00,NA,1,0,0.00,NA,1,0,0.00,NA,1
+Correct Label Only,Global,Time_Manipulation,5,1,20.00,1.000000,4,1,20.00,1.000000,4,1,20.00,1.000000,4
+Correct Label Only,Global,Unchecked_External_Calls,52,36,69.23,1.027778,16,36,69.23,1.027778,16,36,69.23,1.027778,16
+Correct Label Only,Global,Overall,143,93,65.03,1.021505,50,93,65.03,1.021505,50,94,65.73,1.021277,49
+Correct Label Only,Conditional,Access_Control,10,7,70.00,1.000000,3,7,70.00,1.000000,3,7,70.00,1.000000,3
+Correct Label Only,Conditional,Arithmetic,13,13,100.00,1.076923,0,13,100.00,1.076923,0,13,100.00,1.076923,0
+Correct Label Only,Conditional,Denial_of_Service_Attacks,3,2,66.67,1.000000,1,2,66.67,1.000000,1,3,100.00,1.000000,0
+Correct Label Only,Conditional,Insecure_Randomness,7,6,85.71,1.000000,1,6,85.71,1.000000,1,6,85.71,1.000000,1
+Correct Label Only,Conditional,Reentrancy_Attacks,29,28,96.55,1.000000,1,28,96.55,1.000000,1,28,96.55,1.000000,1
+Correct Label Only,Conditional,Time_Manipulation,1,1,100.00,1.000000,0,1,100.00,1.000000,0,1,100.00,1.000000,0
+Correct Label Only,Conditional,Unchecked_External_Calls,36,36,100.00,1.027778,0,36,100.00,1.027778,0,36,100.00,1.027778,0
+Correct Label Only,Conditional,Overall,99,93,93.94,1.021505,6,93,93.94,1.021505,6,94,94.95,1.021277,5
